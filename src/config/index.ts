@@ -177,6 +177,8 @@ const EnvSchema = z.object({
   SUPABASE_ANON_KEY: z.string().optional(),
   /** Supabase Service Role Key (secret). From `SUPABASE_SERVICE_ROLE_KEY`. */
   SUPABASE_SERVICE_ROLE_KEY: z.string().optional(),
+  /** Directory for caching ClinicalTrials.gov API data. Defaults to "data" in project root. */
+  CLINICALTRIALS_DATA_PATH: z.string().default(path.join(projectRoot, "data")),
 });
 
 const parsedEnv = EnvSchema.safeParse(process.env);
@@ -275,6 +277,23 @@ if (!validatedLogsPath) {
 }
 // --- End Logs Directory Handling ---
 
+// --- Data Directory Handling ---
+const validatedDataPath = ensureDirectory(
+  env.CLINICALTRIALS_DATA_PATH,
+  projectRoot,
+  "data",
+);
+
+if (!validatedDataPath) {
+  if (process.stdout.isTTY) {
+    console.error(
+      "FATAL: Data directory configuration is invalid or could not be created. Please check permissions and path. Exiting.",
+    );
+  }
+  process.exit(1); // Exit if data directory is not usable
+}
+// --- End Data Directory Handling ---
+
 /**
  * Main application configuration object.
  * Aggregates settings from validated environment variables and `package.json`.
@@ -361,6 +380,9 @@ export const config = {
           serviceRoleKey: env.SUPABASE_SERVICE_ROLE_KEY,
         }
       : undefined,
+
+  /** Absolute path to the ClinicalTrials.gov data directory. From `CLINICALTRIALS_DATA_PATH` env var. */
+  clinicalTrialsDataPath: validatedDataPath,
 };
 
 /**

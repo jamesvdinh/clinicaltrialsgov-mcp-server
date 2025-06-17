@@ -224,13 +224,13 @@ The following tools will be created to expose the API's functionality.
       .array(z.string())
       .optional()
       .describe(
-        "For 'fieldValues' and 'listFieldSizes', specifies which fields to get stats for."
+        "For 'fieldValues' and 'listFieldSizes', specifies which fields to get stats for.",
       ),
     types: z
       .array(z.string())
       .optional()
       .describe(
-        "For 'fieldValues', filter by field data types (e.g., ENUM, INTEGER)."
+        "For 'fieldValues', filter by field data types (e.g., ENUM, INTEGER).",
       ),
   });
   ```

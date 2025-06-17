@@ -81,8 +81,8 @@ You can also use the npm scripts to run the server directly from your cloned rep
   ```
 - **Via Streamable HTTP:**
   `bash
-    npm run start:http
-    `
+npm run start:http
+`
   This starts a **Streamable HTTP** server (default: `http://127.0.0.1:3010`).
 
 ## ⚙️ Configuration

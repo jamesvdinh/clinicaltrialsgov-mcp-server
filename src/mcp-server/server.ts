@@ -17,12 +17,10 @@
 import { ServerType } from "@hono/node-server";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { config, environment } from "../config/index.js";
-import { ErrorHandler, logger, requestContextService } from "../utils/index.js";
 import { BaseErrorCode } from "../types-global/errors.js";
-import { registerEchoResource } from "./resources/echoResource/index.js";
-import { registerCatFactFetcherTool } from "./tools/catFactFetcher/index.js";
-import { registerEchoTool } from "./tools/echoTool/index.js";
-import { registerFetchImageTestTool } from "./tools/imageTest/index.js";
+import { ErrorHandler, logger, requestContextService } from "../utils/index.js";
+import { registerGetStudyTool } from "./tools/getStudy/index.js";
+import { registerListStudiesTool } from "./tools/listStudies/index.js";
 import { startHttpTransport } from "./transports/httpTransport.js";
 import { connectStdioTransport } from "./transports/stdioTransport.js";
 
@@ -59,10 +57,8 @@ async function createMcpServerInstance(): Promise<McpServer> {
   await ErrorHandler.tryCatch(
     async () => {
       logger.debug("Registering resources and tools...", context);
-      await registerEchoResource(server);
-      await registerEchoTool(server);
-      await registerCatFactFetcherTool(server);
-      await registerFetchImageTestTool(server);
+      await registerGetStudyTool(server);
+      await registerListStudiesTool(server);
       logger.info("Resources and tools registered successfully", context);
     },
     {

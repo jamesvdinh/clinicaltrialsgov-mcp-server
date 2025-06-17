@@ -1,0 +1,648 @@
+{
+  "studies": [
+    {
+      "protocolSection": {
+        "identificationModule": {
+          "nctId": "NCT05147467",
+          "orgStudyIdInfo": {
+            "id": "APG2575CC201"
+          },
+          "organization": {
+            "fullName": "Ascentage Pharma Group Inc.",
+            "class": "INDUSTRY"
+          },
+          "briefTitle": "Study of APG-2575 in Patients With Relapsed/Refractory CLL/SLL",
+          "officialTitle": "A Single-arm, Pivotal Registration Phase II Study of the Efficacy and Safety of APG-2575 Monotherapy in Relapsed or Refractory Chronic Lymphocytic Leukemia/Small Lymphocytic Lymphoma"
+        },
+        "statusModule": {
+          "statusVerifiedDate": "2024-01",
+          "overallStatus": "RECRUITING",
+          "expandedAccessInfo": {
+            "hasExpandedAccess": false
+          },
+          "startDateStruct": {
+            "date": "2021-12-28",
+            "type": "ACTUAL"
+          },
+          "primaryCompletionDateStruct": {
+            "date": "2024-09",
+            "type": "ESTIMATED"
+          },
+          "completionDateStruct": {
+            "date": "2024-12",
+            "type": "ESTIMATED"
+          },
+          "studyFirstSubmitDate": "2021-11-24",
+          "studyFirstSubmitQcDate": "2021-11-24",
+          "studyFirstPostDateStruct": {
+            "date": "2021-12-07",
+            "type": "ACTUAL"
+          },
+          "lastUpdateSubmitDate": "2024-01-22",
+          "lastUpdatePostDateStruct": {
+            "date": "2024-01-23",
+            "type": "ACTUAL"
+          }
+        },
+        "sponsorCollaboratorsModule": {
+          "responsibleParty": {
+            "type": "SPONSOR"
+          },
+          "leadSponsor": {
+            "name": "Ascentage Pharma Group Inc.",
+            "class": "INDUSTRY"
+          }
+        },
+        "oversightModule": {
+          "oversightHasDmc": false,
+          "isFdaRegulatedDrug": false,
+          "isFdaRegulatedDevice": false
+        },
+        "descriptionModule": {
+          "briefSummary": "The purpose of this study is to assess the efficacy and safety of APG-2575 single agent in patients with relapsed/refractory CLL/SLL.",
+          "detailedDescription": "This is an single-arm, open-label, multi-center, pivotal registration Phase II study of efficacy and safety of APG-2575 as a single agent in relapsed/refractory CLL/SLL patients.\n\nThis study plans to enroll approximately 75 CLL/SLL subjects who have failed or are intolerant to prior immunochemotherapy and BTK inhibitor therapy. Eligible subjects will receive APG-2575 600mg, orally administered once daily (QD), within half an hour of a low-fat meal, for a cycle of 28 days. Participants will continue to accept APG - 2575 until the \"end of treatment\" that are consistent with the provisions in the solution of the termination of any specified standards."
+        },
+        "conditionsModule": {
+          "conditions": [
+            "Chronic Lymphocytic Leukemia",
+            "Small Lymphocytic Lymphoma"
+          ],
+          "keywords": [
+            "Chronic Lymphocytic Leukemia",
+            "Small Lymphocytic Lymphoma",
+            "APG-2575"
+          ]
+        },
+        "designModule": {
+          "studyType": "INTERVENTIONAL",
+          "phases": ["PHASE2"],
+          "designInfo": {
+            "allocation": "NA",
+            "interventionModel": "SINGLE_GROUP",
+            "primaryPurpose": "TREATMENT",
+            "maskingInfo": {
+              "masking": "NONE"
+            }
+          },
+          "enrollmentInfo": {
+            "count": 75,
+            "type": "ESTIMATED"
+          }
+        },
+        "armsInterventionsModule": {
+          "armGroups": [
+            {
+              "label": "APG-2575 single agent in Relapse/Refractory CLL/SLL",
+              "type": "EXPERIMENTAL",
+              "description": "APG-2575 orally once daily at 600mg dose levels, every 28 days as a cycle.",
+              "interventionNames": ["Drug: APG2575"]
+            }
+          ],
+          "interventions": [
+            {
+              "type": "DRUG",
+              "name": "APG2575",
+              "description": "APG-2575 orally once daily at 600mg dose levels, every 28 days as a cycle.",
+              "armGroupLabels": [
+                "APG-2575 single agent in Relapse/Refractory CLL/SLL"
+              ]
+            }
+          ]
+        },
+        "outcomesModule": {
+          "primaryOutcomes": [
+            {
+              "measure": "Objective Response Rate (ORR)",
+              "description": "ORR is defined by Complete Remission (CR)+ CR with incomplete marrow recovery (CRi) + Partial Remission (PR) (according to NCI-WG CLL(2018)) and by CR+PR ( according to Lugano (2014)).Response will be evaluated every 2 cycles (8 weeks) till complete treatment or one month after last dose.",
+              "timeFrame": "Up to 9 months after the last subject enrolled."
+            }
+          ],
+          "secondaryOutcomes": [
+            {
+              "measure": "Progress Free Survival (PFS)",
+              "description": "PFS is defined as the time from the first administration to disease progression(PD) or death from any cause.",
+              "timeFrame": "Up to 9 months after the last subject enrolled."
+            },
+            {
+              "measure": "Time To Progression (TTP)",
+              "description": "TTP is defined as the time from the first administration to PD.",
+              "timeFrame": "Up to 9 months after the last subject enrolled."
+            },
+            {
+              "measure": "Time To Response (TTR)",
+              "description": "TTR is defined as the time from the first administration to the subjects' first CR, CRi, or PR.",
+              "timeFrame": "Up to 9 months after the last subject enrolled."
+            },
+            {
+              "measure": "Duration of Response (DOR)",
+              "description": "DOR is defined as the time from the subject's first CR, CRi, or PR to PD or death from any cause.",
+              "timeFrame": "Up to 9 months after the last subject enrolled."
+            },
+            {
+              "measure": "Overall Survival (OS)",
+              "description": "OS is defined as the time from the first administration to death.",
+              "timeFrame": "Up to 9 months after the last subject enrolled."
+            },
+            {
+              "measure": "the time of half absolute lymphocyte value (ALC)",
+              "description": "The time of half absolute lymphocyte value (ALC) is defined as the time from the first administration to 50% reduction of ALC of baseline.",
+              "timeFrame": "Up to 9 months after the last subject enrolled."
+            },
+            {
+              "measure": "Adverse events",
+              "description": "Adverse events (AE) and serious adverse events (SAE) will be graded according to NCI CTCAE Version 5.0.",
+              "timeFrame": "Up to 9 months after the last subject enrolled."
+            },
+            {
+              "measure": "Maximum plasma concentration (Cmax)",
+              "description": "Maximum plasma concentration (Cmax) will be assessed on all participants with APG-2575 treatments.",
+              "timeFrame": "Up to 4 cycles (each cycle is 28 days)."
+            },
+            {
+              "measure": "Area under the plasma concentration versus time curve (AUC)",
+              "description": "Area under the plasma concentration versus time curve (AUC) will be assessed on all participants with APG-2575 treatments.",
+              "timeFrame": "Up to 4 cycles (each cycle is 28 days)."
+            }
+          ],
+          "otherOutcomes": [
+            {
+              "measure": "Minimal Residual Disease (MRD) negative rate",
+              "description": "To observe the proportion of subjects with MRD negative status in bone marrow, peripheral blood, one or both.",
+              "timeFrame": "Up to 9 months after the last subject enrolled."
+            },
+            {
+              "measure": "Bcl-2 expression",
+              "description": "Potential biomarkers to be evaluated included the association of Bcl-2 expression with the efficacy of APG-2575 monotherapy.",
+              "timeFrame": "Up to 9 months after the last subject enrolled"
+            }
+          ]
+        },
+        "eligibilityModule": {
+          "eligibilityCriteria": "Inclusion Criteria:\n\nSubjects who meet each of the following inclusion criteria are eligible to participate in this study:\n\n1. Age ≥18 years old.\n2. Pathologically confirmed CLL/SLL according to the 2018 revised IWCLL NCI-WG guidelines, subject with measurable lesions or splenomegaly due to CLL.\n3. Expected survival is at least 12 weeks.\n4. Refractory, recurrent, or intolerant to BTK inhibitors and immunochemotherapy,or first-line treatment with BTK inhibitors fails and is not suitable for immunochemotherapy.\n5. Eastern Cooperative Oncology Group (ECOG) Performance Status (PS): 0 -2.\n6. Ability to understand and willingness to sign a written informed consent form approved by EC committee (the consent form must be signed by the patient prior to any screening or study-specific procedures).\n7. Willingness and ability to comply with study procedures and follow-up examination.\n\nExclusion Criteria:\n\nSubjects who meet any of the following exclusion criteria are not to be enrolled in this study:\n\n1. Prior history of allogeneic hematopoietic stem cell transplantation, adoptive cell immunotherapy or autologous hematopoietic stem cell transplantation within 24 months.\n2. Failure to recover adequately, at the discretion of the investigator, from prior surgical procedures. Patients who have had major surgery within 28 days from study entry, and patients who have had minor surgery within 14 days of study entry.\n3. Received Bcl-2 inhibitor treatment.\n4. Invasive NHL transformation or central nervous system (CNS) involvement has occurred.\n5. Pregnancy or lactation, or pregnancy is expected during the study period or within 3 months after the last administration of treatment.\n6. Within 2 years before entering the study, the subject had a history of active malignant tumors other than CLL / SLL, except that:\n\n   * Fully treated cervical carcinoma in situ;\n   * Completely resected basal cell carcinoma of the skin or localized squamous cell carcinoma of the skin;\n   * Confinement and resection of previously cured malignancies (or other treatment).\n7. Any other condition or circumstance that would, at the discretion of the investigator, make the patient unsuitable for participation in the study.",
+          "healthyVolunteers": false,
+          "sex": "ALL",
+          "minimumAge": "18 Years",
+          "stdAges": ["ADULT", "OLDER_ADULT"]
+        },
+        "contactsLocationsModule": {
+          "centralContacts": [
+            {
+              "name": "Zi Chen, Doctor",
+              "role": "CONTACT",
+              "phone": "+8618117275173",
+              "email": "Zi.Chen@ascentage.com"
+            },
+            {
+              "name": "Min Yu, Doctor",
+              "role": "CONTACT",
+              "phone": "+8615000679101",
+              "email": "Min.Yu@ascentage.com"
+            }
+          ],
+          "overallOfficials": [
+            {
+              "name": "Yifan Zhai, MD, PhD",
+              "affiliation": "Ascentage Pharma Group Inc.",
+              "role": "STUDY_DIRECTOR"
+            },
+            {
+              "name": "Jianyong Li, M.D.",
+              "affiliation": "The First Affiliated Hospital with Nanjing Medical University",
+              "role": "PRINCIPAL_INVESTIGATOR"
+            }
+          ],
+          "locations": [
+            {
+              "facility": "Sun Yat-sen University Cancer Center",
+              "status": "NOT_YET_RECRUITING",
+              "city": "Guangzhou",
+              "state": "Guangdong",
+              "zip": "510060",
+              "country": "China",
+              "contacts": [
+                {
+                  "name": "Yang Liang",
+                  "role": "CONTACT"
+                },
+                {
+                  "name": "Yang Liang, Postdoc",
+                  "role": "PRINCIPAL_INVESTIGATOR"
+                }
+              ],
+              "geoPoint": {
+                "lat": 23.11667,
+                "lon": 113.25
+              }
+            },
+            {
+              "facility": "Zhujiang Hospital of Southern Medical University",
+              "status": "NOT_YET_RECRUITING",
+              "city": "Guangzhou",
+              "state": "Guangdong",
+              "zip": "510280",
+              "country": "China",
+              "contacts": [
+                {
+                  "name": "Rui Huang",
+                  "role": "CONTACT"
+                },
+                {
+                  "name": "Rui Huang, Ph.D",
+                  "role": "PRINCIPAL_INVESTIGATOR"
+                }
+              ],
+              "geoPoint": {
+                "lat": 23.11667,
+                "lon": 113.25
+              }
+            },
+            {
+              "facility": "Nanfang Hospital of Southern Medical University",
+              "status": "NOT_YET_RECRUITING",
+              "city": "Guangzhou",
+              "state": "Guangdong",
+              "zip": "510515",
+              "country": "China",
+              "contacts": [
+                {
+                  "name": "Ru Feng",
+                  "role": "CONTACT"
+                },
+                {
+                  "name": "Ru Feng, M.D.",
+                  "role": "PRINCIPAL_INVESTIGATOR"
+                }
+              ],
+              "geoPoint": {
+                "lat": 23.11667,
+                "lon": 113.25
+              }
+            },
+            {
+              "facility": "Hainan General Hospital",
+              "status": "NOT_YET_RECRUITING",
+              "city": "Haikou",
+              "state": "Hainan",
+              "zip": "570311",
+              "country": "China",
+              "contacts": [
+                {
+                  "name": "Li'e Lin",
+                  "role": "CONTACT"
+                },
+                {
+                  "name": "Li'e Lin, M.D.",
+                  "role": "PRINCIPAL_INVESTIGATOR"
+                }
+              ],
+              "geoPoint": {
+                "lat": 20.04583,
+                "lon": 110.34167
+              }
+            },
+            {
+              "facility": "Henan Cancer Hospital",
+              "status": "NOT_YET_RECRUITING",
+              "city": "Zhengzhou",
+              "state": "Henan",
+              "zip": "450003",
+              "country": "China",
+              "contacts": [
+                {
+                  "name": "Keshu Zhou",
+                  "role": "CONTACT"
+                },
+                {
+                  "name": "Keshu Zhou, Ph.D",
+                  "role": "PRINCIPAL_INVESTIGATOR"
+                }
+              ],
+              "geoPoint": {
+                "lat": 34.75778,
+                "lon": 113.64861
+              }
+            },
+            {
+              "facility": "Union Hospital medical college Huazhong University of Science and Technology",
+              "status": "RECRUITING",
+              "city": "Wuhan",
+              "state": "Hubei",
+              "zip": "430022",
+              "country": "China",
+              "contacts": [
+                {
+                  "name": "Guohui Cui, M.D.",
+                  "role": "CONTACT"
+                },
+                {
+                  "name": "Guohui Cui",
+                  "role": "PRINCIPAL_INVESTIGATOR"
+                }
+              ],
+              "geoPoint": {
+                "lat": 30.58333,
+                "lon": 114.26667
+              }
+            },
+            {
+              "facility": "The First Affilated Hospital of Soochow University",
+              "status": "NOT_YET_RECRUITING",
+              "city": "Suzhou",
+              "state": "Jiangsu",
+              "zip": "215006",
+              "country": "China",
+              "contacts": [
+                {
+                  "name": "Caixia Li",
+                  "role": "CONTACT"
+                },
+                {
+                  "name": "Caixia Li, Ph.D",
+                  "role": "PRINCIPAL_INVESTIGATOR"
+                }
+              ],
+              "geoPoint": {
+                "lat": 31.30408,
+                "lon": 120.59538
+              }
+            },
+            {
+              "facility": "People's hospital of Jiangsu Province",
+              "status": "NOT_YET_RECRUITING",
+              "city": "Suzhou",
+              "state": "Jiangsu",
+              "country": "China",
+              "contacts": [
+                {
+                  "name": "Jianyong Li, M.D.",
+                  "role": "CONTACT",
+                  "email": "lijianyonglm@medmail.com.cn"
+                },
+                {
+                  "name": "Jianyong Li, M.D.",
+                  "role": "PRINCIPAL_INVESTIGATOR"
+                }
+              ],
+              "geoPoint": {
+                "lat": 31.30408,
+                "lon": 120.59538
+              }
+            },
+            {
+              "facility": "The First Affilated Hospital of Nanchang University",
+              "status": "NOT_YET_RECRUITING",
+              "city": "Nanchang",
+              "state": "Jiangxi",
+              "zip": "330006",
+              "country": "China",
+              "contacts": [
+                {
+                  "name": "Fei Li",
+                  "role": "CONTACT"
+                },
+                {
+                  "name": "Fei Li, Ph.D",
+                  "role": "PRINCIPAL_INVESTIGATOR"
+                }
+              ],
+              "geoPoint": {
+                "lat": 28.68396,
+                "lon": 115.85306
+              }
+            },
+            {
+              "facility": "Institute of blood transfusion of Chinese Academy of Medical Sciences",
+              "status": "NOT_YET_RECRUITING",
+              "city": "Tianjin",
+              "state": "Tianjin",
+              "zip": "215127",
+              "country": "China",
+              "contacts": [
+                {
+                  "name": "Tingyu Wang",
+                  "role": "CONTACT"
+                },
+                {
+                  "name": "Tingyu Wang, Ph.D",
+                  "role": "PRINCIPAL_INVESTIGATOR"
+                }
+              ],
+              "geoPoint": {
+                "lat": 39.14222,
+                "lon": 117.17667
+              }
+            },
+            {
+              "facility": "The First Affiliated Hospital of Zhejiang University School of Medicine",
+              "status": "NOT_YET_RECRUITING",
+              "city": "Hanzhou",
+              "state": "Zhejiang",
+              "zip": "310003",
+              "country": "China",
+              "contacts": [
+                {
+                  "name": "Jie Jin, Ph.D",
+                  "role": "CONTACT"
+                },
+                {
+                  "name": "Jie Jin, Ph.D",
+                  "role": "PRINCIPAL_INVESTIGATOR"
+                }
+              ],
+              "geoPoint": {
+                "lat": 26.4965,
+                "lon": 99.437
+              }
+            }
+          ]
+        }
+      },
+      "derivedSection": {
+        "miscInfoModule": {
+          "versionHolder": "2025-06-16"
+        },
+        "conditionBrowseModule": {
+          "meshes": [
+            {
+              "id": "D008223",
+              "term": "Lymphoma"
+            },
+            {
+              "id": "D007938",
+              "term": "Leukemia"
+            },
+            {
+              "id": "D007945",
+              "term": "Leukemia, Lymphoid"
+            },
+            {
+              "id": "D015451",
+              "term": "Leukemia, Lymphocytic, Chronic, B-Cell"
+            }
+          ],
+          "ancestors": [
+            {
+              "id": "D009370",
+              "term": "Neoplasms by Histologic Type"
+            },
+            {
+              "id": "D009369",
+              "term": "Neoplasms"
+            },
+            {
+              "id": "D008232",
+              "term": "Lymphoproliferative Disorders"
+            },
+            {
+              "id": "D008206",
+              "term": "Lymphatic Diseases"
+            },
+            {
+              "id": "D007160",
+              "term": "Immunoproliferative Disorders"
+            },
+            {
+              "id": "D007154",
+              "term": "Immune System Diseases"
+            },
+            {
+              "id": "D006402",
+              "term": "Hematologic Diseases"
+            },
+            {
+              "id": "D015448",
+              "term": "Leukemia, B-Cell"
+            },
+            {
+              "id": "D002908",
+              "term": "Chronic Disease"
+            },
+            {
+              "id": "D020969",
+              "term": "Disease Attributes"
+            },
+            {
+              "id": "D010335",
+              "term": "Pathologic Processes"
+            }
+          ],
+          "browseLeaves": [
+            {
+              "id": "M11220",
+              "name": "Lymphoma",
+              "asFound": "Lymphoma",
+              "relevance": "HIGH"
+            },
+            {
+              "id": "M10945",
+              "name": "Leukemia",
+              "asFound": "Leukemia",
+              "relevance": "HIGH"
+            },
+            {
+              "id": "M10951",
+              "name": "Leukemia, Lymphoid",
+              "asFound": "Lymphocytic Leukemia",
+              "relevance": "HIGH"
+            },
+            {
+              "id": "M18116",
+              "name": "Leukemia, Lymphocytic, Chronic, B-Cell",
+              "asFound": "Small lymphocytic lymphoma",
+              "relevance": "HIGH"
+            },
+            {
+              "id": "M12315",
+              "name": "Neoplasms by Histologic Type",
+              "relevance": "LOW"
+            },
+            {
+              "id": "M11225",
+              "name": "Lymphoproliferative Disorders",
+              "relevance": "LOW"
+            },
+            {
+              "id": "M11203",
+              "name": "Lymphatic Diseases",
+              "relevance": "LOW"
+            },
+            {
+              "id": "M10206",
+              "name": "Immunoproliferative Disorders",
+              "relevance": "LOW"
+            },
+            {
+              "id": "M10200",
+              "name": "Immune System Diseases",
+              "relevance": "LOW"
+            },
+            {
+              "id": "M9490",
+              "name": "Hematologic Diseases",
+              "relevance": "LOW"
+            },
+            {
+              "id": "M18115",
+              "name": "Leukemia, B-Cell",
+              "relevance": "LOW"
+            },
+            {
+              "id": "M6147",
+              "name": "Chronic Disease",
+              "relevance": "LOW"
+            },
+            {
+              "id": "M22700",
+              "name": "Disease Attributes",
+              "relevance": "LOW"
+            },
+            {
+              "id": "T3543",
+              "name": "Lymphosarcoma",
+              "relevance": "LOW"
+            },
+            {
+              "id": "T1303",
+              "name": "Chronic Graft Versus Host Disease",
+              "relevance": "LOW"
+            },
+            {
+              "id": "T1308",
+              "name": "Chronic Lymphocytic Leukemia",
+              "asFound": "Chronic Lymphocytic Leukemia",
+              "relevance": "HIGH"
+            }
+          ],
+          "browseBranches": [
+            {
+              "abbrev": "BC04",
+              "name": "Neoplasms"
+            },
+            {
+              "abbrev": "BC15",
+              "name": "Blood and Lymph Conditions"
+            },
+            {
+              "abbrev": "BC20",
+              "name": "Immune System Diseases"
+            },
+            {
+              "abbrev": "All",
+              "name": "All Conditions"
+            },
+            {
+              "abbrev": "BC23",
+              "name": "Symptoms and General Pathology"
+            },
+            {
+              "abbrev": "Rare",
+              "name": "Rare Diseases"
+            }
+          ]
+        }
+      },
+      "hasResults": false
+    }
+  ],
+  "nextPageToken": "NF0g5JaGmg"
+}

@@ -1,6 +1,6 @@
 # clinicaltrialsgov-mcp-server - Directory Structure
 
-Generated on: 2025-06-17 09:58:12
+Generated on: 2025-06-17 11:24:46
 
 ```
 clinicaltrialsgov-mcp-server
@@ -8,6 +8,7 @@ clinicaltrialsgov-mcp-server
 │   ├── workflows
 │   │   └── publish.yml
 │   └── FUNDING.yml
+├── data
 ├── docs
 │   ├── api-references
 │   │   ├── duckDB.md
@@ -16,6 +17,11 @@ clinicaltrialsgov-mcp-server
 │   ├── best-practices.md
 │   ├── ctg-oas-v2.yaml
 │   └── tree.md
+├── examples
+│   ├── studies_2025-06-17T11-15-33-773Z.json
+│   ├── studies_2025-06-17T11-16-37-179Z.json
+│   ├── study_NCT00184067_2025-06-17T11-17-42-480Z.json
+│   └── study_NCT03934567_2025-06-17T11-17-59-791Z.json
 ├── scripts
 │   ├── clean.ts
 │   ├── fetch-openapi-spec.ts
@@ -27,20 +33,12 @@ clinicaltrialsgov-mcp-server
 │   │   └── index.ts
 │   ├── mcp-server
 │   │   ├── resources
-│   │   │   └── echoResource
-│   │   │       ├── echoResourceLogic.ts
-│   │   │       ├── index.ts
-│   │   │       └── registration.ts
 │   │   ├── tools
-│   │   │   ├── catFactFetcher
+│   │   │   ├── getStudy
 │   │   │   │   ├── index.ts
 │   │   │   │   ├── logic.ts
 │   │   │   │   └── registration.ts
-│   │   │   ├── echoTool
-│   │   │   │   ├── index.ts
-│   │   │   │   ├── logic.ts
-│   │   │   │   └── registration.ts
-│   │   │   └── imageTest
+│   │   │   └── listStudies
 │   │   │       ├── index.ts
 │   │   │       ├── logic.ts
 │   │   │       └── registration.ts
@@ -57,18 +55,16 @@ clinicaltrialsgov-mcp-server
 │   │   └── server.ts
 │   ├── services
 │   │   ├── clinical-trials-gov
-│   │   ├── duck-db
-│   │   │   ├── duckDBConnectionManager.ts
-│   │   │   ├── duckDBQueryExecutor.ts
-│   │   │   ├── duckDBService.ts
+│   │   │   ├── ClinicalTrialsGovService.ts
+│   │   │   ├── index.ts
 │   │   │   └── types.ts
-│   │   ├── llm-providers
-│   │   │   └── openRouterProvider.ts
 │   │   └── supabase
 │   │       └── supabaseClient.ts
 │   ├── types-global
 │   │   └── errors.ts
 │   ├── utils
+│   │   ├── clinicaltrials
+│   │   │   └── jsonCleaner.ts
 │   │   ├── internal
 │   │   │   ├── errorHandler.ts
 │   │   │   ├── index.ts

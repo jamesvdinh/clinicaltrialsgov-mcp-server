@@ -1,35 +1,32 @@
 /**
- * @fileoverview Handles the registration of the `echo_message` tool with an MCP server instance.
- * This module defines the tool's metadata, its input schema shape,
- * and the asynchronous handler function that processes tool invocation requests.
- * @module src/mcp-server/tools/echoTool/registration
+ * @fileoverview Handles the registration of the `clinicaltrials_list_studies` tool.
+ * @module src/mcp-server/tools/listStudies/registration
  */
-
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
-import { BaseErrorCode, McpError } from "../../../types-global/errors.js";
 import {
   ErrorHandler,
   logger,
   RequestContext,
   requestContextService,
 } from "../../../utils/index.js";
+import { BaseErrorCode, McpError } from "../../../types-global/errors.js";
 import {
-  EchoToolInput,
-  EchoToolInputSchema,
-  echoToolLogic,
+  ListStudiesInput,
+  ListStudiesInputSchema,
+  listStudiesLogic,
 } from "./logic.js";
 
 /**
- * Registers the 'echo_message' tool and its handler with the provided MCP server instance.
- *
- * @param server - The MCP server instance to register the tool with.
- * @returns A promise that resolves when the tool registration is complete.
+ * Registers the 'clinicaltrials_list_studies' tool with the MCP server.
+ * @param server - The MCP server instance.
  */
-export const registerEchoTool = async (server: McpServer): Promise<void> => {
-  const toolName = "echo_message";
+export const registerListStudiesTool = async (
+  server: McpServer,
+): Promise<void> => {
+  const toolName = "clinicaltrials_list_studies";
   const toolDescription =
-    "Echoes a message back with optional formatting and repetition.";
+    "Searches for clinical studies using a combination of query terms and filters. Supports pagination.";
 
   const registrationContext: RequestContext =
     requestContextService.createRequestContext({
@@ -44,9 +41,9 @@ export const registerEchoTool = async (server: McpServer): Promise<void> => {
       server.tool(
         toolName,
         toolDescription,
-        EchoToolInputSchema.shape,
+        ListStudiesInputSchema.shape,
         async (
-          params: EchoToolInput,
+          params: ListStudiesInput,
           mcpContext: any,
         ): Promise<CallToolResult> => {
           const handlerContext: RequestContext =
@@ -59,14 +56,43 @@ export const registerEchoTool = async (server: McpServer): Promise<void> => {
             });
 
           try {
-            const result = await echoToolLogic(params, handlerContext);
+            const validatedParams = ListStudiesInputSchema.safeParse(params);
+            if (!validatedParams.success) {
+              const error = new McpError(
+                BaseErrorCode.VALIDATION_ERROR,
+                "Invalid input parameters.",
+                { issues: validatedParams.error.issues },
+              );
+              return {
+                content: [
+                  {
+                    type: "text",
+                    text: JSON.stringify({
+                      error: {
+                        code: error.code,
+                        message: error.message,
+                        details: error.details,
+                      },
+                    }),
+                  },
+                ],
+                isError: true,
+              };
+            }
+
+            const result = await listStudiesLogic(
+              validatedParams.data,
+              handlerContext,
+            );
             return {
-              content: [{ type: "text", text: JSON.stringify(result, null, 2) }],
+              content: [
+                { type: "text", text: JSON.stringify(result, null, 2) },
+              ],
               isError: false,
             };
           } catch (error) {
             const handledError = ErrorHandler.handleError(error, {
-              operation: "echoToolHandler",
+              operation: "listStudiesToolHandler",
               context: handlerContext,
               input: params,
             });
@@ -76,7 +102,7 @@ export const registerEchoTool = async (server: McpServer): Promise<void> => {
                 ? handledError
                 : new McpError(
                     BaseErrorCode.INTERNAL_ERROR,
-                    "An unexpected error occurred in the echo tool.",
+                    "An unexpected error occurred while listing studies.",
                     { originalErrorName: handledError.name },
                   );
 
@@ -99,7 +125,10 @@ export const registerEchoTool = async (server: McpServer): Promise<void> => {
         },
       );
 
-      logger.info(`Tool '${toolName}' registered successfully.`, registrationContext);
+      logger.info(
+        `Tool '${toolName}' registered successfully.`,
+        registrationContext,
+      );
     },
     {
       operation: `RegisteringTool_${toolName}`,
