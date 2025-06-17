@@ -9,7 +9,7 @@
 
 **Empower your AI agents with direct access to the official ClinicalTrials.gov database!**
 
-An MCP (Model Context Protocol) server providing a robust, developer-friendly interface to the official [ClinicalTrials.gov v2 API](https://clinicaltrials.gov/api/v2/docs). Enables LLMs and AI agents to search, retrieve, and analyze clinical study data programmatically.
+An MCP (Model Context Protocol) server providing a robust, developer-friendly interface to the official [ClinicalTrials.gov v2 API](https://clinicaltrials.gov/data-api/api). Enables LLMs and AI agents to search, retrieve, and analyze clinical study data programmatically.
 
 Built on the [`cyanheads/mcp-ts-template`](https://github.com/cyanheads/mcp-ts-template), this server follows a modular architecture with robust error handling, logging, and security features.
 
