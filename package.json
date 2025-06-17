@@ -1,25 +1,25 @@
 {
-  "name": "mcp-ts-template",
-  "version": "1.5.3",
-  "description": "Production-ready TypeScript template for building robust Model Context Protocol (MCP) Servers & Clients. Features extensive utilities, service integrations (OpenRouter, DuckDB), advanced authentication (OAuth 2.1, JWT), and both STDIO & Hono-based HTTP transports.",
+  "name": "clinicaltrialsgov-mcp-server",
+  "version": "1.0.0",
+  "description": "A Model Context Protocol (MCP) Server providing LLM tools for the official ClinicalTrials.gov REST API.",
   "main": "dist/index.js",
   "files": [
     "dist"
   ],
   "bin": {
-    "mcp-ts-template": "dist/index.js"
+    "clinicaltrialsgov-mcp-server": "dist/index.js"
   },
   "exports": "./dist/index.js",
   "types": "dist/index.d.ts",
   "type": "module",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cyanheads/mcp-ts-template.git"
+    "url": "git+https://github.com/cyanheads/clinicaltrialsgov-mcp-server.git"
   },
   "bugs": {
-    "url": "https://github.com/cyanheads/mcp-ts-template/issues"
+    "url": "https://github.com/cyanheads/clinicaltrialsgov-mcp-server/issues"
   },
-  "homepage": "https://github.com/cyanheads/mcp-ts-template#readme",
+  "homepage": "https://github.com/cyanheads/clinicaltrialsgov-mcp-server#readme",
   "scripts": {
     "build": "tsc && node --loader ts-node/esm scripts/make-executable.ts dist/index.js",
     "start": "node dist/index.js",
@@ -31,7 +31,7 @@
     "tree": "ts-node --esm scripts/tree.ts",
     "fetch-spec": "ts-node --esm scripts/fetch-openapi-spec.ts",
     "format": "prettier --write \"**/*.{ts,js,json,md,html,css}\"",
-    "inspector": "npx mcp-inspector --config mcp.json --server mcp-ts-template",
+    "inspector": "npx mcp-inspector --config mcp.json --server clinicaltrialsgov-mcp-server",
     "db:duckdb-example": "MCP_LOG_LEVEL=debug tsc && node dist/storage/duckdbExample.js"
   },
   "dependencies": {
@@ -63,37 +63,19 @@
   },
   "keywords": [
     "typescript",
-    "template",
     "mcp",
     "model-context-protocol",
-    "architecture",
-    "error-handling",
-    "llm",
-    "ai-integration",
     "mcp-server",
-    "mcp-client",
+    "clinicaltrials.gov",
+    "api",
+    "clinical-trials",
+    "research",
     "hono",
     "stdio",
-    "http",
-    "authentication",
-    "oauth",
-    "jwt",
-    "openrouter",
-    "duckdb",
-    "zod"
+    "http"
   ],
-  "author": "cyanheads <casey@caseyjhand.com> (https://github.com/cyanheads/mcp-ts-template#readme)",
+  "author": "cyanheads <casey@caseyjhand.com>",
   "license": "Apache-2.0",
-  "funding": [
-    {
-      "type": "github",
-      "url": "https://github.com/sponsors/cyanheads"
-    },
-    {
-      "type": "buy_me_a_coffee",
-      "url": "https://www.buymeacoffee.com/cyanheads"
-    }
-  ],
   "engines": {
     "node": ">=20.0.0"
   },

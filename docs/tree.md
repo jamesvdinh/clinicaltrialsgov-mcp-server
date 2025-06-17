@@ -1,9 +1,9 @@
-# mcp-ts-template - Directory Structure
+# clinicaltrialsgov-mcp-server - Directory Structure
 
-Generated on: 2025-06-16 21:42:01
+Generated on: 2025-06-17 09:58:12
 
 ```
-mcp-ts-template
+clinicaltrialsgov-mcp-server
 ├── .github
 │   ├── workflows
 │   │   └── publish.yml
@@ -14,6 +14,7 @@ mcp-ts-template
 │   │   ├── jsdoc-standard-tags.md
 │   │   └── typedoc-reference.md
 │   ├── best-practices.md
+│   ├── ctg-oas-v2.yaml
 │   └── tree.md
 ├── scripts
 │   ├── clean.ts
@@ -23,21 +24,6 @@ mcp-ts-template
 │   └── tree.ts
 ├── src
 │   ├── config
-│   │   └── index.ts
-│   ├── mcp-client
-│   │   ├── client-config
-│   │   │   ├── configLoader.ts
-│   │   │   ├── mcp-config.json.example
-│   │   │   └── README.md
-│   │   ├── core
-│   │   │   ├── clientCache.ts
-│   │   │   ├── clientConnectionLogic.ts
-│   │   │   └── clientManager.ts
-│   │   ├── transports
-│   │   │   ├── httpClientTransport.ts
-│   │   │   ├── index.ts
-│   │   │   ├── stdioClientTransport.ts
-│   │   │   └── transportFactory.ts
 │   │   └── index.ts
 │   ├── mcp-server
 │   │   ├── resources
@@ -70,6 +56,7 @@ mcp-ts-template
 │   │   ├── README.md
 │   │   └── server.ts
 │   ├── services
+│   │   ├── clinical-trials-gov
 │   │   ├── duck-db
 │   │   │   ├── duckDBConnectionManager.ts
 │   │   │   ├── duckDBQueryExecutor.ts
@@ -79,8 +66,6 @@ mcp-ts-template
 │   │   │   └── openRouterProvider.ts
 │   │   └── supabase
 │   │       └── supabaseClient.ts
-│   ├── storage
-│   │   └── duckdbExample.ts
 │   ├── types-global
 │   │   └── errors.ts
 │   ├── utils
@@ -118,6 +103,7 @@ mcp-ts-template
 ├── mcp.json
 ├── package-lock.json
 ├── package.json
+├── PROJECT-SPEC.md
 ├── README.md
 ├── repomix.config.json
 ├── smithery.yaml
