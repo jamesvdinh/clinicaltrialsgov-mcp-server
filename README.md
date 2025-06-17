@@ -1,159 +1,235 @@
-# ClinicalTrials.gov MCP Server 🏥
+# ClinicalTrials.gov MCP Server
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-^5.8.3-blue.svg)](https://www.typescriptlang.org/)
-[![Model Context Protocol SDK](https://img.shields.io/badge/MCP%20SDK-^1.12.3-green.svg)](https://github.com/modelcontextprotocol/typescript-sdk)
-[![MCP Spec Version](https://img.shields.io/badge/MCP%20Spec-2025--03--26-lightgrey.svg)](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/docs/specification/2025-03-26/changelog.mdx)
+[![Model Context Protocol](https://img.shields.io/badge/MCP%20SDK-^1.12.3-green.svg)](https://modelcontextprotocol.io/)
 [![Version](https://img.shields.io/badge/Version-1.0.0-blue.svg)](./CHANGELOG.md)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![Status](https://img.shields.io/badge/Status-Stable-green.svg)](https://github.com/cyanheads/clinicaltrialsgov-mcp-server/issues)
+[![Status](https://img.shields.io/badge/Status-beta-orange.svg)](https://github.com/cyanheads/clinicaltrialsgov-mcp-server/issues)
 [![GitHub](https://img.shields.io/github/stars/cyanheads/clinicaltrialsgov-mcp-server?style=social)](https://github.com/cyanheads/clinicaltrialsgov-mcp-server)
 
-**A [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) Server providing a robust, developer-friendly interface to the official [ClinicalTrials.gov REST API](https://clinicaltrials.gov/api/v2/docs).**
+**Empower your AI agents with direct access to the official ClinicalTrials.gov database!**
 
-A Model Context Protocol (MCP) Server providing LLM tools for the official ClinicalTrials.gov REST API. Search and retrieve clinical trial data, including study details and more
+An MCP (Model Context Protocol) server providing a robust, developer-friendly interface to the official [ClinicalTrials.gov v2 API](https://clinicaltrials.gov/api/v2/docs). Enables LLMs and AI agents to search, retrieve, and analyze clinical study data programmatically.
 
-## 📋 Table of Contents
+Built on the [`cyanheads/mcp-ts-template`](https://github.com/cyanheads/mcp-ts-template), this server follows a modular architecture with robust error handling, logging, and security features.
 
-- [✨ Key Features](#-key-features)
-- [🏁 Quick Start](#-quick-start)
-- [⚙️ Configuration](#️-configuration)
-- [🔩 Server Configuration (Environment Variables)](#-server-configuration-environment-variables)
-- [🏗️ Project Structure](#️-project-structure)
-- [🧩 Extending the MCP Server](#-extending-the-mcp-server)
-- [🌍 More MCP Resources](#-explore-more-mcp-resources)
-- [📜 License](#-license)
+## 🚀 Core Capabilities: ClinicalTrials.gov Tools 🛠️
 
-## ✨ Key Features
+This server equips your AI with specialized tools to interact with the ClinicalTrials.gov database:
 
-This server provides a suite of tools for interacting with the ClinicalTrials.gov API:
+| Tool Name                                                            | Description                                                                                                                                               | Key Features                                                                                                                                                                                                                                                                                                                                             |
+| :------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`clinicaltrials_list_studies`](./src/mcp-server/tools/listStudies/) | Searches for clinical studies using a combination of query terms and filters. (See [Example](./examples/studies_2025-06-17T11-15-33-773Z.json))           | - `query`: Search by condition, term, location, title, intervention, outcomes, sponsor, or ID.<br/>- `filter`: Refine results by NCT IDs, study status, geographic distance, or advanced Essie expressions.<br/>- `pagination`: Control result sets with `pageSize` and `pageToken`.<br/>- `fields`: Specify which data fields to return for efficiency. |
+| [`clinicaltrials_get_study`](./src/mcp-server/tools/getStudy/)       | Retrieves detailed information for a single clinical study by its NCT number. (See [Example](./examples/study_NCT03934567_2025-06-17T11-17-59-791Z.json)) | - `nctId`: Fetches a study using its unique identifier (e.g., "NCT03934567").<br/>- `fields`: Select specific fields to retrieve.<br/>- `markupFormat`: Choose between `markdown` or `legacy` for formatted content.<br/>- Uses ClinicalTrials.gov REST API v2.                                                                                          |
 
-| Tool                          | Description                                                                   | Endpoint(s)            |
-| :---------------------------- | :---------------------------------------------------------------------------- | :--------------------- |
-| `clinicaltrials_list_studies` | Searches for clinical studies using a combination of query terms and filters. | `GET /studies`         |
-| `clinicaltrials_get_study`    | Retrieves detailed information for a single clinical study by its NCT number. | `GET /studies/{nctId}` |
+---
 
-## 📦 Installation
+## Table of Contents
 
-1.  **Clone the repository:**
+| [Overview](#overview) | [Features](#features) | [Installation](#installation) |
 
-    ```bash
-    git clone https://github.com/cyanheads/clinicaltrialsgov-mcp-server.git
-    cd clinicaltrialsgov-mcp-server
-    ```
+| [Configuration](#configuration) | [Project Structure](#project-structure) |
 
-2.  **Install dependencies:**
+| [Tools](#tools) | [Resources](#resources) | [Development](#development) | [License](#license) |
 
-    ```bash
-    npm install
-    ```
+## Overview
 
-3.  **Build the project:**
-    ```bash
-    npm run build
-    # Or use 'npm run rebuild' for a clean install
-    ```
+The ClinicalTrials.gov MCP Server acts as a bridge, allowing applications (MCP Clients) that understand the Model Context Protocol (MCP) – like advanced AI assistants (LLMs), IDE extensions, or custom research tools – to interact directly and efficiently with the official ClinicalTrials.gov database.
 
-## 🚀 Usage
+Instead of complex API integration or manual searches, your tools can leverage this server to:
 
-### Using NPX
+- **Automate clinical research workflows**: Search for clinical trials, fetch detailed study metadata, and analyze trial characteristics programmatically.
+- **Gain research insights**: Access comprehensive trial data including study protocols, eligibility criteria, outcomes, sponsors, and locations without leaving the host application.
+- **Integrate clinical trial data into AI-driven research**: Enable LLMs to conduct clinical trial reviews, analyze research trends, and support evidence-based decision making.
+- **Support regulatory and compliance workflows**: Retrieve structured data for regulatory submissions, competitive intelligence, and market research.
 
-To run the MCP server directly using `npx`, you can use the following command:
+Built on the robust `mcp-ts-template`, this server provides a standardized, secure, and efficient way to expose ClinicalTrials.gov functionality via the MCP standard. It achieves this by integrating with the official ClinicalTrials.gov v2 API, ensuring compliance with rate limits and providing comprehensive error handling.
+
+> **Developer Note**: This repository includes a [.clinerules](.clinerules) file that serves as a developer cheat sheet for your LLM coding agent with quick reference for the codebase patterns, file locations, and code snippets.
+
+## Features
+
+### Core Utilities
+
+Leverages the robust utilities provided by the `mcp-ts-template`:
+
+- **Logging**: Structured, configurable logging (file rotation, stdout JSON, MCP notifications) with sensitive data redaction.
+- **Error Handling**: Centralized error processing, standardized error types (`McpError`), and automatic logging.
+- **Configuration**: Environment variable loading (`dotenv`) with comprehensive validation.
+- **Input Validation/Sanitization**: Uses `zod` for schema validation and custom sanitization logic.
+- **Request Context**: Tracking and correlation of operations via unique request IDs using `AsyncLocalStorage`.
+- **Type Safety**: Strong typing enforced by TypeScript and Zod schemas.
+- **HTTP Transport**: High-performance HTTP server using **Hono**, featuring session management with garbage collection, CORS, and IP-based rate limiting.
+- **Authentication**: Robust authentication layer supporting JWT and OAuth 2.1, with fine-grained scope enforcement.
+- **Deployment**: Multi-stage `Dockerfile` for creating small, secure production images with native dependency support.
+
+### ClinicalTrials.gov Integration
+
+- **Official API Integration**: Comprehensive access to ClinicalTrials.gov v2 API endpoints with automatic JSON parsing.
+- **Advanced Search Capabilities**: Complex query construction with filters for study status, geographic location, conditions, interventions, and sponsors.
+- **Full Study Metadata**: Retrieve complete trial data including protocols, eligibility criteria, study design, outcomes, sponsors, and contact information.
+- **Flexible Field Selection**: Choose specific data fields to retrieve for efficient API usage and reduced response sizes.
+- **Pagination Support**: Handle large result sets with built-in pagination using `pageSize` and `pageToken` parameters.
+- **Multiple Query Types**: Support for condition-based, intervention-based, location-based, and sponsor-based searches.
+- **Data Format Options**: Choose between `markdown` and `legacy` markup formats for study descriptions.
+- **Rate Limiting Compliance**: Built-in request throttling to comply with ClinicalTrials.gov API guidelines.
+
+## Installation
+
+### Prerequisites
+
+- [Node.js (>=18.0.0)](https://nodejs.org/)
+- [npm](https://www.npmjs.com/) (comes with Node.js)
+- [Docker](https://www.docker.com/) (optional, for containerized deployment)
+
+### Install via npm (recommended)
 
 ```bash
-# Run with default stdio transport
-npx clinicaltrialsgov-mcp-server
-
-# Run with HTTP transport
-MCP_TRANSPORT_TYPE=http npx clinicaltrialsgov-mcp-server
+npm install @cyanheads/clinicaltrialsgov-mcp-server
 ```
 
-### From Source (for Development)
+### Alternatively Install from Source
 
-You can also use the npm scripts to run the server directly from your cloned repository:
+1. Clone the repository:
 
-- **Via Stdio (Default):**
-  ```bash
-  npm start
-  # or 'npm run start:stdio'
-  ```
-- **Via Streamable HTTP:**
-  ```bash
-  npm run start:http
-  ```
-  This starts a **Streamable HTTP** server (default: `http://127.0.0.1:3010`).
+   ```bash
+   git clone https://github.com/cyanheads/clinicaltrialsgov-mcp-server.git
+   cd clinicaltrialsgov-mcp-server
+   ```
 
-## ⚙️ Configuration
+2. Install dependencies:
 
-### 🔩 Server Configuration (Environment Variables)
+   ```bash
+   npm install
+   ```
 
-Configure the MCP server's behavior using these environment variables:
+3. Build the project:
+   ```bash
+   npm run build
+   *or npm run rebuild*
+   ```
 
-| Variable                   | Description                                                                                         | Default                                |
-| :------------------------- | :-------------------------------------------------------------------------------------------------- | :------------------------------------- |
-| `MCP_TRANSPORT_TYPE`       | Server transport: `stdio` or `http`.                                                                | `stdio`                                |
-| `MCP_HTTP_PORT`            | Port for the HTTP server (if `MCP_TRANSPORT_TYPE=http`).                                            | `3010`                                 |
-| `MCP_HTTP_HOST`            | Host address for the HTTP server (if `MCP_TRANSPORT_TYPE=http`).                                    | `127.0.0.1`                            |
-| `MCP_ALLOWED_ORIGINS`      | Comma-separated allowed origins for CORS (if `MCP_TRANSPORT_TYPE=http`).                            | (none)                                 |
-| `MCP_SERVER_NAME`          | Optional server name (used in MCP initialization).                                                  | (from package.json)                    |
-| `MCP_SERVER_VERSION`       | Optional server version (used in MCP initialization).                                               | (from package.json)                    |
-| `MCP_LOG_LEVEL`            | Server logging level (`debug`, `info`, `warning`, `error`, etc.).                                   | `debug`                                |
-| `LOGS_DIR`                 | Directory for log files.                                                                            | `logs/` (in project root)              |
-| `CLINICALTRIALS_DATA_PATH` | Directory for caching ClinicalTrials.gov API data.                                                  | `data/` (in project root)              |
-| `NODE_ENV`                 | Runtime environment (`development`, `production`).                                                  | `development`                          |
-| `MCP_AUTH_SECRET_KEY`      | **Required for HTTP transport.** Secret key (min 32 chars) for signing/verifying auth tokens (JWT). | (none - **MUST be set in production**) |
-| `MCP_AUTH_MODE`            | Authentication mode: `jwt` (default) or `oauth`.                                                    | `jwt`                                  |
-| `OAUTH_ISSUER_URL`         | **Required for `oauth` mode.** The issuer URL of your authorization server.                         | (none)                                 |
-| `OAUTH_AUDIENCE`           | **Required for `oauth` mode.** The audience identifier for this MCP server.                         | (none)                                 |
-| `OAUTH_JWKS_URI`           | **Optional for `oauth` mode.** The JWKS endpoint URL. If omitted, it's discovered from the issuer.  | (none)                                 |
+## Configuration
 
-### 🔌 Client Configuration
+### Environment Variables
 
-#### Example: Adding to an MCP Client
+Configure the server using environment variables. These environmental variables are set within your MCP client config/settings (e.g. `claude_desktop_config.json` for Claude Desktop)
 
-To add this server to an MCP client application (like [Claude Desktop](https://github.com/cyanheads/claude-desktop)), you would update the client's configuration file.
+| Variable                   | Description                                                                              | Default                   |
+| -------------------------- | ---------------------------------------------------------------------------------------- | ------------------------- |
+| `MCP_TRANSPORT_TYPE`       | Transport mechanism: `stdio` or `http`.                                                  | `stdio`                   |
+| `MCP_HTTP_PORT`            | Port for the HTTP server (if `MCP_TRANSPORT_TYPE=http`).                                 | `3010`                    |
+| `MCP_HTTP_HOST`            | Host address for the HTTP server (if `MCP_TRANSPORT_TYPE=http`).                         | `127.0.0.1`               |
+| `MCP_ALLOWED_ORIGINS`      | Comma-separated list of allowed origins for CORS (if `MCP_TRANSPORT_TYPE=http`).         | (none)                    |
+| `MCP_LOG_LEVEL`            | Logging level (`debug`, `info`, `notice`, `warning`, `error`, `crit`, `alert`, `emerg`). | `debug`                   |
+| `LOG_OUTPUT_MODE`          | Logging output mode: `file` or `stdout`.                                                 | `file`                    |
+| `MCP_AUTH_MODE`            | Authentication mode for HTTP: `jwt` or `oauth`.                                          | `jwt`                     |
+| `MCP_AUTH_SECRET_KEY`      | **Required for `jwt` auth.** Minimum 32-character secret key for JWT authentication.     | (none)                    |
+| `CLINICALTRIALS_DATA_PATH` | Directory for caching ClinicalTrials.gov API data.                                       | `data/` (in project root) |
+| `LOGS_DIR`                 | Directory for log file storage (if `LOG_OUTPUT_MODE=file`).                              | `logs/`                   |
+| `NODE_ENV`                 | Runtime environment (`development`, `production`).                                       | `development`             |
+
+### MCP Client Settings
+
+Add the following to your MCP client's configuration file (e.g., `cline_mcp_settings.json`). This configuration uses `npx` to run the server, which will automatically install the package if not already present:
 
 ```json
 {
   "mcpServers": {
     "clinicaltrialsgov-mcp-server": {
       "command": "npx",
-      "args": ["clinicaltrialsgov-mcp-server"],
+      "args": ["@cyanheads/clinicaltrialsgov-mcp-server"],
       "env": {
-        "MCP_LOG_LEVEL": "debug",
-        "MCP_TRANSPORT_TYPE": "http",
-        "MCP_HTTP_PORT": "3010"
-      }
+        "MCP_LOG_LEVEL": "info"
+      },
+      "disabled": false,
+      "autoApprove": []
     }
   }
 }
 ```
 
-## 🏗️ Project Structure
+## Project Structure
 
-This project follows a standard TypeScript project layout. For a detailed breakdown, see the [Project Structure Guide](docs/best-practices.md).
+The codebase follows a modular structure within the `src/` directory:
 
-You can also generate a current file tree:
-
-```bash
-npm run tree
+```
+src/
+├── index.ts              # Entry point: Initializes and starts the server
+├── config/               # Configuration loading (env vars, package info)
+│   └── index.ts
+├── mcp-server/           # Core MCP server logic and capability registration
+│   ├── server.ts         # Server setup, capability registration
+│   ├── transports/       # Transport handling (stdio, http)
+│   ├── resources/        # MCP Resource implementations
+│   └── tools/            # MCP Tool implementations (subdirs per tool)
+├── services/             # External service integrations
+│   └── clinical-trials-gov/ # ClinicalTrials.gov API client and parsing
+├── types-global/         # Shared TypeScript type definitions
+└── utils/                # Common utility functions (logger, error handler, etc.)
 ```
 
-## 🧩 Extending the MCP Server
+For a detailed file tree, run `npm run tree` or see [docs/tree.md](docs/tree.md).
 
-For detailed guidance on how to add your own custom Tools and Resources, please see the [Server Extension Guide](src/mcp-server/README.md).
+## Tools
 
-## 🌍 Explore More MCP Resources
+The ClinicalTrials.gov MCP Server provides a comprehensive suite of tools for clinical trial research, callable via the Model Context Protocol.
 
-Looking for more examples, guides, and pre-built MCP servers? Check out the companion repository:
+| Tool Name                     | Description                                                           | Key Arguments                                                                     |
+| :---------------------------- | :-------------------------------------------------------------------- | :-------------------------------------------------------------------------------- |
+| `clinicaltrials_list_studies` | Searches for clinical studies using queries, filters, and pagination. | `query?`, `filter?`, `fields?`, `sort?`, `pageSize?`, `pageToken?`, `countTotal?` |
+| `clinicaltrials_get_study`    | Fetches detailed information for a single study by NCT number.        | `nctId`, `markupFormat?`, `fields?`                                               |
 
-➡️ **[cyanheads/model-context-protocol-resources](https://github.com/cyanheads/model-context-protocol-resources)**
+_Note: All tools support comprehensive error handling and return structured JSON responses._
 
-## 📜 License
+## Examples
 
-This project is licensed under the Apache License 2.0. See the [LICENSE](LICENSE) file for details.
+Comprehensive usage examples are available in the [`examples/`](examples/) directory:
+
+- [List Studies](examples/studies_2025-06-17T11-15-33-773Z.json)
+- [Get Study Details](examples/study_NCT03934567_2025-06-17T11-17-59-791Z.json)
+
+## Development
+
+### Build and Test
+
+```bash
+# Build the project (compile TS to JS in dist/ and make executable)
+npm run build
+
+# Test the server locally using the MCP inspector tool (stdio transport)
+npm run inspector
+
+# Test the server locally using the MCP inspector tool (http transport)
+npm run inspector:http
+
+# Clean build artifacts
+npm run clean
+
+# Generate a file tree representation for documentation
+npm run tree
+
+# Clean build artifacts and then rebuild the project
+npm run rebuild
+
+# Format code with Prettier
+npm run format
+
+# Start the server using stdio (default)
+npm start
+# Or explicitly:
+npm run start:stdio
+
+# Start the server using HTTP transport
+npm run start:http
+```
+
+## License
+
+This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
 
 ---
 
 <div align="center">
-Built with ❤️ and the <a href="https://modelcontextprotocol.io/">Model Context Protocol</a>
+Built with the <a href="https://modelcontextprotocol.io/">Model Context Protocol</a>
 </div>
