@@ -38,6 +38,10 @@ COPY package.json .
 
 # Create a non-root user and switch to it
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+
+# Create and set permissions for the data directory
+RUN mkdir data && chown appuser:appgroup data
+
 USER appuser
 
 # Expose port if the application runs a server (adjust if needed)
@@ -46,4 +50,4 @@ EXPOSE 3010
 
 # Command to run the application
 # This will execute the binary defined in package.json
-CMD ["npx", "mcp-ts-template"]
+CMD ["npx", "clinicaltrialsgov-mcp-server"]
