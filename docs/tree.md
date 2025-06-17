@@ -1,6 +1,6 @@
 # clinicaltrialsgov-mcp-server - Directory Structure
 
-Generated on: 2025-06-17 11:24:46
+Generated on: 2025-06-17 11:42:08
 
 ```
 clinicaltrialsgov-mcp-server

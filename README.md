@@ -10,7 +10,7 @@
 
 **A [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) Server providing a robust, developer-friendly interface to the official [ClinicalTrials.gov REST API](https://clinicaltrials.gov/api/v2/docs).**
 
-This MCP server provides LLM tools to search and retrieve studies from the ClinicalTrials.gov database. Allowing seamless interaction with clinical trial data for research and analysis.
+A Model Context Protocol (MCP) Server providing LLM tools for the official ClinicalTrials.gov REST API. Search and retrieve clinical trial data, including study details and more
 
 ## 📋 Table of Contents
 

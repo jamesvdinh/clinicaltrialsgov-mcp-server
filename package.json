@@ -1,7 +1,7 @@
 {
   "name": "clinicaltrialsgov-mcp-server",
   "version": "1.0.0",
-  "description": "A Model Context Protocol (MCP) Server providing LLM tools for the official ClinicalTrials.gov REST API.",
+  "description": "A Model Context Protocol (MCP) Server providing LLM tools for the official ClinicalTrials.gov REST API. Search and retrieve clinical trial data, including study details and more",
   "main": "dist/index.js",
   "files": [
     "dist"
@@ -76,6 +76,16 @@
   ],
   "author": "cyanheads <casey@caseyjhand.com>",
   "license": "Apache-2.0",
+  "funding": [
+    {
+      "type": "github",
+      "url": "https://github.com/sponsors/cyanheads"
+    },
+    {
+      "type": "buy_me_a_coffee",
+      "url": "https://www.buymeacoffee.com/cyanheads"
+    }
+  ],
   "engines": {
     "node": ">=20.0.0"
   },
