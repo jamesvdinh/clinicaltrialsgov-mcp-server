@@ -10,8 +10,7 @@
 
 **A [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) Server providing a robust, developer-friendly interface to the official [ClinicalTrials.gov REST API](https://clinicaltrials.gov/api/v2/docs).**
 
-This server encapsulates the complexity of the underlying API, exposing its functionality through a set of well-defined, easy-to-use LLM tools.
-The primary goal is to enable seamless interaction with clinical trial data for research, analysis, and application development.
+This MCP server provides LLM tools to search and retrieve studies from the ClinicalTrials.gov database. Allowing seamless interaction with clinical trial data for research and analysis.
 
 ## 📋 Table of Contents
 
@@ -28,12 +27,10 @@ The primary goal is to enable seamless interaction with clinical trial data for 
 
 This server provides a suite of tools for interacting with the ClinicalTrials.gov API:
 
-| Tool                                | Description                                                                                               | Endpoint(s)                                                            |
-| :---------------------------------- | :-------------------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------- |
-| `clinicaltrials_list_studies`       | Searches for clinical studies using a combination of query terms and filters. Supports pagination.        | `GET /studies`                                                         |
-| `clinicaltrials_get_study`          | Retrieves detailed information for a single clinical study by its NCT number.                             | `GET /studies/{nctId}`                                                 |
-| `clinicaltrials_get_study_metadata` | Provides the complete data model for study fields, useful for understanding the available data structure. | `GET /studies/metadata`                                                |
-| `clinicaltrials_get_api_stats`      | Fetches various statistics from the API, such as study sizes and field value distributions.               | `GET /stats/size`, `GET /stats/field/values`, `GET /stats/field/sizes` |
+| Tool                          | Description                                                                   | Endpoint(s)            |
+| :---------------------------- | :---------------------------------------------------------------------------- | :--------------------- |
+| `clinicaltrials_list_studies` | Searches for clinical studies using a combination of query terms and filters. | `GET /studies`         |
+| `clinicaltrials_get_study`    | Retrieves detailed information for a single clinical study by its NCT number. | `GET /studies/{nctId}` |
 
 ## 📦 Installation
 
@@ -80,9 +77,9 @@ You can also use the npm scripts to run the server directly from your cloned rep
   # or 'npm run start:stdio'
   ```
 - **Via Streamable HTTP:**
-  `bash
-npm run start:http
-`
+  ```bash
+  npm run start:http
+  ```
   This starts a **Streamable HTTP** server (default: `http://127.0.0.1:3010`).
 
 ## ⚙️ Configuration
@@ -91,22 +88,23 @@ npm run start:http
 
 Configure the MCP server's behavior using these environment variables:
 
-| Variable              | Description                                                                                         | Default                                |
-| :-------------------- | :-------------------------------------------------------------------------------------------------- | :------------------------------------- |
-| `MCP_TRANSPORT_TYPE`  | Server transport: `stdio` or `http`.                                                                | `stdio`                                |
-| `MCP_HTTP_PORT`       | Port for the HTTP server (if `MCP_TRANSPORT_TYPE=http`).                                            | `3010`                                 |
-| `MCP_HTTP_HOST`       | Host address for the HTTP server (if `MCP_TRANSPORT_TYPE=http`).                                    | `127.0.0.1`                            |
-| `MCP_ALLOWED_ORIGINS` | Comma-separated allowed origins for CORS (if `MCP_TRANSPORT_TYPE=http`).                            | (none)                                 |
-| `MCP_SERVER_NAME`     | Optional server name (used in MCP initialization).                                                  | (from package.json)                    |
-| `MCP_SERVER_VERSION`  | Optional server version (used in MCP initialization).                                               | (from package.json)                    |
-| `MCP_LOG_LEVEL`       | Server logging level (`debug`, `info`, `warning`, `error`, etc.).                                   | `debug`                                |
-| `LOGS_DIR`            | Directory for log files.                                                                            | `logs/` (in project root)              |
-| `NODE_ENV`            | Runtime environment (`development`, `production`).                                                  | `development`                          |
-| `MCP_AUTH_SECRET_KEY` | **Required for HTTP transport.** Secret key (min 32 chars) for signing/verifying auth tokens (JWT). | (none - **MUST be set in production**) |
-| `MCP_AUTH_MODE`       | Authentication mode: `jwt` (default) or `oauth`.                                                    | `jwt`                                  |
-| `OAUTH_ISSUER_URL`    | **Required for `oauth` mode.** The issuer URL of your authorization server.                         | (none)                                 |
-| `OAUTH_AUDIENCE`      | **Required for `oauth` mode.** The audience identifier for this MCP server.                         | (none)                                 |
-| `OAUTH_JWKS_URI`      | **Optional for `oauth` mode.** The JWKS endpoint URL. If omitted, it's discovered from the issuer.  | (none)                                 |
+| Variable                   | Description                                                                                         | Default                                |
+| :------------------------- | :-------------------------------------------------------------------------------------------------- | :------------------------------------- |
+| `MCP_TRANSPORT_TYPE`       | Server transport: `stdio` or `http`.                                                                | `stdio`                                |
+| `MCP_HTTP_PORT`            | Port for the HTTP server (if `MCP_TRANSPORT_TYPE=http`).                                            | `3010`                                 |
+| `MCP_HTTP_HOST`            | Host address for the HTTP server (if `MCP_TRANSPORT_TYPE=http`).                                    | `127.0.0.1`                            |
+| `MCP_ALLOWED_ORIGINS`      | Comma-separated allowed origins for CORS (if `MCP_TRANSPORT_TYPE=http`).                            | (none)                                 |
+| `MCP_SERVER_NAME`          | Optional server name (used in MCP initialization).                                                  | (from package.json)                    |
+| `MCP_SERVER_VERSION`       | Optional server version (used in MCP initialization).                                               | (from package.json)                    |
+| `MCP_LOG_LEVEL`            | Server logging level (`debug`, `info`, `warning`, `error`, etc.).                                   | `debug`                                |
+| `LOGS_DIR`                 | Directory for log files.                                                                            | `logs/` (in project root)              |
+| `CLINICALTRIALS_DATA_PATH` | Directory for caching ClinicalTrials.gov API data.                                                  | `data/` (in project root)              |
+| `NODE_ENV`                 | Runtime environment (`development`, `production`).                                                  | `development`                          |
+| `MCP_AUTH_SECRET_KEY`      | **Required for HTTP transport.** Secret key (min 32 chars) for signing/verifying auth tokens (JWT). | (none - **MUST be set in production**) |
+| `MCP_AUTH_MODE`            | Authentication mode: `jwt` (default) or `oauth`.                                                    | `jwt`                                  |
+| `OAUTH_ISSUER_URL`         | **Required for `oauth` mode.** The issuer URL of your authorization server.                         | (none)                                 |
+| `OAUTH_AUDIENCE`           | **Required for `oauth` mode.** The audience identifier for this MCP server.                         | (none)                                 |
+| `OAUTH_JWKS_URI`           | **Optional for `oauth` mode.** The JWKS endpoint URL. If omitted, it's discovered from the issuer.  | (none)                                 |
 
 ### 🔌 Client Configuration
 
