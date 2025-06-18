@@ -101,7 +101,7 @@ Add the following to your MCP client's configuration file (e.g., `cline_mcp_sett
 }
 ```
 
-## If running manually (not via MCP client) (e.g. for development or testing)
+## If running manually (not via MCP client for development or testing)
 
 ### Install via npm
 
