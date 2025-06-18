@@ -93,9 +93,7 @@ Add the following to your MCP client's configuration file (e.g., `cline_mcp_sett
       "args": ["clinicaltrialsgov-mcp-server"],
       "env": {
         "MCP_LOG_LEVEL": "info"
-      },
-      "disabled": false,
-      "autoApprove": []
+      }
     }
   }
 }
