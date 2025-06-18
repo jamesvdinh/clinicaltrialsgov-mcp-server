@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.1] - 2025-06-18
+
+### Changed
+
+- **Error Handling**: Refactored `getStudy` and `listStudies` tool logic to align with the "Logic Throws, Handlers Catch" principle, ensuring that core logic files only throw structured `McpError` instances, while registration files handle the `try...catch` blocks and response formatting.
+- **Dockerfile**: Optimized the `Dockerfile` by restructuring it into a multi-stage build. This change improves caching, reduces the final image size, and separates build-time dependencies from runtime dependencies.
+- **Documentation**: Updated `README.md` with clearer installation instructions, updated dependency badges, and moved the project specification to the `docs/` directory.
+
+### Dependencies
+
+- Bumped `@modelcontextprotocol/sdk` from `^1.12.3` to `^1.13.0`.
+- Updated `hono`, `openai`, and other dependencies to their latest patch versions.
+
 ## [1.0.0] - 2025-06-17
 
 ### Added

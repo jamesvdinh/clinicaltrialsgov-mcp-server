@@ -1,8 +1,8 @@
 # ClinicalTrials.gov MCP Server
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-^5.8.3-blue.svg)](https://www.typescriptlang.org/)
-[![Model Context Protocol](https://img.shields.io/badge/MCP%20SDK-^1.12.3-green.svg)](https://modelcontextprotocol.io/)
-[![Version](https://img.shields.io/badge/Version-1.0.0-blue.svg)](./CHANGELOG.md)
+[![Model Context Protocol](https://img.shields.io/badge/MCP%20SDK-^1.13.0-green.svg)](https://modelcontextprotocol.io/)
+[![Version](https://img.shields.io/badge/Version-1.0.1-blue.svg)](./CHANGELOG.md)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Status](https://img.shields.io/badge/Status-beta-orange.svg)](https://github.com/cyanheads/clinicaltrialsgov-mcp-server/issues)
 [![GitHub](https://img.shields.io/github/stars/cyanheads/clinicaltrialsgov-mcp-server?style=social)](https://github.com/cyanheads/clinicaltrialsgov-mcp-server)
@@ -74,18 +74,39 @@ Leverages the robust utilities provided by the `mcp-ts-template`:
 - **Data Format Options**: Choose between `markdown` and `legacy` markup formats for study descriptions.
 - **Rate Limiting Compliance**: Built-in request throttling to comply with ClinicalTrials.gov API guidelines.
 
-## Installation
+## Installation (If running manually)
 
 ### Prerequisites
 
 - [Node.js (>=18.0.0)](https://nodejs.org/)
 - [npm](https://www.npmjs.com/) (comes with Node.js)
-- [Docker](https://www.docker.com/) (optional, for containerized deployment)
 
-### Install via npm (recommended)
+### MCP Client Settings
+
+Add the following to your MCP client's configuration file (e.g., `cline_mcp_settings.json`). This configuration uses `npx` to run the server, which will automatically install the package if not already present:
+
+```json
+{
+  "mcpServers": {
+    "clinicaltrialsgov-mcp-server": {
+      "command": "npx",
+      "args": ["clinicaltrialsgov-mcp-server"],
+      "env": {
+        "MCP_LOG_LEVEL": "info"
+      },
+      "disabled": false,
+      "autoApprove": []
+    }
+  }
+}
+```
+
+## If running manually (not via MCP client) (e.g. for development or testing)
+
+### Install via npm
 
 ```bash
-npm install @cyanheads/clinicaltrialsgov-mcp-server
+npm install clinicaltrialsgov-mcp-server
 ```
 
 ### Alternatively Install from Source
@@ -128,26 +149,6 @@ Configure the server using environment variables. These environmental variables 
 | `CLINICALTRIALS_DATA_PATH` | Directory for caching ClinicalTrials.gov API data.                                       | `data/` (in project root) |
 | `LOGS_DIR`                 | Directory for log file storage (if `LOG_OUTPUT_MODE=file`).                              | `logs/`                   |
 | `NODE_ENV`                 | Runtime environment (`development`, `production`).                                       | `development`             |
-
-### MCP Client Settings
-
-Add the following to your MCP client's configuration file (e.g., `cline_mcp_settings.json`). This configuration uses `npx` to run the server, which will automatically install the package if not already present:
-
-```json
-{
-  "mcpServers": {
-    "clinicaltrialsgov-mcp-server": {
-      "command": "npx",
-      "args": ["@cyanheads/clinicaltrialsgov-mcp-server"],
-      "env": {
-        "MCP_LOG_LEVEL": "info"
-      },
-      "disabled": false,
-      "autoApprove": []
-    }
-  }
-}
-```
 
 ## Project Structure
 
