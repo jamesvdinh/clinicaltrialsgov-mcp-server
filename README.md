@@ -74,7 +74,7 @@ Leverages the robust utilities provided by the `mcp-ts-template`:
 - **Data Format Options**: Choose between `markdown` and `legacy` markup formats for study descriptions.
 - **Rate Limiting Compliance**: Built-in request throttling to comply with ClinicalTrials.gov API guidelines.
 
-## Installation (If running manually)
+## Installation
 
 ### Prerequisites
 
