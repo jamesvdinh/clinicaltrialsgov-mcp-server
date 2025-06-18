@@ -51,26 +51,14 @@ export async function getStudyLogic(
     toolInput: params,
   });
   const service = new ClinicalTrialsGovService();
-  try {
-    const study = await service.fetchStudy(params.nctId, context);
-    if (!study) {
-      throw new McpError(
-        BaseErrorCode.NOT_FOUND,
-        `Study with NCT ID '${params.nctId}' not found.`,
-        { nctId: params.nctId },
-      );
-    }
-    logger.info(`Successfully fetched study ${params.nctId}`, { ...context });
-    return cleanStudy(study);
-  } catch (error) {
-    // Re-throw service errors or wrap unexpected errors
-    if (error instanceof McpError) {
-      throw error;
-    }
+  const study = await service.fetchStudy(params.nctId, context);
+  if (!study) {
     throw new McpError(
-      BaseErrorCode.INTERNAL_ERROR,
-      `An unexpected error occurred while fetching study ${params.nctId}.`,
-      { originalError: error },
+      BaseErrorCode.NOT_FOUND,
+      `Study with NCT ID '${params.nctId}' not found.`,
+      { nctId: params.nctId },
     );
   }
+  logger.info(`Successfully fetched study ${params.nctId}`, { ...context });
+  return cleanStudy(study);
 }

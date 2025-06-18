@@ -108,23 +108,12 @@ export async function listStudiesLogic(
 ): Promise<PagedStudies> {
   logger.debug("Executing listStudiesLogic", { ...context, toolInput: params });
   const service = new ClinicalTrialsGovService();
-  try {
-    const pagedStudies = await service.listStudies(params, context);
-    logger.info("Successfully listed studies.", { ...context });
+  const pagedStudies = await service.listStudies(params, context);
+  logger.info("Successfully listed studies.", { ...context });
 
-    if (pagedStudies.studies) {
-      pagedStudies.studies = pagedStudies.studies.map(cleanStudy);
-    }
-
-    return pagedStudies;
-  } catch (error) {
-    if (error instanceof McpError) {
-      throw error;
-    }
-    throw new McpError(
-      BaseErrorCode.INTERNAL_ERROR,
-      "An unexpected error occurred while listing studies.",
-      { originalError: error },
-    );
+  if (pagedStudies.studies) {
+    pagedStudies.studies = pagedStudies.studies.map(cleanStudy);
   }
+
+  return pagedStudies;
 }
