@@ -1,6 +1,6 @@
 # clinicaltrialsgov-mcp-server - Directory Structure
 
-Generated on: 2025-06-17 11:42:08
+Generated on: 2025-06-21 01:25:34
 
 ```
 clinicaltrialsgov-mcp-server
@@ -16,6 +16,7 @@ clinicaltrialsgov-mcp-server
 │   │   └── typedoc-reference.md
 │   ├── best-practices.md
 │   ├── ctg-oas-v2.yaml
+│   ├── PROJECT-SPEC.md
 │   └── tree.md
 ├── examples
 │   ├── studies_2025-06-17T11-15-33-773Z.json
@@ -43,12 +44,18 @@ clinicaltrialsgov-mcp-server
 │   │   │       ├── logic.ts
 │   │   │       └── registration.ts
 │   │   ├── transports
-│   │   │   ├── authentication
-│   │   │   │   ├── authContext.ts
-│   │   │   │   ├── authMiddleware.ts
-│   │   │   │   ├── authUtils.ts
-│   │   │   │   ├── oauthMiddleware.ts
-│   │   │   │   └── types.ts
+│   │   │   ├── auth
+│   │   │   │   ├── core
+│   │   │   │   │   ├── authContext.ts
+│   │   │   │   │   ├── authTypes.ts
+│   │   │   │   │   └── authUtils.ts
+│   │   │   │   ├── strategies
+│   │   │   │   │   ├── jwt
+│   │   │   │   │   │   └── jwtMiddleware.ts
+│   │   │   │   │   └── oauth
+│   │   │   │   │       └── oauthMiddleware.ts
+│   │   │   │   └── index.ts
+│   │   │   ├── httpErrorHandler.ts
 │   │   │   ├── httpTransport.ts
 │   │   │   └── stdioTransport.ts
 │   │   ├── README.md
@@ -99,7 +106,6 @@ clinicaltrialsgov-mcp-server
 ├── mcp.json
 ├── package-lock.json
 ├── package.json
-├── PROJECT-SPEC.md
 ├── README.md
 ├── repomix.config.json
 ├── smithery.yaml

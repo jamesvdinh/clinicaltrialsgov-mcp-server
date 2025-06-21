@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.2] - 2025-06-20
+
+**Alignment with cyanheads/mcp-ts-template@v1.5.6**
+
+### Changed
+
+- **Authentication Refactor**: Restructured the authentication middleware to be more modular and extensible. The core logic is now separated into `core` and `strategies` directories, with dedicated modules for JWT and OAuth. This improves separation of concerns and makes it easier to add new authentication methods in the future.
+- **Centralized HTTP Error Handling**: Implemented a new `httpErrorHandler.ts` to centralize all HTTP error responses. This ensures consistent error formatting and status codes across the application, improving predictability and making the API easier to consume.
+- **Session Management**: Removed the manual session garbage collection logic from `httpTransport.ts`. Session cleanup is now handled by the `StreamableHTTPServerTransport`'s `onclose` event, making the implementation cleaner and more reliable.
+
+### Dependencies
+
+- Updated `hono` to `^4.8.2` and `openai` to `^5.6.0`.
+
 ## [1.0.1] - 2025-06-18
 
 ### Changed
