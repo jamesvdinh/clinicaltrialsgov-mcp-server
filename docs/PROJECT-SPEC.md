@@ -243,7 +243,6 @@ The following tools will be created to expose the API's functionality.
 The implementation will proceed in the following phases:
 
 1.  **Setup Service Layer & Data Persistence**:
-
     - **Update Configuration**: Modify `src/config/index.ts` to include a new `CLINICALTRIALS_DATA_PATH` environment variable, with `./data` as the default value.
     - Create the `src/services/clinical-trials-gov/` directory.
     - Implement `ClinicalTrialsGovService.ts` with the base URL and fetch logic.
@@ -251,19 +250,16 @@ The implementation will proceed in the following phases:
     - Define initial type interfaces in `types.ts`.
 
 2.  **Implement `clinicaltrials_get_study` Tool**:
-
     - Create the tool structure.
     - Implement the logic to handle the `nctId` path parameter and other query options.
     - Expand `types.ts` with the `Study` interface.
 
 3.  **Implement `clinicaltrials_list_studies` Tool**:
-
     - This is the most complex tool.
     - Carefully map the Zod schema to the numerous query parameters.
     - Implement logic to handle pagination via `pageToken`.
 
 4.  **Implement Remaining Tools**:
-
     - Implement `clinicaltrials_get_api_stats` and `clinicaltrials_get_study_metadata` tools.
 
 5.  **Refinement and Documentation**:

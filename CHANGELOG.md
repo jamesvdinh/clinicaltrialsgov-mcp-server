@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.3] - 2025-06-24
+
+### Dependencies
+
+- Updated various dependencies to their latest versions, including `@modelcontextprotocol/sdk` to `^1.13.1`, `@supabase/supabase-js` to `^2.50.1`, and `hono` to `^4.8.3`.
+- Removed `jsonwebtoken` as it is no longer a direct dependency.
+
+### Changed
+
+- **Documentation**: Cleaned up minor formatting inconsistencies in JSDoc reference documentation and project-related markdown files.
+
 ## [1.0.2] - 2025-06-20
 
 **Alignment with cyanheads/mcp-ts-template@v1.5.6**
