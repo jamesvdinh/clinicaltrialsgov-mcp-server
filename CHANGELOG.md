@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.4] - 2025-07-05
+
+### Changed
+
+- **Configuration Resilience**: Improved the startup process by making the `logs` and `data` directory configurations more resilient. The server now falls back to default paths and logs a warning instead of exiting if a custom path is invalid or inaccessible.
+- **Conditional Backup**: The `ClinicalTrialsGovService` now only attempts to write backup files if a valid data path is configured, preventing errors when the data directory is unavailable.
+
+### Dependencies
+
+- Updated various dependencies to their latest versions, including `@hono/node-server`, `@modelcontextprotocol/sdk`, `@supabase/supabase-js`, `hono`, `openai`, and `zod`.
+
 ## [1.0.3] - 2025-06-24
 
 ### Dependencies

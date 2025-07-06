@@ -164,7 +164,7 @@ export class ClinicalTrialsGovService {
 
   /**
    * A generic fetch method that handles backing up the response.
-   * It always fetches live data and writes it to a backup file.
+   * It always fetches live data and writes it to a backup file if the data path is configured.
    * @param url - The URL to fetch.
    * @param fileName - The file name to use for the backup.
    * @param context - The request context for logging.
@@ -175,8 +175,6 @@ export class ClinicalTrialsGovService {
     fileName: string,
     context: RequestContext,
   ): Promise<T> {
-    const filePath = path.join(config.clinicalTrialsDataPath, fileName);
-
     logger.debug(`[API] Fetching from ${url}`, context);
     const fetchOptions = {
       headers: { Accept: "application/json" },
@@ -209,14 +207,22 @@ export class ClinicalTrialsGovService {
 
     const data = (await response.json()) as T;
 
-    try {
-      writeFileSync(filePath, JSON.stringify(data, null, 2));
-      logger.debug(`[Backup] Wrote to ${filePath}`, context);
-    } catch (error) {
-      logger.error(`Failed to write backup file: ${filePath}`, {
-        ...context,
-        error,
-      });
+    if (config.clinicalTrialsDataPath) {
+      const filePath = path.join(config.clinicalTrialsDataPath, fileName);
+      try {
+        writeFileSync(filePath, JSON.stringify(data, null, 2));
+        logger.debug(`[Backup] Wrote to ${filePath}`, context);
+      } catch (error) {
+        logger.error(`Failed to write backup file: ${filePath}`, {
+          ...context,
+          error,
+        });
+      }
+    } else {
+      logger.debug(
+        "[Backup] Skipping backup because data path is not configured.",
+        context,
+      );
     }
 
     return data;

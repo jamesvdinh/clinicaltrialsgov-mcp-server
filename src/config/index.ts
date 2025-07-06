@@ -265,20 +265,36 @@ const ensureDirectory = (
 // --- End Directory Ensurance Function ---
 
 // --- Logs Directory Handling ---
-const validatedLogsPath = ensureDirectory(env.LOGS_DIR, projectRoot, "logs");
+let validatedLogsPath: string | null = ensureDirectory(
+  env.LOGS_DIR,
+  projectRoot,
+  "logs",
+);
 
 if (!validatedLogsPath) {
   if (process.stdout.isTTY) {
-    console.error(
-      "FATAL: Logs directory configuration is invalid or could not be created. Please check permissions and path. Exiting.",
+    console.warn(
+      `Warning: Custom logs directory ('${env.LOGS_DIR}') is invalid or outside the project boundary. Falling back to default.`,
     );
   }
-  process.exit(1); // Exit if logs directory is not usable
+  // Try again with the absolute default path
+  const defaultLogsDir = path.join(projectRoot, "logs");
+  validatedLogsPath = ensureDirectory(defaultLogsDir, projectRoot, "logs");
+
+  if (!validatedLogsPath) {
+    if (process.stdout.isTTY) {
+      // This is just a warning now, not fatal.
+      console.warn(
+        "Warning: Default logs directory could not be created. File logging will be disabled.",
+      );
+    }
+    // Do not exit. validatedLogsPath remains null, and the logger will handle it.
+  }
 }
 // --- End Logs Directory Handling ---
 
 // --- Data Directory Handling ---
-const validatedDataPath = ensureDirectory(
+let validatedDataPath: string | null = ensureDirectory(
   env.CLINICALTRIALS_DATA_PATH,
   projectRoot,
   "data",
@@ -286,11 +302,22 @@ const validatedDataPath = ensureDirectory(
 
 if (!validatedDataPath) {
   if (process.stdout.isTTY) {
-    console.error(
-      "FATAL: Data directory configuration is invalid or could not be created. Please check permissions and path. Exiting.",
+    console.warn(
+      `Warning: Custom data directory ('${env.CLINICALTRIALS_DATA_PATH}') is invalid or outside the project boundary. Falling back to default.`,
     );
   }
-  process.exit(1); // Exit if data directory is not usable
+  // Try again with the absolute default path
+  const defaultDataDir = path.join(projectRoot, "data");
+  validatedDataPath = ensureDirectory(defaultDataDir, projectRoot, "data");
+
+  if (!validatedDataPath) {
+    if (process.stdout.isTTY) {
+      console.warn(
+        "Warning: Default data directory could not be created. Features requiring local data caching will be disabled.",
+      );
+    }
+    // Do not exit. validatedDataPath remains null.
+  }
 }
 // --- End Data Directory Handling ---
 
