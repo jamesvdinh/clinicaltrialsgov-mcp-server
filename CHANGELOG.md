@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.7] - 2025-07-09
+
+### Changed
+
+- **Documentation**: Updated `README.md` to accurately reflect the current toolset, including the `analyzeTrends` tool and the multi-ID capabilities of `getStudy`. Also regenerated the `docs/tree.md` file to match the current project structure.
+- **Package Metadata**: Improved the project's `package.json` by refining the description for clarity and adding more relevant keywords to enhance discoverability.
+
 ## [1.0.6] - 2025-07-09
 
 ### Added

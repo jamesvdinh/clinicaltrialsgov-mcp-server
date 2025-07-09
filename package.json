@@ -1,7 +1,7 @@
 {
   "name": "clinicaltrialsgov-mcp-server",
-  "version": "1.0.6",
-  "description": "A Model Context Protocol (MCP) Server providing LLM tools for the official ClinicalTrials.gov REST API. Search and retrieve clinical trial data, including study details and more",
+  "version": "1.0.7",
+  "description": "ClinicalTrials.gov Model Context Protocol (MCP) Server that provides a suite of tools for interacting with the official ClinicalTrials.gov v2 API. Enables AI agents and LLMs to programmatically search, retrieve, and analyze clinical trial data.",
   "main": "dist/index.js",
   "files": [
     "dist"
@@ -64,14 +64,18 @@
     "zod": "^3.25.76"
   },
   "keywords": [
-    "typescript",
     "mcp",
-    "model-context-protocol",
     "mcp-server",
-    "clinicaltrials.gov",
-    "api",
+    "model-context-protocol",
+    "ai-agent",
+    "llm",
+    "typescript",
     "clinical-trials",
-    "research",
+    "clinicaltrials.gov",
+    "api-client",
+    "research-tools",
+    "bioinformatics",
+    "health-tech",
     "hono",
     "stdio",
     "http"
