@@ -96,11 +96,11 @@ export const ListStudiesInputSchema = z.object({
     .number()
     .int()
     .min(1)
-    .max(200)
-    .default(15)
+    .max(50)
+    .default(5)
     .optional()
     .describe(
-      "The number of studies to return per page (1-200). Defaults to 15.",
+      "The number of studies to return per page (1-1000). Defaults to 5.",
     ),
   pageToken: z
     .string()

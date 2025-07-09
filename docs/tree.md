@@ -1,6 +1,6 @@
 # clinicaltrialsgov-mcp-server - Directory Structure
 
-Generated on: 2025-07-09 16:41:23
+Generated on: 2025-07-09 17:19:27
 
 ```
 clinicaltrialsgov-mcp-server
@@ -90,6 +90,9 @@ clinicaltrialsgov-mcp-server
 │   │   │   ├── dateParser.ts
 │   │   │   ├── index.ts
 │   │   │   └── jsonParser.ts
+│   │   ├── scheduling
+│   │   │   ├── index.ts
+│   │   │   └── scheduler.ts
 │   │   ├── security
 │   │   │   ├── idGenerator.ts
 │   │   │   ├── index.ts

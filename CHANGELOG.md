@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.6] - 2025-07-09
+
+### Added
+
+- **Scheduling Service**: Introduced a new `SchedulerService` (`src/utils/scheduling`) to manage cron jobs. This service provides a unified interface for scheduling, starting, stopping, and listing recurring tasks.
+
+### Changed
+
+- **Template Alignment**: Updated the project to align with the latest `cyanheads/mcp-ts-template@v1.6.2`, incorporating improvements in error handling, configuration management, and code structure.
+- **HTTP Transport**: Refactored the HTTP transport layer to improve port handling and retry logic, making the server startup more robust.
+- **`listStudies` Tool**: Adjusted the default `pageSize` to `5` and the maximum to `50` to better align with current model token limits.
+- **`analyzeTrends` Tool**: Increased the `pageSize` to `1000` to optimize data fetching for large-scale analyses.
+- **Error Handling**: Improved error message generation in the `ErrorHandler` for non-standard error objects.
+- **Dependencies**: Added `node-cron` for the new scheduling service.
+
+### Fixed
+
+- **Sanitization Logic**: Corrected the `structuredClone` usage to be compatible with different JavaScript environments.
+
 ## [1.0.5] - 2025-07-09
 
 ### Added

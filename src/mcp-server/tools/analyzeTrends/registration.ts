@@ -26,7 +26,7 @@ export const registerAnalyzeTrendsTool = async (
 ): Promise<void> => {
   const toolName = "clinicaltrials_analyze_trends";
   const toolDescription =
-    "Performs a statistical analysis on a set of clinical trials, aggregating data by status, country, sponsor, or phase.";
+    "Performs a statistical analysis on a set of clinical trials, aggregating data by status, country, sponsor, or phase. Use specific query parameters to refine the analysis and filter the studies included in the analysis. The tool can handle up to 5000 studies per analysis.";
 
   const registrationContext: RequestContext =
     requestContextService.createRequestContext({

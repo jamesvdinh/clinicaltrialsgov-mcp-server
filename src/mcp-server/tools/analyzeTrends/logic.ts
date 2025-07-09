@@ -97,7 +97,7 @@ async function fetchAllStudies(
   // If within limits, proceed to fetch all studies
   while (hasMore) {
     const pagedStudies = await service.listStudies(
-      { ...params, pageToken, pageSize: 200 },
+      { ...params, pageToken, pageSize: 1000 },
       context,
     );
     if (pagedStudies.studies) {
