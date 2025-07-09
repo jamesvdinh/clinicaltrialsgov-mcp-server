@@ -1,6 +1,6 @@
 # clinicaltrialsgov-mcp-server - Directory Structure
 
-Generated on: 2025-06-21 01:25:34
+Generated on: 2025-07-09 16:41:23
 
 ```
 clinicaltrialsgov-mcp-server
@@ -33,8 +33,11 @@ clinicaltrialsgov-mcp-server
 │   ├── config
 │   │   └── index.ts
 │   ├── mcp-server
-│   │   ├── resources
 │   │   ├── tools
+│   │   │   ├── analyzeTrends
+│   │   │   │   ├── index.ts
+│   │   │   │   ├── logic.ts
+│   │   │   │   └── registration.ts
 │   │   │   ├── getStudy
 │   │   │   │   ├── index.ts
 │   │   │   │   ├── logic.ts
@@ -102,6 +105,7 @@ clinicaltrialsgov-mcp-server
 ├── CHANGELOG.md
 ├── CLAUDE.md
 ├── Dockerfile
+├── eslint.config.js
 ├── LICENSE
 ├── mcp.json
 ├── package-lock.json
