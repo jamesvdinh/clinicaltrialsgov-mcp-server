@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.5] - 2025-07-09
+
+### Added
+
+- **`analyzeTrends` Tool**: Introduced a new tool, `clinicaltrials_analyze_trends`, to perform statistical analysis on study sets. This tool can aggregate data by status, country, sponsor type, or phase, providing valuable insights into clinical trial trends.
+- **ESLint Configuration**: Added a new ESLint setup (`eslint.config.js`) to enforce code quality and consistency across the project.
+
+### Changed
+
+- **`getStudy` Tool Enhancement**: The `clinicaltrials_get_study` tool can now fetch multiple studies by accepting an array of NCT IDs. It also includes a `summaryOnly` option to return condensed study summaries instead of full data.
+- **`listStudies` Tool Enhancement**: The `clinicaltrials_list_studies` tool now supports geographic filtering with a structured `geo` object (latitude, longitude, radius), making location-based searches more intuitive.
+- **Type Definitions**: Significantly expanded the `Study` type in `types.ts` to more accurately reflect the structure of the ClinicalTrials.gov API, improving type safety and developer experience.
+
+### Dependencies
+
+- Updated numerous dependencies to their latest versions, including `@supabase/supabase-js`, `@types/node`, `openai`, and `zod`.
+- Added new development dependencies for ESLint, including `@typescript-eslint/eslint-plugin`, `@typescript-eslint/parser`, and `eslint-plugin-prettier`.
+
 ## [1.0.4] - 2025-07-05
 
 ### Changed
