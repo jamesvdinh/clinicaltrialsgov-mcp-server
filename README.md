@@ -1,8 +1,8 @@
 # ClinicalTrials.gov MCP Server
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-^5.8.3-blue.svg)](https://www.typescriptlang.org/)
-[![Model Context Protocol](https://img.shields.io/badge/MCP%20SDK-^1.13.1-green.svg)](https://modelcontextprotocol.io/)
-[![Version](https://img.shields.io/badge/Version-1.0.3-blue.svg)](./CHANGELOG.md)
+[![Model Context Protocol](https://img.shields.io/badge/MCP%20SDK-^1.15.0-green.svg)](https://modelcontextprotocol.io/)
+[![Version](https://img.shields.io/badge/Version-1.0.6-blue.svg)](./CHANGELOG.md)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Status](https://img.shields.io/badge/Status-beta-orange.svg)](https://github.com/cyanheads/clinicaltrialsgov-mcp-server/issues)
 [![GitHub](https://img.shields.io/github/stars/cyanheads/clinicaltrialsgov-mcp-server?style=social)](https://github.com/cyanheads/clinicaltrialsgov-mcp-server)
@@ -17,20 +17,20 @@ Built on the [`cyanheads/mcp-ts-template`](https://github.com/cyanheads/mcp-ts-t
 
 This server equips your AI with specialized tools to interact with the ClinicalTrials.gov database:
 
-| Tool Name                                                            | Description                                                                                                                                               | Key Features                                                                                                                                                                                                                                                                                                                                             |
-| :------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`clinicaltrials_list_studies`](./src/mcp-server/tools/listStudies/) | Searches for clinical studies using a combination of query terms and filters. (See [Example](./examples/studies_2025-06-17T11-15-33-773Z.json))           | - `query`: Search by condition, term, location, title, intervention, outcomes, sponsor, or ID.<br/>- `filter`: Refine results by NCT IDs, study status, geographic distance, or advanced Essie expressions.<br/>- `pagination`: Control result sets with `pageSize` and `pageToken`.<br/>- `fields`: Specify which data fields to return for efficiency. |
-| [`clinicaltrials_get_study`](./src/mcp-server/tools/getStudy/)       | Retrieves detailed information for a single clinical study by its NCT number. (See [Example](./examples/study_NCT03934567_2025-06-17T11-17-59-791Z.json)) | - `nctId`: Fetches a study using its unique identifier (e.g., "NCT03934567").<br/>- `fields`: Select specific fields to retrieve.<br/>- `markupFormat`: Choose between `markdown` or `legacy` for formatted content.<br/>- Uses ClinicalTrials.gov REST API v2.                                                                                          |
+| Tool Name                                                                | Description                                                                                                                                                 | Key Features                                                                                                                                                                                                                                                                                                                                             |
+| :----------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`clinicaltrials_list_studies`](./src/mcp-server/tools/listStudies/)     | Searches for clinical studies using a combination of query terms and filters. (See [Example](./examples/studies_2025-06-17T11-15-33-773Z.json))             | - `query`: Search by condition, term, location, title, intervention, outcomes, sponsor, or ID.<br/>- `filter`: Refine results by NCT IDs, study status, geographic distance, or advanced Essie expressions.<br/>- `pagination`: Control result sets with `pageSize` and `pageToken`.<br/>- `fields`: Specify which data fields to return for efficiency. |
+| [`clinicaltrials_get_study`](./src/mcp-server/tools/getStudy/)           | Fetches detailed information for one or more clinical studies by their NCT IDs. (See [Example](./examples/study_NCT03934567_2025-06-17T11-17-59-791Z.json)) | - `nctIds`: Fetches up to 5 studies using their unique identifiers (e.g., "NCT03934567").<br/>- `summaryOnly`: Return a condensed summary instead of full data.<br/>- `fields`: Select specific fields to retrieve.<br/>- `markupFormat`: Choose between `markdown` or `legacy` for formatted content.                                                   |
+| [`clinicaltrials_analyze_trends`](./src/mcp-server/tools/analyzeTrends/) | Performs statistical analysis on a set of studies, aggregating data by status, country, sponsor, or phase.                                                  | - `analysisType`: Choose the aggregation method (`countByStatus`, `countByCountry`, etc.).<br/>- `query` & `filter`: Use the same powerful search parameters as `list_studies` to define the dataset for analysis.<br/>- Analyzes up to 5000 studies per request.                                                                                        |
 
 ---
 
 ## Table of Contents
 
-| [Overview](#overview) | [Features](#features) | [Installation](#installation) |
-
+| [Overview](#overview)           | [Features](#features)                   | [Installation](#installation) |
+| :------------------------------ | :-------------------------------------- | :---------------------------- |
 | [Configuration](#configuration) | [Project Structure](#project-structure) |
-
-| [Tools](#tools) | [Resources](#resources) | [Development](#development) | [License](#license) |
+| [Tools](#tools)                 | [Development](#development)             | [License](#license)           |
 
 ## Overview
 
@@ -55,11 +55,11 @@ Leverages the robust utilities provided by the `mcp-ts-template`:
 
 - **Logging**: Structured, configurable logging (file rotation, stdout JSON, MCP notifications) with sensitive data redaction.
 - **Error Handling**: Centralized error processing, standardized error types (`McpError`), and automatic logging.
-- **Configuration**: Environment variable loading (`dotenv`) with comprehensive validation.
+- **Configuration**: Environment variable loading (`dotenv`) with comprehensive validation using Zod.
 - **Input Validation/Sanitization**: Uses `zod` for schema validation and custom sanitization logic.
 - **Request Context**: Tracking and correlation of operations via unique request IDs using `AsyncLocalStorage`.
 - **Type Safety**: Strong typing enforced by TypeScript and Zod schemas.
-- **HTTP Transport**: High-performance HTTP server using **Hono**, featuring session management with garbage collection and authentication support.
+- **HTTP Transport**: High-performance HTTP server using **Hono**, featuring session management and authentication support.
 - **Authentication**: Robust authentication layer supporting JWT and OAuth 2.1, with fine-grained scope enforcement.
 - **Deployment**: Multi-stage `Dockerfile` for creating small, secure production images with native dependency support.
 
@@ -70,8 +70,7 @@ Leverages the robust utilities provided by the `mcp-ts-template`:
 - **Full Study Metadata**: Retrieve complete trial data including protocols, eligibility criteria, study design, outcomes, sponsors, and contact information.
 - **Flexible Field Selection**: Choose specific data fields to retrieve for efficient API usage and reduced response sizes.
 - **Pagination Support**: Handle large result sets with built-in pagination using `pageSize` and `pageToken` parameters.
-- **Multiple Query Types**: Support for condition-based, intervention-based, location-based, and sponsor-based searches.
-- **Data Format Options**: Choose between `markdown` and `legacy` markup formats for study descriptions.
+- **Data Cleaning**: Automatically cleans and simplifies redundant information from API responses for easier consumption.
 - **Rate Limiting Compliance**: Built-in request throttling to comply with ClinicalTrials.gov API guidelines.
 
 ## Installation
@@ -99,54 +98,48 @@ Add the following to your MCP client's configuration file (e.g., `cline_mcp_sett
 }
 ```
 
-## If running manually (not via MCP client for development or testing)
+### If running manually (not via MCP client for development or testing)
 
-### Install via npm
+#### Install via npm
 
 ```bash
 npm install clinicaltrialsgov-mcp-server
 ```
 
-### Alternatively Install from Source
+#### Alternatively Install from Source
 
-1. Clone the repository:
-
-   ```bash
-   git clone https://github.com/cyanheads/clinicaltrialsgov-mcp-server.git
-   cd clinicaltrialsgov-mcp-server
-   ```
-
-2. Install dependencies:
-
-   ```bash
-   npm install
-   ```
-
-3. Build the project:
-   ```bash
-   npm run build
-   *or npm run rebuild*
-   ```
+1.  Clone the repository:
+    ```bash
+    git clone https://github.com/cyanheads/clinicaltrialsgov-mcp-server.git
+    cd clinicaltrialsgov-mcp-server
+    ```
+2.  Install dependencies:
+    ```bash
+    npm install
+    ```
+3.  Build the project:
+    ```bash
+    npm run build
+    ```
 
 ## Configuration
 
 ### Environment Variables
 
-Configure the server using environment variables. These environmental variables are set within your MCP client config/settings (e.g. `claude_desktop_config.json` for Claude Desktop)
+Configure the server using environment variables. For local development, these can be set in a `.env` file at the project root or directly in your environment. Otherwise, you can set them in your MCP client configuration as shown above.
 
-| Variable                   | Description                                                                              | Default                   |
-| -------------------------- | ---------------------------------------------------------------------------------------- | ------------------------- |
-| `MCP_TRANSPORT_TYPE`       | Transport mechanism: `stdio` or `http`.                                                  | `stdio`                   |
-| `MCP_HTTP_PORT`            | Port for the HTTP server (if `MCP_TRANSPORT_TYPE=http`).                                 | `3010`                    |
-| `MCP_HTTP_HOST`            | Host address for the HTTP server (if `MCP_TRANSPORT_TYPE=http`).                         | `127.0.0.1`               |
-| `MCP_ALLOWED_ORIGINS`      | Comma-separated list of allowed origins for CORS (if `MCP_TRANSPORT_TYPE=http`).         | (none)                    |
-| `MCP_LOG_LEVEL`            | Logging level (`debug`, `info`, `notice`, `warning`, `error`, `crit`, `alert`, `emerg`). | `debug`                   |
-| `LOG_OUTPUT_MODE`          | Logging output mode: `file` or `stdout`.                                                 | `file`                    |
-| `MCP_AUTH_MODE`            | Authentication mode for HTTP: `jwt` or `oauth`.                                          | `jwt`                     |
-| `MCP_AUTH_SECRET_KEY`      | **Required for `jwt` auth.** Minimum 32-character secret key for JWT authentication.     | (none)                    |
-| `CLINICALTRIALS_DATA_PATH` | Directory for caching ClinicalTrials.gov API data.                                       | `data/` (in project root) |
-| `LOGS_DIR`                 | Directory for log file storage (if `LOG_OUTPUT_MODE=file`).                              | `logs/`                   |
-| `NODE_ENV`                 | Runtime environment (`development`, `production`).                                       | `development`             |
+| Variable                   | Description                                                                              | Default       |
+| :------------------------- | :--------------------------------------------------------------------------------------- | :------------ |
+| `MCP_TRANSPORT_TYPE`       | Transport mechanism: `stdio` or `http`.                                                  | `stdio`       |
+| `MCP_HTTP_PORT`            | Port for the HTTP server (if `MCP_TRANSPORT_TYPE=http`).                                 | `3010`        |
+| `MCP_HTTP_HOST`            | Host address for the HTTP server (if `MCP_TRANSPORT_TYPE=http`).                         | `127.0.0.1`   |
+| `MCP_ALLOWED_ORIGINS`      | Comma-separated list of allowed origins for CORS (if `MCP_TRANSPORT_TYPE=http`).         | (none)        |
+| `MCP_LOG_LEVEL`            | Logging level (`debug`, `info`, `notice`, `warning`, `error`, `crit`, `alert`, `emerg`). | `debug`       |
+| `MCP_AUTH_MODE`            | Authentication mode for HTTP: `jwt` or `oauth`.                                          | `jwt`         |
+| `MCP_AUTH_SECRET_KEY`      | **Required for `jwt` auth.** Minimum 32-character secret key for JWT authentication.     | (none)        |
+| `CLINICALTRIALS_DATA_PATH` | Directory for caching ClinicalTrials.gov API data.                                       | `data/`       |
+| `LOGS_DIR`                 | Directory for log file storage.                                                          | `logs/`       |
+| `NODE_ENV`                 | Runtime environment (`development`, `production`).                                       | `development` |
 
 ## Project Structure
 
@@ -160,10 +153,9 @@ src/
 ├── mcp-server/           # Core MCP server logic and capability registration
 │   ├── server.ts         # Server setup, capability registration
 │   ├── transports/       # Transport handling (stdio, http)
-│   ├── resources/        # MCP Resource implementations
 │   └── tools/            # MCP Tool implementations (subdirs per tool)
 ├── services/             # External service integrations
-│   └── clinical-trials-gov/ # ClinicalTrials.gov API client and parsing
+│   └── clinical-trials-gov/ # ClinicalTrials.gov API client and types
 ├── types-global/         # Shared TypeScript type definitions
 └── utils/                # Common utility functions (logger, error handler, etc.)
 ```
@@ -174,10 +166,11 @@ For a detailed file tree, run `npm run tree` or see [docs/tree.md](docs/tree.md)
 
 The ClinicalTrials.gov MCP Server provides a comprehensive suite of tools for clinical trial research, callable via the Model Context Protocol.
 
-| Tool Name                     | Description                                                           | Key Arguments                                                                     |
-| :---------------------------- | :-------------------------------------------------------------------- | :-------------------------------------------------------------------------------- |
-| `clinicaltrials_list_studies` | Searches for clinical studies using queries, filters, and pagination. | `query?`, `filter?`, `fields?`, `sort?`, `pageSize?`, `pageToken?`, `countTotal?` |
-| `clinicaltrials_get_study`    | Fetches detailed information for a single study by NCT number.        | `nctId`, `markupFormat?`, `fields?`                                               |
+| Tool Name                       | Description                                                           | Key Arguments                                                                     |
+| :------------------------------ | :-------------------------------------------------------------------- | :-------------------------------------------------------------------------------- |
+| `clinicaltrials_list_studies`   | Searches for clinical studies using queries, filters, and pagination. | `query?`, `filter?`, `fields?`, `sort?`, `pageSize?`, `pageToken?`, `countTotal?` |
+| `clinicaltrials_get_study`      | Fetches detailed information for one or more studies by NCT ID.       | `nctIds`, `summaryOnly?`, `markupFormat?`, `fields?`                              |
+| `clinicaltrials_analyze_trends` | Performs statistical analysis on a set of studies.                    | `analysisType`, `query?`, `filter?`                                               |
 
 _Note: All tools support comprehensive error handling and return structured JSON responses._
 
