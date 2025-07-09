@@ -6,23 +6,91 @@
  */
 
 /**
- * Represents a single clinical study.
- * This is a placeholder and will be expanded as the tool is implemented.
+ * Represents a single clinical study, based on the ClinicalTrials.gov API structure.
  */
 export interface Study {
-  protocolSection: {
-    identificationModule: {
+  protocolSection?: {
+    identificationModule?: {
       nctId: string;
-      orgStudyIdInfo: {
+      orgStudyIdInfo?: {
         id: string;
       };
-      organization: {
+      organization?: {
         fullName: string;
         class: string;
       };
-      briefTitle: string;
-      officialTitle: string;
-      acronym: string;
+      briefTitle?: string;
+      officialTitle?: string;
+      acronym?: string;
+    };
+    statusModule?: {
+      overallStatus?: string;
+      lastKnownStatus?: string;
+      startDateStruct?: {
+        date: string;
+        type: string;
+      };
+      primaryCompletionDateStruct?: {
+        date: string;
+        type: string;
+      };
+      completionDateStruct?: {
+        date: string;
+        type: string;
+      };
+    };
+    sponsorCollaboratorsModule?: {
+      responsibleParty?: {
+        type: string;
+      };
+      leadSponsor?: {
+        name: string;
+        class: string;
+      };
+      collaborators?: {
+        name: string;
+        class: string;
+      }[];
+    };
+    descriptionModule?: {
+      briefSummary?: string;
+      detailedDescription?: string;
+    };
+    conditionsModule?: {
+      conditions?: string[];
+      keywords?: string[];
+    };
+    armsInterventionsModule?: {
+      arms?: {
+        name: string;
+        type: string;
+        description: string;
+      }[];
+      interventions?: {
+        type: string;
+        name: string;
+        description: string;
+        armNames: string[];
+      }[];
+    };
+    designModule?: {
+      studyType?: string;
+      phases?: string[];
+      designInfo?: {
+        allocation?: string;
+        interventionModel?: string;
+        primaryPurpose?: string;
+        maskingInfo?: {
+          masking?: string;
+        };
+      };
+    };
+    contactsLocationsModule?: {
+      locations?: {
+        city?: string;
+        state?: string;
+        country?: string;
+      }[];
     };
   };
 }

@@ -8,7 +8,7 @@ import {
   PagedStudies,
   Status,
 } from "../../../services/clinical-trials-gov/index.js";
-import { BaseErrorCode, McpError } from "../../../types-global/errors.js";
+import { McpError } from "../../../types-global/errors.js";
 import { cleanStudy } from "../../../utils/clinicaltrials/jsonCleaner.js";
 import { logger, type RequestContext } from "../../../utils/index.js";
 
@@ -18,55 +18,80 @@ import { logger, type RequestContext } from "../../../utils/index.js";
 export const ListStudiesInputSchema = z.object({
   query: z
     .object({
-      cond: z.string().optional().describe("Query for conditions or diseases."),
+      cond: z
+        .string()
+        .optional()
+        .describe("Search for conditions or diseases."),
       term: z
         .string()
         .optional()
-        .describe("Query for other terms (e.g., dates, areas)."),
-      locn: z.string().optional().describe("Query for location terms."),
+        .describe(
+          "Search for other terms like interventions, outcomes, or sponsors.",
+        ),
+      locn: z.string().optional().describe("Search for study locations."),
       titles: z
         .string()
         .optional()
-        .describe("Query for study titles or acronyms."),
+        .describe("Search within study titles or acronyms."),
       intr: z
         .string()
         .optional()
-        .describe("Query for interventions or treatments."),
-      outc: z.string().optional().describe("Query for outcome measures."),
+        .describe("Search for specific interventions or treatments."),
+      outc: z
+        .string()
+        .optional()
+        .describe("Search for specific outcome measures."),
       spons: z
         .string()
         .optional()
-        .describe("Query for sponsors or collaborators."),
-      id: z.string().optional().describe("Query for study IDs (NCT, etc.)."),
+        .describe("Search for sponsors or collaborators."),
+      id: z
+        .string()
+        .optional()
+        .describe("Search for study identifiers (e.g., NCT ID)."),
     })
     .optional()
-    .describe("Essie expression queries that affect ranking."),
+    .describe("A set of search terms that influence result ranking."),
   filter: z
     .object({
       ids: z
         .array(z.string())
         .optional()
-        .describe("Filter by a list of NCT IDs."),
+        .describe("Return only studies with the specified NCT IDs."),
       overallStatus: z
         .array(z.nativeEnum(Status))
         .optional()
-        .describe("Filter by study status."),
+        .describe("Filter results by one or more study statuses."),
       geo: z
-        .string()
+        .object({
+          latitude: z.number().min(-90).max(90),
+          longitude: z.number().min(-180).max(180),
+          radius: z.number().positive(),
+          unit: z.enum(["km", "mi"]).default("km"),
+        })
         .optional()
-        .describe("Filter by geographic distance: distance(lat,lon,dist)."),
+        .describe(
+          "Filter results to a geographic area by providing a point and radius.",
+        ),
       advanced: z
         .string()
         .optional()
-        .describe("Advanced filter using Essie expression syntax."),
+        .describe("Apply an advanced filter using Essie expression syntax."),
     })
     .optional()
-    .describe("Filters that do not affect ranking."),
+    .describe(
+      "A set of filters that narrow the search results without affecting ranking.",
+    ),
   fields: z
     .array(z.string())
     .optional()
-    .describe("Comma-separated list of fields to return."),
-  sort: z.array(z.string()).optional().describe("Sort order for the results."),
+    .describe(
+      "A list of specific top-level fields to include in the response.",
+    ),
+  sort: z
+    .array(z.string())
+    .optional()
+    .describe("Specify the sort order for the results."),
   pageSize: z
     .number()
     .int()
@@ -75,18 +100,18 @@ export const ListStudiesInputSchema = z.object({
     .default(15)
     .optional()
     .describe(
-      "The number of studies to return per page. Default is 15, maximum is 200.",
+      "The number of studies to return per page (1-200). Defaults to 15.",
     ),
   pageToken: z
     .string()
     .optional()
-    .describe("Token for retrieving the next page of results."),
+    .describe("A token used to retrieve the next page of results."),
   countTotal: z
     .boolean()
     .default(true)
     .optional()
     .describe(
-      "Set to true to get the total count of matching studies. Default is true.",
+      "If true, includes the total count of matching studies in the response.",
     ),
 });
 
@@ -96,10 +121,12 @@ export const ListStudiesInputSchema = z.object({
 export type ListStudiesInput = z.infer<typeof ListStudiesInputSchema>;
 
 /**
- * Implements the core logic for the `clinicaltrials_list_studies` tool.
+ * Searches for clinical studies using a combination of queries and filters.
+ * Supports pagination, sorting, and geographic filtering.
+ *
  * @param params - The validated input parameters for the tool.
  * @param context - The request context for logging and tracing.
- * @returns A promise that resolves with the paged list of studies.
+ * @returns A promise that resolves with a paginated list of studies.
  * @throws {McpError} If the API request fails.
  */
 export async function listStudiesLogic(
@@ -107,8 +134,24 @@ export async function listStudiesLogic(
   context: RequestContext,
 ): Promise<PagedStudies> {
   logger.debug("Executing listStudiesLogic", { ...context, toolInput: params });
+
+  // Create a mutable copy of params to transform the geo filter
+  const apiParams: any = { ...params };
+
+  if (apiParams.filter?.geo) {
+    const { latitude, longitude, radius, unit } = apiParams.filter.geo;
+    const geoString = `distance(${latitude},${longitude},${radius}${unit})`;
+
+    // Create a new filter object with the transformed geo string
+    apiParams.filter = {
+      ...apiParams.filter,
+      geo: geoString,
+    };
+    logger.debug(`Transformed geo filter to: ${geoString}`, { ...context });
+  }
+
   const service = new ClinicalTrialsGovService();
-  const pagedStudies = await service.listStudies(params, context);
+  const pagedStudies = await service.listStudies(apiParams, context);
   logger.info("Successfully listed studies.", { ...context });
 
   if (pagedStudies.studies) {

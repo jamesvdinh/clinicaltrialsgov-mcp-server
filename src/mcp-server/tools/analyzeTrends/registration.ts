@@ -1,32 +1,32 @@
 /**
- * @fileoverview Handles the registration of the `clinicaltrials_list_studies` tool.
- * @module src/mcp-server/tools/listStudies/registration
+ * @fileoverview Handles the registration of the `clinicaltrials_analyze_trends` tool.
+ * @module src/mcp-server/tools/analyzeTrends/registration
  */
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
+import { BaseErrorCode, McpError } from "../../../types-global/errors.js";
 import {
   ErrorHandler,
   logger,
   RequestContext,
   requestContextService,
 } from "../../../utils/index.js";
-import { BaseErrorCode, McpError } from "../../../types-global/errors.js";
 import {
-  ListStudiesInput,
-  ListStudiesInputSchema,
-  listStudiesLogic,
+  AnalyzeTrendsInput,
+  AnalyzeTrendsInputSchema,
+  analyzeTrendsLogic,
 } from "./logic.js";
 
 /**
- * Registers the 'clinicaltrials_list_studies' tool with the MCP server.
+ * Registers the 'clinicaltrials_analyze_trends' tool with the MCP server.
  * @param server - The MCP server instance.
  */
-export const registerListStudiesTool = async (
+export const registerAnalyzeTrendsTool = async (
   server: McpServer,
 ): Promise<void> => {
-  const toolName = "clinicaltrials_list_studies";
+  const toolName = "clinicaltrials_analyze_trends";
   const toolDescription =
-    "Searches for clinical studies using a combination of query terms and filters. Supports pagination, sorting, and geographic filtering.";
+    "Performs a statistical analysis on a set of clinical trials, aggregating data by status, country, sponsor, or phase.";
 
   const registrationContext: RequestContext =
     requestContextService.createRequestContext({
@@ -41,9 +41,9 @@ export const registerListStudiesTool = async (
       server.tool(
         toolName,
         toolDescription,
-        ListStudiesInputSchema.shape,
+        AnalyzeTrendsInputSchema.shape,
         async (
-          params: ListStudiesInput,
+          params: AnalyzeTrendsInput,
           mcpContext: any,
         ): Promise<CallToolResult> => {
           const handlerContext: RequestContext =
@@ -56,7 +56,7 @@ export const registerListStudiesTool = async (
             });
 
           try {
-            const validatedParams = ListStudiesInputSchema.safeParse(params);
+            const validatedParams = AnalyzeTrendsInputSchema.safeParse(params);
             if (!validatedParams.success) {
               const error = new McpError(
                 BaseErrorCode.VALIDATION_ERROR,
@@ -80,7 +80,7 @@ export const registerListStudiesTool = async (
               };
             }
 
-            const result = await listStudiesLogic(
+            const result = await analyzeTrendsLogic(
               validatedParams.data,
               handlerContext,
             );
@@ -92,7 +92,7 @@ export const registerListStudiesTool = async (
             };
           } catch (error) {
             const handledError = ErrorHandler.handleError(error, {
-              operation: "listStudiesToolHandler",
+              operation: "analyzeTrendsToolHandler",
               context: handlerContext,
               input: params,
             });
@@ -102,8 +102,8 @@ export const registerListStudiesTool = async (
                 ? handledError
                 : new McpError(
                     BaseErrorCode.INTERNAL_ERROR,
-                    "An unexpected error occurred while listing studies.",
-                    { originalErrorName: handledError.name },
+                    "An unexpected error occurred.",
+                    { originalError: handledError.message },
                   );
 
             return {

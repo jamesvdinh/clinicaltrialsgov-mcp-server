@@ -22,7 +22,7 @@ export const registerGetStudyTool = async (
 ): Promise<void> => {
   const toolName = "clinicaltrials_get_study";
   const toolDescription =
-    "Retrieves detailed information for a single clinical study by its NCT number.";
+    "Fetches one or more clinical studies from ClinicalTrials.gov by their NCT IDs. Returns either complete study data or concise summaries for each.";
 
   const registrationContext: RequestContext =
     requestContextService.createRequestContext({
@@ -101,7 +101,7 @@ export const registerGetStudyTool = async (
             ) {
               mcpError = new McpError(
                 BaseErrorCode.NOT_FOUND,
-                `The requested study with NCT ID '${params.nctId}' could not be found.`,
+                `One or more of the requested studies could not be found. Check the NCT IDs for accuracy.`,
                 handledError.details,
               );
             } else if (handledError instanceof McpError) {

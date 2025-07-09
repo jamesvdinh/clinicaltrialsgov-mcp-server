@@ -21,6 +21,7 @@ import { BaseErrorCode } from "../types-global/errors.js";
 import { ErrorHandler, logger, requestContextService } from "../utils/index.js";
 import { registerGetStudyTool } from "./tools/getStudy/index.js";
 import { registerListStudiesTool } from "./tools/listStudies/index.js";
+import { registerAnalyzeTrendsTool } from "./tools/analyzeTrends/index.js";
 import { startHttpTransport } from "./transports/httpTransport.js";
 import { connectStdioTransport } from "./transports/stdioTransport.js";
 
@@ -59,6 +60,7 @@ async function createMcpServerInstance(): Promise<McpServer> {
       logger.debug("Registering resources and tools...", context);
       await registerGetStudyTool(server);
       await registerListStudiesTool(server);
+      await registerAnalyzeTrendsTool(server);
       logger.info("Resources and tools registered successfully", context);
     },
     {
