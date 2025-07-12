@@ -111,7 +111,7 @@ export async function getStudyLogic(
     toolInput: params,
   });
 
-  const service = new ClinicalTrialsGovService();
+  const service = ClinicalTrialsGovService.getInstance();
 
   const studyPromises = nctIds.map(async (nctId) => {
     const study = await service.fetchStudy(nctId, context);

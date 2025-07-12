@@ -68,7 +68,7 @@ async function fetchAllStudies(
   params: Omit<AnalyzeTrendsInput, "analysisType">,
   context: RequestContext,
 ): Promise<Study[]> {
-  const service = new ClinicalTrialsGovService();
+  const service = ClinicalTrialsGovService.getInstance();
   let allStudies: Study[] = [];
   let pageToken: string | undefined = undefined;
   let hasMore = true;
@@ -156,7 +156,7 @@ export async function analyzeTrendsLogic(
           study.protocolSection?.sponsorCollaboratorsModule?.leadSponsor
             ?.class ?? "Unknown";
         break;
-      case "countByPhase":
+      case "countByPhase": {
         const phases = study.protocolSection?.designModule?.phases ?? [
           "Unknown",
         ];
@@ -166,6 +166,7 @@ export async function analyzeTrendsLogic(
         });
         // Skip the default increment logic for this case
         continue;
+      }
     }
     if (key) {
       results[key] = (results[key] || 0) + 1;

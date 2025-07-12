@@ -21,6 +21,26 @@ const BASE_URL = "https://clinicaltrials.gov/api/v2";
  * It handles request construction, API communication, and response backup.
  */
 export class ClinicalTrialsGovService {
+  private static instance: ClinicalTrialsGovService;
+
+  /**
+   * Private constructor to prevent direct instantiation.
+   */
+  private constructor() {
+    // The constructor is now private.
+  }
+
+  /**
+   * Returns the singleton instance of the ClinicalTrialsGovService.
+   * @returns The singleton instance.
+   */
+  public static getInstance(): ClinicalTrialsGovService {
+    if (!ClinicalTrialsGovService.instance) {
+      ClinicalTrialsGovService.instance = new ClinicalTrialsGovService();
+    }
+    return ClinicalTrialsGovService.instance;
+  }
+
   /**
    * Fetches a single study by its NCT ID.
    * @param nctId - The NCT ID of the study.
@@ -44,12 +64,12 @@ export class ClinicalTrialsGovService {
    * @returns A promise that resolves with a paged list of studies.
    */
   public async listStudies(
-    params: Record<string, any>,
+    params: Record<string, unknown>,
     context: RequestContext,
   ): Promise<PagedStudies> {
     const queryParams = new URLSearchParams();
 
-    if (params.query) {
+    if (typeof params.query === "object" && params.query !== null) {
       for (const [key, value] of Object.entries(params.query)) {
         if (value) {
           queryParams.set(`query.${key}`, String(value));
@@ -57,7 +77,7 @@ export class ClinicalTrialsGovService {
       }
     }
 
-    if (params.filter) {
+    if (typeof params.filter === "object" && params.filter !== null) {
       for (const [key, value] of Object.entries(params.filter)) {
         if (value) {
           if (Array.isArray(value)) {
@@ -69,16 +89,16 @@ export class ClinicalTrialsGovService {
       }
     }
 
-    if (params.fields) {
+    if (Array.isArray(params.fields)) {
       queryParams.set("fields", params.fields.join(","));
     }
-    if (params.sort) {
+    if (Array.isArray(params.sort)) {
       queryParams.set("sort", params.sort.join(","));
     }
     if (params.pageSize) {
       queryParams.set("pageSize", String(params.pageSize));
     }
-    if (params.pageToken) {
+    if (typeof params.pageToken === "string") {
       queryParams.set("pageToken", params.pageToken);
     }
     if (params.countTotal) {
@@ -125,7 +145,7 @@ export class ClinicalTrialsGovService {
     statType: "studySize" | "fieldValues" | "listFieldSizes",
     params: { fields?: string[]; types?: string[] },
     context: RequestContext,
-  ): Promise<any> {
+  ): Promise<unknown> {
     const queryParams = new URLSearchParams();
     if (params.fields) {
       queryParams.set("fields", params.fields.join(","));
@@ -159,7 +179,7 @@ export class ClinicalTrialsGovService {
 
     const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
     const fileName = `stats_${statType}_${timestamp}.json`;
-    return this.fetchAndBackup<any>(url, fileName, context);
+    return this.fetchAndBackup<unknown>(url, fileName, context);
   }
 
   /**

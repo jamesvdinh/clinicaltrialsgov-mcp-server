@@ -8,7 +8,6 @@ import {
   PagedStudies,
   Status,
 } from "../../../services/clinical-trials-gov/index.js";
-import { McpError } from "../../../types-global/errors.js";
 import { cleanStudy } from "../../../utils/clinicaltrials/jsonCleaner.js";
 import { logger, type RequestContext } from "../../../utils/index.js";
 
@@ -136,10 +135,20 @@ export async function listStudiesLogic(
   logger.debug("Executing listStudiesLogic", { ...context, toolInput: params });
 
   // Create a mutable copy of params to transform the geo filter
-  const apiParams: any = { ...params };
+  const apiParams: Record<string, unknown> = { ...params };
 
-  if (apiParams.filter?.geo) {
-    const { latitude, longitude, radius, unit } = apiParams.filter.geo;
+  if (
+    typeof apiParams.filter === "object" &&
+    apiParams.filter !== null &&
+    "geo" in apiParams.filter
+  ) {
+    const geo = apiParams.filter.geo as {
+      latitude: number;
+      longitude: number;
+      radius: number;
+      unit: string;
+    };
+    const { latitude, longitude, radius, unit } = geo;
     const geoString = `distance(${latitude},${longitude},${radius}${unit})`;
 
     // Create a new filter object with the transformed geo string
@@ -150,7 +159,7 @@ export async function listStudiesLogic(
     logger.debug(`Transformed geo filter to: ${geoString}`, { ...context });
   }
 
-  const service = new ClinicalTrialsGovService();
+  const service = ClinicalTrialsGovService.getInstance();
   const pagedStudies = await service.listStudies(apiParams, context);
   logger.info("Successfully listed studies.", { ...context });
 
