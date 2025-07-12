@@ -1,6 +1,6 @@
 # clinicaltrialsgov-mcp-server - Directory Structure
 
-Generated on: 2025-07-09 17:43:23
+Generated on: 2025-07-12 10:08:43
 
 ```
 clinicaltrialsgov-mcp-server
@@ -10,13 +10,7 @@ clinicaltrialsgov-mcp-server
 │   └── FUNDING.yml
 ├── data
 ├── docs
-│   ├── api-references
-│   │   ├── duckDB.md
-│   │   ├── jsdoc-standard-tags.md
-│   │   └── typedoc-reference.md
 │   ├── best-practices.md
-│   ├── ctg-oas-v2.yaml
-│   ├── PROJECT-SPEC.md
 │   └── tree.md
 ├── examples
 │   ├── studies_2025-06-17T11-15-33-773Z.json

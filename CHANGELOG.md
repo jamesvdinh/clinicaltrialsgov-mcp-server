@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.8] - 2025-07-12
+
+### Changed
+
+- **Singleton Service**: Refactored `ClinicalTrialsGovService` to implement the singleton pattern, ensuring a single, shared instance is used across the application. This improves efficiency and consistency.
+- **Type Safety**: Enhanced type safety throughout the codebase by replacing `any` with more specific types like `unknown` or defined interfaces. This includes updates to tool registrations, service layers, and utility functions.
+- **Error Handling**: Improved error handling in scripts and configuration loaders by using `unknown` and providing more robust error messages.
+- **Dependencies**: Updated all major dependencies to their latest versions, including `@modelcontextprotocol/sdk`, `@supabase/supabase-js`, `@types/node`, `eslint`, `node-cron`, and `openai`.
+- **Documentation**: Regenerated the `docs/tree.md` file to reflect the latest project structure.
+
+### Fixed
+
+- **`listStudies` Logic**: Corrected the logic for handling the `geo` filter to ensure it is properly transformed into the required API format.
+- **`analyzeTrends` Logic**: Fixed an issue in the `countByPhase` analysis to correctly handle studies with multiple phases.
+
 ## [1.0.7] - 2025-07-09
 
 ### Changed
