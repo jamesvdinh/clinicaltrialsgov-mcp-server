@@ -44,7 +44,7 @@ export const registerAnalyzeTrendsTool = async (
         AnalyzeTrendsInputSchema.shape,
         async (
           params: AnalyzeTrendsInput,
-          mcpContext: any,
+          mcpContext: unknown,
         ): Promise<CallToolResult> => {
           const handlerContext: RequestContext =
             requestContextService.createRequestContext({

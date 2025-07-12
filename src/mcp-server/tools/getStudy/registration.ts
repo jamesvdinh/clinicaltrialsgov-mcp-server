@@ -40,7 +40,7 @@ export const registerGetStudyTool = async (
         GetStudyInputSchema.shape,
         async (
           params: GetStudyInput,
-          mcpContext: any,
+          mcpContext: unknown,
         ): Promise<CallToolResult> => {
           const handlerContext: RequestContext =
             requestContextService.createRequestContext({

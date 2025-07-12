@@ -12,19 +12,30 @@ import { Study } from "../../services/clinical-trials-gov/types.js";
  * @param study - The study object to clean.
  * @returns A new study object with cleaned browse modules.
  */
+interface BrowseLeaf {
+  term?: string;
+  name?: string;
+  relevance?: string;
+}
+
+interface BrowseModule {
+  browseLeaves?: BrowseLeaf[];
+  ancestors?: { term?: string }[];
+}
+
 function cleanBrowseModules(study: Study): Study {
   const cleanedStudy = JSON.parse(JSON.stringify(study));
 
-  const cleanModule = (module: any) => {
+  const cleanModule = (module: BrowseModule | undefined) => {
     if (module && module.browseLeaves && module.ancestors) {
-      const leafTerms = new Set();
-      module.browseLeaves.forEach((leaf: any) => {
+      const leafTerms = new Set<string>();
+      module.browseLeaves.forEach((leaf: BrowseLeaf) => {
         if (leaf.term) leafTerms.add(leaf.term);
         if (leaf.name) leafTerms.add(leaf.name);
       });
 
       module.ancestors = module.ancestors.filter(
-        (ancestor: any) => !leafTerms.has(ancestor.term),
+        (ancestor) => ancestor.term && !leafTerms.has(ancestor.term),
       );
     }
   };
@@ -43,10 +54,10 @@ function cleanBrowseModules(study: Study): Study {
 function filterBrowseLeavesByRelevance(study: Study): Study {
   const cleanedStudy = JSON.parse(JSON.stringify(study));
 
-  const filterModule = (module: any) => {
+  const filterModule = (module: BrowseModule | undefined) => {
     if (module && module.browseLeaves) {
       module.browseLeaves = module.browseLeaves.filter(
-        (leaf: any) => leaf.relevance !== "LOW",
+        (leaf) => leaf.relevance !== "LOW",
       );
     }
   };

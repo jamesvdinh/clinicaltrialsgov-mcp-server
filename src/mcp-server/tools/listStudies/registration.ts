@@ -44,7 +44,7 @@ export const registerListStudiesTool = async (
         ListStudiesInputSchema.shape,
         async (
           params: ListStudiesInput,
-          mcpContext: any,
+          mcpContext: unknown,
         ): Promise<CallToolResult> => {
           const handlerContext: RequestContext =
             requestContextService.createRequestContext({
