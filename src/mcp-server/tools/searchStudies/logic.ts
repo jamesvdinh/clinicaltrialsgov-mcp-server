@@ -72,9 +72,9 @@ export const SearchStudiesInputSchema = z.object({
     .int()
     .min(1)
     .max(200)
-    .default(50)
+    .default(10)
     .optional()
-    .describe("The number of studies to return per page (1-200). Defaults to 50."),
+    .describe("The number of studies to return per page (1-200). Defaults to 10."),
   pageToken: z.string().optional().describe("A token used to retrieve the next page of results."),
   countTotal: z
     .boolean()

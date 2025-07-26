@@ -44,29 +44,9 @@ export const registerGetStudyTool = async (
 
       try {
         const result = await getStudyLogic(params, handlerContext);
-        const summaryText = `Successfully fetched ${
-          result.studies.length
-        } clinical studies: ${result.studies
-          .map((s) => {
-            if ("protocolSection" in s) {
-              return s.protocolSection?.identificationModule?.nctId;
-            } else if ("study" in s) {
-              return (
-                s.study as {
-                  protocolSection?: { identificationModule?: { nctId?: string } };
-                }
-              )?.protocolSection?.identificationModule?.nctId;
-            }
-            return undefined;
-          })
-          .filter(Boolean)
-          .join(", ")}.`;
         return {
           structuredContent: result,
-          content: [
-            { type: "text", text: summaryText },
-            { type: "text", text: JSON.stringify(result, null, 2) },
-          ],
+          content: [{ type: "text", text: JSON.stringify(result, null, 2) }],
         };
       } catch (error) {
         logger.error(`Error in ${toolName} handler`, {

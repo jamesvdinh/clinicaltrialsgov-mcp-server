@@ -13,7 +13,7 @@ import { cleanStudy } from "../../../utils/clinicaltrials/jsonCleaner.js";
 import { logger, type RequestContext } from "../../../utils/index.js";
 
 /**
- * Zod schema for the `clinicaltrials_get_study` tool input.
+ * Zod schema for the input of the `clinicaltrials_get_study` tool.
  */
 export const GetStudyInputSchema = z.object({
   nctIds: z
@@ -25,27 +25,27 @@ export const GetStudyInputSchema = z.object({
         .max(5),
     ])
     .describe(
-      "A single NCT ID or an array of up to 5 NCT IDs. Each must follow the format 'NCT' followed by 8 digits (e.g., 'NCT12345678').",
+      "A single NCT ID (e.g., 'NCT12345678') or an array of up to 5 NCT IDs to fetch.",
     ),
   markupFormat: z
     .enum(["markdown", "legacy"])
     .default("markdown")
     .optional()
     .describe(
-      "Specifies the format for rich text fields in the response. Defaults to 'markdown'.",
+      "Format for rich text fields. 'markdown' provides formatted text, while 'legacy' provides the original. Defaults to 'markdown'.",
     ),
   fields: z
     .array(z.string())
     .optional()
     .describe(
-      "An optional list of specific top-level fields to include in the response. If omitted, all fields are returned.",
+      "A list of specific top-level fields to return (e.g., ['protocolSection', 'derivedSection']). If omitted, all fields are returned.",
     ),
   summaryOnly: z
     .boolean()
     .default(false)
     .optional()
     .describe(
-      "If true, returns a condensed summary of the study instead of the full data. Defaults to false.",
+      "If true, returns a concise summary of each study. If false (default), returns the complete study data.",
     ),
 });
 
@@ -55,7 +55,7 @@ export const GetStudyInputSchema = z.object({
 export type GetStudyInput = z.infer<typeof GetStudyInputSchema>;
 
 /**
- * Zod schema for a summarized study, containing only essential fields.
+ * Zod schema for a summarized study, containing only essential fields for a concise overview.
  */
 export const StudySummarySchema = z.object({
   nctId: z.string().optional(),
@@ -78,7 +78,6 @@ export type StudySummary = z.infer<typeof StudySummarySchema>;
 
 /**
  * Zod schema for the output of the `clinicaltrials_get_study` tool.
- * The output is an object containing an array of studies or summaries.
  */
 export const GetStudyOutputSchema = z.object({
   studies: z.array(z.union([StudySchema, StudySummarySchema])),
@@ -114,13 +113,13 @@ function createStudySummary(study: Study): StudySummary {
 }
 
 /**
- * Fetches one or more clinical studies by their NCT numbers from the ClinicalTrials.gov API.
- * It can return either full study data or condensed summaries.
+ * Fetches one or more clinical studies from ClinicalTrials.gov by their NCT IDs.
+ * Returns either complete study data or concise summaries for each.
  *
- * @param params - The validated input parameters for the tool.
+ * @param params - The validated input parameters, defining which studies to fetch and in what format.
  * @param context - The request context for logging and tracing.
- * @returns A promise that resolves with an array of detailed study data or summaries.
- * @throws {McpError} If any of the studies are not found or if an API request fails.
+ * @returns A promise resolving to an object containing an array of studies or summaries.
+ * @throws {McpError} Throws if a study is not found or if the API request fails.
  */
 export async function getStudyLogic(
   params: GetStudyInput,

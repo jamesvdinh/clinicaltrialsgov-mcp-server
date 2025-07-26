@@ -46,13 +46,32 @@ export const registerSearchStudiesTool = async (
         const result = await searchStudiesLogic(params, handlerContext);
         const studies = result.studies;
         const studySummaries =
-          studies?.map(
-            (study) =>
-              `  - ${study.protocolSection?.identificationModule?.nctId} [${study.protocolSection?.statusModule?.overallStatus}]: ${study.protocolSection?.identificationModule?.briefTitle}`,
-          ) ?? [];
+          studies?.map((study) => {
+            const idModule = study.protocolSection?.identificationModule;
+            const statusModule = study.protocolSection?.statusModule;
+            const descriptionModule = study.protocolSection?.descriptionModule;
+            const interventionsModule =
+              study.protocolSection?.armsInterventionsModule;
+            const sponsorModule =
+              study.protocolSection?.sponsorCollaboratorsModule;
+
+            const interventions =
+              interventionsModule?.interventions
+                ?.map((i) => i.name)
+                .join(", ") ?? "N/A";
+
+            return `
+- **NCT ID:** ${idModule?.nctId ?? "N/A"}
+- **Title:** ${idModule?.briefTitle ?? "N/A"}
+- **Status:** ${statusModule?.overallStatus ?? "N/A"}
+- **Summary:** ${descriptionModule?.briefSummary ?? "N/A"}
+- **Interventions:** ${interventions}
+- **Sponsor:** ${sponsorModule?.leadSponsor?.name ?? "N/A"}
+`;
+          }) ?? [];
         let summaryText =
           `Successfully retrieved ${studies?.length ?? 0} studies.\n` +
-          studySummaries.join("\n");
+          studySummaries.join("\n---\n");
 
         if (result.nextPageToken) {
           summaryText += `\nNext Page Token: ${result.nextPageToken}`;
@@ -63,10 +82,7 @@ export const registerSearchStudiesTool = async (
 
         return {
           structuredContent: result,
-          content: [
-            { type: "text", text: summaryText },
-            { type: "text", text: JSON.stringify(result, null, 2) },
-          ],
+          content: [{ type: "text", text: summaryText }],
         };
       } catch (error) {
         logger.error(`Error in ${toolName} handler`, {
