@@ -42,16 +42,33 @@ export class ClinicalTrialsGovService {
   }
 
   /**
-   * Fetches a single study by its NCT ID.
+   * Fetches a single study by its NCT ID, with optional parameters.
    * @param nctId - The NCT ID of the study.
    * @param context - The request context for logging.
+   * @param options - Optional parameters for the fetch request.
+   * @param options.fields - A list of specific top-level fields to return.
+   * @param options.markupFormat - The format for rich text fields ('markdown' or 'legacy').
    * @returns A promise that resolves with the study data.
    */
   public async fetchStudy(
     nctId: string,
     context: RequestContext,
+    options: {
+      fields?: string[];
+      markupFormat?: "markdown" | "legacy";
+    } = {},
   ): Promise<Study> {
-    const url = `${BASE_URL}/studies/${nctId}`;
+    const queryParams = new URLSearchParams();
+    if (options.fields && options.fields.length > 0) {
+      queryParams.set("fields", options.fields.join(","));
+    }
+    if (options.markupFormat) {
+      queryParams.set("markupFormat", options.markupFormat);
+    }
+
+    const queryString = queryParams.toString();
+    const url = `${BASE_URL}/studies/${nctId}${queryString ? `?${queryString}` : ""}`;
+
     const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
     const fileName = `study_${nctId}_${timestamp}.json`;
     return this.fetchAndBackup<Study>(url, fileName, context);

@@ -18,14 +18,14 @@ import { logger, type RequestContext } from "../../../utils/index.js";
 export const GetStudyInputSchema = z.object({
   nctIds: z
     .union([
-      z.string().regex(/^[Nn][Cc][Tt]\d+$/),
+      z.string().regex(/^[Nn][Cc][Tt]\d{8}$/),
       z
-        .array(z.string().regex(/^[Nn][Cc][Tt]\d+$/))
+        .array(z.string().regex(/^[Nn][Cc][Tt]\d{8}$/))
         .min(1)
         .max(5),
     ])
     .describe(
-      "A single NCT ID (e.g., 'NCT12345678') or an array of up to 5 NCT IDs to fetch.",
+      "A single NCT ID (e.g., 'NCT12345678') or an array of up to 5 NCT IDs to fetch. Each ID must be 8 digits.",
     ),
   markupFormat: z
     .enum(["markdown", "legacy"])
@@ -81,6 +81,14 @@ export type StudySummary = z.infer<typeof StudySummarySchema>;
  */
 export const GetStudyOutputSchema = z.object({
   studies: z.array(z.union([StudySchema, StudySummarySchema])),
+  errors: z
+    .array(
+      z.object({
+        nctId: z.string(),
+        error: z.string(),
+      }),
+    )
+    .optional(),
 });
 
 /**
@@ -132,26 +140,52 @@ export async function getStudyLogic(
   });
 
   const service = ClinicalTrialsGovService.getInstance();
+  const studies: (Study | StudySummary)[] = [];
+  const errors: { nctId: string; error: string }[] = [];
 
   const studyPromises = nctIds.map(async (nctId) => {
-    const study = await service.fetchStudy(nctId, context);
-    if (!study) {
-      throw new McpError(
-        BaseErrorCode.NOT_FOUND,
-        `Study with NCT ID '${nctId}' not found.`,
-        { nctId },
-      );
-    }
-    const cleanedStudy = cleanStudy(study);
-    logger.info(`Successfully fetched study ${nctId}`, { ...context });
+    try {
+      const study = await service.fetchStudy(nctId, context, {
+        fields: params.fields,
+        markupFormat: params.markupFormat,
+      });
 
-    if (params.summaryOnly) {
-      logger.debug(`Creating summary for study ${nctId}`, { ...context });
-      return createStudySummary(cleanedStudy);
+      if (!study) {
+        // This case might be redundant if fetchStudy throws a 404, but it's a safe fallback.
+        throw new McpError(
+          BaseErrorCode.NOT_FOUND,
+          `Study with NCT ID '${nctId}' not found.`,
+        );
+      }
+
+      const cleanedStudy = cleanStudy(study);
+      logger.info(`Successfully fetched study ${nctId}`, { ...context });
+
+      if (params.summaryOnly) {
+        logger.debug(`Creating summary for study ${nctId}`, { ...context });
+        studies.push(createStudySummary(cleanedStudy));
+      } else {
+        studies.push(cleanedStudy);
+      }
+    } catch (error) {
+      const errorMessage =
+        error instanceof McpError
+          ? error.message
+          : "An unexpected error occurred";
+      logger.warning(`Failed to fetch study ${nctId}: ${errorMessage}`, {
+        ...context,
+        nctId,
+        error,
+      });
+      errors.push({ nctId, error: errorMessage });
     }
-    return cleanedStudy;
   });
 
-  const studies = await Promise.all(studyPromises);
-  return { studies };
+  await Promise.all(studyPromises);
+
+  const result: GetStudyOutput = { studies };
+  if (errors.length > 0) {
+    result.errors = errors;
+  }
+  return result;
 }

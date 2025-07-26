@@ -181,6 +181,8 @@ const EnvSchema = z.object({
   SUPABASE_SERVICE_ROLE_KEY: z.string().optional(),
   /** Directory for caching ClinicalTrials.gov API data. Defaults to "data" in project root. */
   CLINICALTRIALS_DATA_PATH: z.string().default(path.join(projectRoot, "data")),
+  /** Maximum number of studies to fetch for analysis. Default: 5000. */
+  MAX_STUDIES_FOR_ANALYSIS: z.coerce.number().int().positive().default(5000),
 });
 
 const parsedEnv = EnvSchema.safeParse(process.env);
@@ -416,6 +418,8 @@ export const config = {
 
   /** Absolute path to the ClinicalTrials.gov data directory. From `CLINICALTRIALS_DATA_PATH` env var. */
   clinicalTrialsDataPath: validatedDataPath,
+  /** Maximum number of studies to fetch for analysis. From `MAX_STUDIES_FOR_ANALYSIS` env var. */
+  maxStudiesForAnalysis: env.MAX_STUDIES_FOR_ANALYSIS,
 };
 
 /**

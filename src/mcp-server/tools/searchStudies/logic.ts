@@ -76,11 +76,6 @@ export const SearchStudiesInputSchema = z.object({
     .optional()
     .describe("The number of studies to return per page (1-200). Defaults to 10."),
   pageToken: z.string().optional().describe("A token used to retrieve the next page of results."),
-  countTotal: z
-    .boolean()
-    .default(true)
-    .optional()
-    .describe("If true, includes the total count of matching studies in the response."),
 });
 
 /**
@@ -113,35 +108,41 @@ export async function searchStudiesLogic(
 ): Promise<SearchStudiesOutput> {
   logger.debug("Executing searchStudiesLogic", { ...context, toolInput: params });
 
-  // Create a mutable copy of params to transform the geo filter
-  const apiParams: Record<string, unknown> = { ...params };
+  // Explicitly construct parameters for the service to ensure clarity and prevent side effects.
+  const apiParams: Record<string, unknown> = {
+    query: params.query,
+    fields: params.fields,
+    sort: params.sort,
+    pageSize: params.pageSize,
+    pageToken: params.pageToken,
+    countTotal: true,
+  };
 
-  if (
-    typeof apiParams.filter === "object" &&
-    apiParams.filter !== null &&
-    "geo" in apiParams.filter
-  ) {
-    const geo = apiParams.filter.geo as {
-      latitude: number;
-      longitude: number;
-      radius: number;
-      unit: string;
-    };
-    const { latitude, longitude, radius, unit } = geo;
-    const geoString = `distance(${latitude},${longitude},${radius}${unit})`;
-
-    // Create a new filter object with the transformed geo string
-    apiParams.filter = {
-      ...apiParams.filter,
-      geo: geoString,
-    };
-    logger.debug(`Transformed geo filter to: ${geoString}`, { ...context });
+  // Handle filter transformation separately.
+  if (params.filter) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const filter: Record<string, any> = { ...params.filter };
+    if (filter.geo) {
+      const { latitude, longitude, radius, unit } = filter.geo as {
+        latitude: number;
+        longitude: number;
+        radius: number;
+        unit: string;
+      };
+      // The API expects the geo filter as a single string.
+      filter.geo = `distance(${latitude},${longitude},${radius}${unit})`;
+      logger.debug(`Transformed geo filter to: ${filter.geo}`, {
+        ...context,
+      });
+    }
+    apiParams.filter = filter;
   }
 
   const service = ClinicalTrialsGovService.getInstance();
   const pagedStudies = await service.listStudies(apiParams, context);
   logger.info("Successfully listed studies.", { ...context });
 
+  // Clean each study in the response to remove extraneous fields.
   if (pagedStudies.studies) {
     pagedStudies.studies = pagedStudies.studies.map(cleanStudy);
   }
