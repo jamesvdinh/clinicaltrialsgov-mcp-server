@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.10] - 2025-07-26
+
+### Changed
+
+- **`analyzeTrends` Tool Enhancement**: The `clinicaltrials_analyze_trends` tool can now process an array of analysis types in a single request (e.g., `["countByStatus", "countByCountry"]`), returning a distinct analysis for each type. This improves efficiency by allowing multiple aggregations over a single dataset.
+- **Dependencies**: Updated `typescript` to `^5.5.4` and `@types/node` to `^20.16.1`.
+
 ## [1.0.9] - 2025-07-26
 
 ### Added

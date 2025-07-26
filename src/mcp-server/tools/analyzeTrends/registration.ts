@@ -44,20 +44,23 @@ export const registerAnalyzeTrendsTool = async (
 
       try {
         const result = await analyzeTrendsLogic(params, handlerContext);
-        const resultsSummary = Object.entries(result.results)
-          .map(([key, value]) => `  - ${key}: ${value}`)
-          .join("\n");
+        const summaryLines: string[] = [];
 
-        const summaryText =
-          `Successfully analyzed ${result.totalStudies} studies for trend '${result.analysisType}'.\n\n` +
-          `Analysis Results:\n${resultsSummary}`;
+        result.analysis.forEach((analysisResult) => {
+          const resultsSummary = Object.entries(analysisResult.results)
+            .map(([key, value]) => `  - ${key}: ${value}`)
+            .join("\n");
+          summaryLines.push(
+            `Successfully analyzed ${analysisResult.totalStudies} studies for trend '${analysisResult.analysisType}'.\n\n` +
+              `Analysis Results:\n${resultsSummary}`,
+          );
+        });
+
+        const summaryText = summaryLines.join("\n\n---\n\n");
 
         return {
           structuredContent: result,
-          content: [
-            { type: "text", text: summaryText },
-            { type: "text", text: JSON.stringify(result, null, 2) },
-          ],
+          content: [{ type: "text", text: summaryText }],
         };
       } catch (error) {
         logger.error(`Error in ${toolName} handler`, {

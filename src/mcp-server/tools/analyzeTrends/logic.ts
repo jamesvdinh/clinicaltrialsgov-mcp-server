@@ -27,8 +27,11 @@ export const AnalyzeTrendsInputSchema = SearchStudiesInputSchema.pick({
   query: true,
   filter: true,
 }).extend({
-  analysisType: AnalysisTypeSchema.describe(
-    "The type of statistical analysis to perform on the study set.",
+  analysisType: z.union([
+    AnalysisTypeSchema,
+    z.array(AnalysisTypeSchema).min(1),
+  ]).describe(
+    "A single analysis type or an array of types to perform on the study set.",
   ),
 });
 
@@ -54,7 +57,9 @@ export type AnalysisResult = z.infer<typeof AnalysisResultSchema>;
 /**
  * Zod schema for the output of the `clinicaltrials_analyze_trends` tool.
  */
-export const AnalyzeTrendsOutputSchema = AnalysisResultSchema;
+export const AnalyzeTrendsOutputSchema = z.object({
+  analysis: z.array(AnalysisResultSchema),
+});
 
 /**
  * TypeScript type inferred from the output schema.
@@ -148,49 +153,54 @@ export async function analyzeTrendsLogic(
 ): Promise<AnalyzeTrendsOutput> {
   const { analysisType, ...searchParams } = params;
   const allStudies = await fetchAllStudies(searchParams, context);
+  const analysisTypes = Array.isArray(analysisType)
+    ? analysisType
+    : [analysisType];
 
-  const results: Record<string, number> = {};
+  const finalResults: AnalysisResult[] = [];
 
-  for (const study of allStudies) {
-    let key: string | undefined;
-    switch (analysisType) {
-      case "countByStatus":
-        key = study.protocolSection?.statusModule?.overallStatus ?? "Unknown";
-        break;
-      case "countByCountry":
-        study.protocolSection?.contactsLocationsModule?.locations?.forEach(
-          (loc) => {
-            const country = loc.country ?? "Unknown";
-            results[country] = (results[country] || 0) + 1;
-          },
-        );
-        // Skip the default increment logic for this case
-        continue;
-      case "countBySponsorType":
-        key =
-          study.protocolSection?.sponsorCollaboratorsModule?.leadSponsor
-            ?.class ?? "Unknown";
-        break;
-      case "countByPhase": {
-        const phases = study.protocolSection?.designModule?.phases ?? [
-          "Unknown",
-        ];
-        phases.forEach((phase) => {
-          const phaseKey = phase ?? "Unknown";
-          results[phaseKey] = (results[phaseKey] || 0) + 1;
-        });
-        // Skip the default increment logic for this case
-        continue;
+  for (const type of analysisTypes) {
+    const results: Record<string, number> = {};
+    for (const study of allStudies) {
+      let key: string | undefined;
+      switch (type) {
+        case "countByStatus":
+          key = study.protocolSection?.statusModule?.overallStatus ?? "Unknown";
+          break;
+        case "countByCountry":
+          study.protocolSection?.contactsLocationsModule?.locations?.forEach(
+            (loc) => {
+              const country = loc.country ?? "Unknown";
+              results[country] = (results[country] || 0) + 1;
+            },
+          );
+          continue;
+        case "countBySponsorType":
+          key =
+            study.protocolSection?.sponsorCollaboratorsModule?.leadSponsor
+              ?.class ?? "Unknown";
+          break;
+        case "countByPhase": {
+          const phases = study.protocolSection?.designModule?.phases ?? [
+            "Unknown",
+          ];
+          phases.forEach((phase) => {
+            const phaseKey = phase ?? "Unknown";
+            results[phaseKey] = (results[phaseKey] || 0) + 1;
+          });
+          continue;
+        }
+      }
+      if (key) {
+        results[key] = (results[key] || 0) + 1;
       }
     }
-    if (key) {
-      results[key] = (results[key] || 0) + 1;
-    }
+    finalResults.push({
+      analysisType: type,
+      totalStudies: allStudies.length,
+      results,
+    });
   }
 
-  return {
-    analysisType,
-    totalStudies: allStudies.length,
-    results,
-  };
+  return { analysis: finalResults };
 }
