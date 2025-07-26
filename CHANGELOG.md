@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.1] - 2025-07-26
+
+### Changed
+
+- **`getStudy` Tool Enhancement**:
+  - The tool now processes an array of NCT IDs and returns both successful results and a list of errors for any IDs that could not be fetched, rather than throwing an error on the first failure.
+  - The `nctIds` parameter now enforces a stricter validation regex (`/^[Nn][Cc][Tt]\d{8}$/`) and has a more precise description.
+  - The underlying `fetchStudy` service method now supports `fields` and `markupFormat` options for more targeted queries.
+- **`searchStudies` Tool Refinement**:
+  - The `countTotal` parameter has been removed from the input schema and is now always enabled by default in the logic layer to ensure the `totalCount` is consistently returned.
+  - The logic for handling the `geo` filter was refactored for improved clarity and robustness.
+- **Configuration**: Added a new environment variable, `MAX_STUDIES_FOR_ANALYSIS`, to control the maximum number of studies processed by the `analyzeTrends` tool.
+- **Dependencies**: Updated `package.json` and `package-lock.json` to version `1.1.1` and added the `llm-agent` keyword for better discoverability.
+
 ## [1.1.0] - 2025-07-26
 
 ### Changed
