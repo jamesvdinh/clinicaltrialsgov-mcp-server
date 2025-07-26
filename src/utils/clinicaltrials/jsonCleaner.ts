@@ -69,6 +69,35 @@ function filterBrowseLeavesByRelevance(study: Study): Study {
 }
 
 /**
+ * Ensures that the `armNames` property in each intervention is an array.
+ * This handles cases where the API might return a null or undefined value.
+ * @param study - The study object to clean.
+ * @returns A new study object with `armNames` guaranteed to be an array.
+ */
+function ensureArmNamesArray(study: Study): Study {
+  const cleanedStudy = JSON.parse(JSON.stringify(study));
+
+  const interventions =
+    cleanedStudy.protocolSection?.armsInterventionsModule?.interventions;
+  if (interventions) {
+    interventions.forEach(
+      (intervention: {
+        type: string;
+        name: string;
+        description: string;
+        armNames: string[];
+      }) => {
+        if (!intervention.armNames) {
+          intervention.armNames = [];
+        }
+      },
+    );
+  }
+
+  return cleanedStudy;
+}
+
+/**
  * Cleans a single study object by applying all available cleaning functions.
  * @param study - The study object to clean.
  * @returns A cleaned study object.
@@ -77,6 +106,7 @@ export function cleanStudy(study: Study): Study {
   let cleanedStudy = study;
   cleanedStudy = cleanBrowseModules(cleanedStudy);
   cleanedStudy = filterBrowseLeavesByRelevance(cleanedStudy);
+  cleanedStudy = ensureArmNamesArray(cleanedStudy);
   // Add other cleaning functions here as needed
   return cleanedStudy;
 }

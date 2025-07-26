@@ -5,104 +5,158 @@
  * @module src/services/clinical-trials-gov/types
  */
 
+import { z } from "zod";
+
+/**
+ * Zod schema for a single clinical study, mirroring the ClinicalTrials.gov API structure.
+ * This provides runtime validation and serves as the single source of truth for the Study type.
+ */
+export const StudySchema = z.object({
+  protocolSection: z
+    .object({
+      identificationModule: z
+        .object({
+          nctId: z.string(),
+          orgStudyIdInfo: z.object({ id: z.string() }).optional(),
+          organization: z
+            .object({
+              fullName: z.string(),
+              class: z.string(),
+            })
+            .optional(),
+          briefTitle: z.string().optional(),
+          officialTitle: z.string().optional(),
+          acronym: z.string().optional(),
+        })
+        .optional(),
+      statusModule: z
+        .object({
+          overallStatus: z.string().optional(),
+          lastKnownStatus: z.string().optional(),
+          startDateStruct: z
+            .object({
+              date: z.string(),
+              type: z.string().optional(),
+            })
+            .optional(),
+          primaryCompletionDateStruct: z
+            .object({
+              date: z.string(),
+              type: z.string().optional(),
+            })
+            .optional(),
+          completionDateStruct: z
+            .object({
+              date: z.string(),
+              type: z.string().optional(),
+            })
+            .optional(),
+        })
+        .optional(),
+      sponsorCollaboratorsModule: z
+        .object({
+          responsibleParty: z.object({ type: z.string() }).optional(),
+          leadSponsor: z
+            .object({
+              name: z.string(),
+              class: z.string(),
+            })
+            .optional(),
+          collaborators: z
+            .array(
+              z.object({
+                name: z.string(),
+                class: z.string(),
+              }),
+            )
+            .optional(),
+        })
+        .optional(),
+      descriptionModule: z
+        .object({
+          briefSummary: z.string().optional(),
+          detailedDescription: z.string().optional(),
+        })
+        .optional(),
+      conditionsModule: z
+        .object({
+          conditions: z.array(z.string()).optional(),
+          keywords: z.array(z.string()).optional(),
+        })
+        .optional(),
+      armsInterventionsModule: z
+        .object({
+          arms: z
+            .array(
+              z.object({
+                name: z.string(),
+                type: z.string(),
+                description: z.string().optional(),
+              }),
+            )
+            .optional(),
+          interventions: z
+            .array(
+              z.object({
+                type: z.string(),
+                name: z.string(),
+                description: z.string().optional(),
+                armNames: z.array(z.string()),
+              }),
+            )
+            .optional(),
+        })
+        .optional(),
+      designModule: z
+        .object({
+          studyType: z.string().optional(),
+          phases: z.array(z.string()).optional(),
+          designInfo: z
+            .object({
+              allocation: z.string().optional(),
+              interventionModel: z.string().optional(),
+              primaryPurpose: z.string().optional(),
+              maskingInfo: z.object({ masking: z.string() }).optional(),
+            })
+            .optional(),
+        })
+        .optional(),
+      contactsLocationsModule: z
+        .object({
+          locations: z
+            .array(
+              z.object({
+                city: z.string().optional(),
+                state: z.string().optional(),
+                country: z.string().optional(),
+              }),
+            )
+            .optional(),
+        })
+        .optional(),
+    })
+    .optional(),
+});
+
 /**
  * Represents a single clinical study, based on the ClinicalTrials.gov API structure.
+ * This type is inferred from the StudySchema to ensure consistency.
  */
-export interface Study {
-  protocolSection?: {
-    identificationModule?: {
-      nctId: string;
-      orgStudyIdInfo?: {
-        id: string;
-      };
-      organization?: {
-        fullName: string;
-        class: string;
-      };
-      briefTitle?: string;
-      officialTitle?: string;
-      acronym?: string;
-    };
-    statusModule?: {
-      overallStatus?: string;
-      lastKnownStatus?: string;
-      startDateStruct?: {
-        date: string;
-        type: string;
-      };
-      primaryCompletionDateStruct?: {
-        date: string;
-        type: string;
-      };
-      completionDateStruct?: {
-        date: string;
-        type: string;
-      };
-    };
-    sponsorCollaboratorsModule?: {
-      responsibleParty?: {
-        type: string;
-      };
-      leadSponsor?: {
-        name: string;
-        class: string;
-      };
-      collaborators?: {
-        name: string;
-        class: string;
-      }[];
-    };
-    descriptionModule?: {
-      briefSummary?: string;
-      detailedDescription?: string;
-    };
-    conditionsModule?: {
-      conditions?: string[];
-      keywords?: string[];
-    };
-    armsInterventionsModule?: {
-      arms?: {
-        name: string;
-        type: string;
-        description: string;
-      }[];
-      interventions?: {
-        type: string;
-        name: string;
-        description: string;
-        armNames: string[];
-      }[];
-    };
-    designModule?: {
-      studyType?: string;
-      phases?: string[];
-      designInfo?: {
-        allocation?: string;
-        interventionModel?: string;
-        primaryPurpose?: string;
-        maskingInfo?: {
-          masking?: string;
-        };
-      };
-    };
-    contactsLocationsModule?: {
-      locations?: {
-        city?: string;
-        state?: string;
-        country?: string;
-      }[];
-    };
-  };
-}
+export type Study = z.infer<typeof StudySchema>;
+
+/**
+ * Zod schema for a paged list of studies.
+ */
+export const PagedStudiesSchema = z.object({
+  studies: z.array(StudySchema),
+  nextPageToken: z.string().optional(),
+  totalCount: z.number().optional(),
+});
 
 /**
  * Represents a paged list of studies.
  */
-export interface PagedStudies {
-  studies: Study[];
-  nextPageToken?: string;
-  totalCount?: number;
-}
+export type PagedStudies = z.infer<typeof PagedStudiesSchema>;
 
 /**
  * Represents a node in the study data model tree.

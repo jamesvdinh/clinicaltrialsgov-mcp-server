@@ -225,7 +225,10 @@ export class ClinicalTrialsGovService {
       });
     }
 
-    const data = (await response.json()) as T;
+    const responseBody = await response.text();
+    logger.debug(`[API] Raw response body: ${responseBody}`, context);
+
+    const data = JSON.parse(responseBody) as T;
 
     if (config.clinicalTrialsDataPath) {
       const filePath = path.join(config.clinicalTrialsDataPath, fileName);

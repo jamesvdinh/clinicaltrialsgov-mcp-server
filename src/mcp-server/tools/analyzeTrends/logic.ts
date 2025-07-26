@@ -8,7 +8,7 @@ import {
   Study,
 } from "../../../services/clinical-trials-gov/index.js";
 import { logger, type RequestContext } from "../../../utils/index.js";
-import { ListStudiesInputSchema } from "../listStudies/logic.js";
+import { SearchStudiesInputSchema } from "../searchStudies/logic.js";
 
 /**
  * Defines the types of analysis that can be performed.
@@ -23,7 +23,7 @@ export const AnalysisTypeSchema = z.enum([
 /**
  * Zod schema for the `clinicaltrials_analyze_trends` tool input.
  */
-export const AnalyzeTrendsInputSchema = ListStudiesInputSchema.pick({
+export const AnalyzeTrendsInputSchema = SearchStudiesInputSchema.pick({
   query: true,
   filter: true,
 }).extend({
@@ -38,13 +38,28 @@ export const AnalyzeTrendsInputSchema = ListStudiesInputSchema.pick({
 export type AnalyzeTrendsInput = z.infer<typeof AnalyzeTrendsInputSchema>;
 
 /**
+ * Zod schema for the analysis result.
+ */
+export const AnalysisResultSchema = z.object({
+  analysisType: AnalysisTypeSchema,
+  totalStudies: z.number().int(),
+  results: z.record(z.number()),
+});
+
+/**
  * Defines the structure for the analysis result.
  */
-export type AnalysisResult = {
-  analysisType: z.infer<typeof AnalysisTypeSchema>;
-  totalStudies: number;
-  results: Record<string, number>;
-};
+export type AnalysisResult = z.infer<typeof AnalysisResultSchema>;
+
+/**
+ * Zod schema for the output of the `clinicaltrials_analyze_trends` tool.
+ */
+export const AnalyzeTrendsOutputSchema = AnalysisResultSchema;
+
+/**
+ * TypeScript type inferred from the output schema.
+ */
+export type AnalyzeTrendsOutput = z.infer<typeof AnalyzeTrendsOutputSchema>;
 
 /**
  * Fetches all studies for a given query, handling pagination.
@@ -130,7 +145,7 @@ async function fetchAllStudies(
 export async function analyzeTrendsLogic(
   params: AnalyzeTrendsInput,
   context: RequestContext,
-): Promise<AnalysisResult> {
+): Promise<AnalyzeTrendsOutput> {
   const { analysisType, ...searchParams } = params;
   const allStudies = await fetchAllStudies(searchParams, context);
 

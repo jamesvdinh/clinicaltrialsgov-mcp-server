@@ -1,17 +1,20 @@
 /**
- * @fileoverview Handles the registration of the `clinicaltrials_get_study` tool.
+ * @fileoverview Handles registration and error handling for the `clinicaltrials_get_study` tool.
  * @module src/mcp-server/tools/getStudy/registration
  */
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
-import { BaseErrorCode, McpError } from "../../../types-global/errors.js";
+import { McpError } from "../../../types-global/errors.js";
 import {
   ErrorHandler,
   logger,
-  RequestContext,
   requestContextService,
 } from "../../../utils/index.js";
-import { GetStudyInput, GetStudyInputSchema, getStudyLogic } from "./logic.js";
+import {
+  GetStudyInput,
+  GetStudyInputSchema,
+  getStudyLogic,
+  GetStudyOutputSchema,
+} from "./logic.js";
 
 /**
  * Registers the 'clinicaltrials_get_study' tool with the MCP server.
@@ -24,125 +27,69 @@ export const registerGetStudyTool = async (
   const toolDescription =
     "Fetches one or more clinical studies from ClinicalTrials.gov by their NCT IDs. Returns either complete study data or concise summaries for each.";
 
-  const registrationContext: RequestContext =
-    requestContextService.createRequestContext({
-      operation: "RegisterTool",
-      toolName: toolName,
-    });
-
-  logger.info(`Registering tool: '${toolName}'`, registrationContext);
-
-  await ErrorHandler.tryCatch(
-    async () => {
-      server.tool(
-        toolName,
-        toolDescription,
-        GetStudyInputSchema.shape,
-        async (
-          params: GetStudyInput,
-          mcpContext: unknown,
-        ): Promise<CallToolResult> => {
-          const handlerContext: RequestContext =
-            requestContextService.createRequestContext({
-              parentRequestId: registrationContext.requestId,
-              operation: "HandleToolRequest",
-              toolName: toolName,
-              mcpToolContext: mcpContext,
-              input: params,
-            });
-
-          try {
-            const validatedParams = GetStudyInputSchema.safeParse(params);
-            if (!validatedParams.success) {
-              const error = new McpError(
-                BaseErrorCode.VALIDATION_ERROR,
-                "Invalid input parameters.",
-                { issues: validatedParams.error.issues },
-              );
-              return {
-                content: [
-                  {
-                    type: "text",
-                    text: JSON.stringify({
-                      error: {
-                        code: error.code,
-                        message: error.message,
-                        details: error.details,
-                      },
-                    }),
-                  },
-                ],
-                isError: true,
-              };
-            }
-
-            const result = await getStudyLogic(
-              validatedParams.data,
-              handlerContext,
-            );
-            return {
-              content: [
-                { type: "text", text: JSON.stringify(result, null, 2) },
-              ],
-              isError: false,
-            };
-          } catch (error) {
-            const handledError = ErrorHandler.handleError(error, {
-              operation: "getStudyToolHandler",
-              context: handlerContext,
-              input: params,
-            });
-
-            let mcpError: McpError;
-
-            if (
-              handledError instanceof McpError &&
-              handledError.message.includes("Study not found")
-            ) {
-              mcpError = new McpError(
-                BaseErrorCode.NOT_FOUND,
-                `One or more of the requested studies could not be found. Check the NCT IDs for accuracy.`,
-                handledError.details,
-              );
-            } else if (handledError instanceof McpError) {
-              mcpError = handledError;
-            } else {
-              mcpError = new McpError(
-                BaseErrorCode.INTERNAL_ERROR,
-                "An unexpected error occurred.",
-                { originalError: handledError.message },
-              );
-            }
-
-            return {
-              content: [
-                {
-                  type: "text",
-                  text: JSON.stringify({
-                    error: {
-                      code: mcpError.code,
-                      message: mcpError.message,
-                      details: mcpError.details,
-                    },
-                  }),
-                },
-              ],
-              isError: true,
-            };
-          }
-        },
-      );
-
-      logger.info(
-        `Tool '${toolName}' registered successfully.`,
-        registrationContext,
-      );
-    },
+  server.registerTool(
+    toolName,
     {
-      operation: `RegisteringTool_${toolName}`,
-      context: registrationContext,
-      errorCode: BaseErrorCode.INITIALIZATION_FAILED,
-      critical: true,
+      title: "Fetch Clinical Study",
+      description: toolDescription,
+      inputSchema: GetStudyInputSchema.shape,
+      outputSchema: GetStudyOutputSchema.shape,
+      annotations: { readOnlyHint: true },
+    },
+    async (params: GetStudyInput, callContext) => {
+      const handlerContext = requestContextService.createRequestContext({
+        toolName,
+        parentContext: callContext,
+      });
+
+      try {
+        const result = await getStudyLogic(params, handlerContext);
+        const summaryText = `Successfully fetched ${
+          result.studies.length
+        } clinical studies: ${result.studies
+          .map((s) => {
+            if ("protocolSection" in s) {
+              return s.protocolSection?.identificationModule?.nctId;
+            } else if ("study" in s) {
+              return (
+                s.study as {
+                  protocolSection?: { identificationModule?: { nctId?: string } };
+                }
+              )?.protocolSection?.identificationModule?.nctId;
+            }
+            return undefined;
+          })
+          .filter(Boolean)
+          .join(", ")}.`;
+        return {
+          structuredContent: result,
+          content: [
+            { type: "text", text: summaryText },
+            { type: "text", text: JSON.stringify(result, null, 2) },
+          ],
+        };
+      } catch (error) {
+        logger.error(`Error in ${toolName} handler`, {
+          error,
+          ...handlerContext,
+        });
+        const mcpError = ErrorHandler.handleError(error, {
+          operation: toolName,
+          context: handlerContext,
+          input: params,
+        }) as McpError;
+
+        return {
+          isError: true,
+          content: [{ type: "text", text: mcpError.message }],
+          structuredContent: {
+            code: mcpError.code,
+            message: mcpError.message,
+            details: mcpError.details,
+          },
+        };
+      }
     },
   );
+  logger.info(`Tool '${toolName}' registered successfully.`);
 };

@@ -2,12 +2,34 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.9] - 2025-07-26
+
+### Added
+
+- **`searchStudies` Tool**: Introduced the `clinicaltrials_search_studies` tool, replacing the former `listStudies` tool. This new tool provides a more explicit and descriptive interface for searching clinical trials.
+- **Zod Output Schemas**: Implemented Zod schemas for the output of all tools (`getStudy`, `searchStudies`, `analyzeTrends`), ensuring that the data returned to the model is strictly validated and typed.
+- **Enhanced Type Safety**: Introduced `StudySchema` and `PagedStudiesSchema` in `types.ts` using Zod, establishing a single source of truth for data structures and improving runtime type safety.
+
+### Changed
+
+- **Architectural Overhaul**: Upgraded the entire project to align with the new v2.0 architectural standards defined in `.clinerules`. This includes:
+  - **Strict "Logic Throws, Handlers Catch" Pattern**: All tools (`getStudy`, `searchStudies`, `analyzeTrends`) were refactored to isolate business logic in `logic.ts` files, which now throw structured `McpError`s. The `registration.ts` files now exclusively handle `try...catch` blocks and format the final `CallToolResult`.
+  - **Standardized Tool Registration**: The tool registration process in `server.ts` and individual registration files has been updated to use the new `server.registerTool` method, which requires explicit `title`, `description`, `inputSchema`, and `outputSchema`.
+- **`getStudy` Tool Refactor**: The `clinicaltrials_get_study` tool now returns a structured object `{ studies: [...] }` and supports fetching multiple studies or summaries in a single call, aligning with the new output schema standards.
+- **`analyzeTrends` Tool Refactor**: The `clinicaltrials_analyze_trends` tool was updated to use the new `searchStudies` logic as its foundation and now returns a structured `AnalysisResult` object.
+- **Dependencies**: Updated all major dependencies to their latest versions, including `@modelcontextprotocol/sdk` to `^1.17.0`, `hono` to `^4.8.9`, and `typescript-eslint` to `^8.38.0`.
+- **Developer Guidelines**: The `.clinerules` file was updated to v2.0, formalizing the new architectural patterns and providing clearer guidance for future development.
+
+### Removed
+
+- **`listStudies` Tool**: The `clinicaltrials_list_studies` tool has been completely removed and replaced by the new `clinicaltrials_search_studies` tool to better reflect its functionality.
+
 ## [1.0.8] - 2025-07-12
 
 ### Changed
 
 - **Singleton Service**: Refactored `ClinicalTrialsGovService` to implement the singleton pattern, ensuring a single, shared instance is used across the application. This improves efficiency and consistency.
-- **Type Safety**: Enhanced type safety throughout the codebase by replacing `any` with more specific types like `unknown` or defined interfaces. This includes updates to tool registrations, service layers, and utility functions.
+- **Type Safety**: Enhanced type safety throughout the codebase by replacing `any` with more specific types like `unknown` or defined interfaces. This includes updates to tool registrations, service layers, and utility fnctions.
 - **Error Handling**: Improved error handling in scripts and configuration loaders by using `unknown` and providing more robust error messages.
 - **Dependencies**: Updated all major dependencies to their latest versions, including `@modelcontextprotocol/sdk`, `@supabase/supabase-js`, `@types/node`, `eslint`, `node-cron`, and `openai`.
 - **Documentation**: Regenerated the `docs/tree.md` file to reflect the latest project structure.

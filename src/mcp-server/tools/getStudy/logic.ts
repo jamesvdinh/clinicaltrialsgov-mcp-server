@@ -6,6 +6,7 @@ import { z } from "zod";
 import {
   ClinicalTrialsGovService,
   Study,
+  StudySchema,
 } from "../../../services/clinical-trials-gov/index.js";
 import { BaseErrorCode, McpError } from "../../../types-global/errors.js";
 import { cleanStudy } from "../../../utils/clinicaltrials/jsonCleaner.js";
@@ -54,19 +55,39 @@ export const GetStudyInputSchema = z.object({
 export type GetStudyInput = z.infer<typeof GetStudyInputSchema>;
 
 /**
- * Defines the structure for a summarized study, containing only essential fields.
+ * Zod schema for a summarized study, containing only essential fields.
  */
-export type StudySummary = {
-  nctId: string | undefined;
-  title: string | undefined;
-  briefSummary: string | undefined;
-  overallStatus: string | undefined;
-  conditions: string[] | undefined;
-  interventions:
-    | { name: string | undefined; type: string | undefined }[]
-    | undefined;
-  leadSponsor: string | undefined;
-};
+export const StudySummarySchema = z.object({
+  nctId: z.string().optional(),
+  title: z.string().optional(),
+  briefSummary: z.string().optional(),
+  overallStatus: z.string().optional(),
+  conditions: z.array(z.string()).optional(),
+  interventions: z
+    .array(
+      z.object({ name: z.string().optional(), type: z.string().optional() }),
+    )
+    .optional(),
+  leadSponsor: z.string().optional(),
+});
+
+/**
+ * TypeScript type inferred from the summary schema.
+ */
+export type StudySummary = z.infer<typeof StudySummarySchema>;
+
+/**
+ * Zod schema for the output of the `clinicaltrials_get_study` tool.
+ * The output is an object containing an array of studies or summaries.
+ */
+export const GetStudyOutputSchema = z.object({
+  studies: z.array(z.union([StudySchema, StudySummarySchema])),
+});
+
+/**
+ * TypeScript type inferred from the output schema.
+ */
+export type GetStudyOutput = z.infer<typeof GetStudyOutputSchema>;
 
 /**
  * Extracts a concise summary from a full study object.
@@ -104,7 +125,7 @@ function createStudySummary(study: Study): StudySummary {
 export async function getStudyLogic(
   params: GetStudyInput,
   context: RequestContext,
-): Promise<(Study | StudySummary)[]> {
+): Promise<GetStudyOutput> {
   const nctIds = Array.isArray(params.nctIds) ? params.nctIds : [params.nctIds];
   logger.debug(`Executing getStudyLogic for NCT IDs: ${nctIds.join(", ")}`, {
     ...context,
@@ -132,5 +153,6 @@ export async function getStudyLogic(
     return cleanedStudy;
   });
 
-  return Promise.all(studyPromises);
+  const studies = await Promise.all(studyPromises);
+  return { studies };
 }

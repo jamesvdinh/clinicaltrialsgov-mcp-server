@@ -1,6 +1,6 @@
 # clinicaltrialsgov-mcp-server - Directory Structure
 
-Generated on: 2025-07-12 10:08:43
+Generated on: 2025-07-26 14:49:39
 
 ```
 clinicaltrialsgov-mcp-server
@@ -36,7 +36,7 @@ clinicaltrialsgov-mcp-server
 │   │   │   │   ├── index.ts
 │   │   │   │   ├── logic.ts
 │   │   │   │   └── registration.ts
-│   │   │   └── listStudies
+│   │   │   └── searchStudies
 │   │   │       ├── index.ts
 │   │   │       ├── logic.ts
 │   │   │       └── registration.ts

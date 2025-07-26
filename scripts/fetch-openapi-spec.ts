@@ -213,11 +213,7 @@ async function fetchAndProcessSpec(): Promise<void> {
   } catch (error: unknown) {
     const errorMessage =
       error instanceof Error ? error.message : "An unknown error occurred";
-    if (
-      error instanceof Error &&
-      "code" in error &&
-      error.code === "ENOENT"
-    ) {
+    if (error instanceof Error && "code" in error && error.code === "ENOENT") {
       console.log(`Output directory not found. Creating: ${outputDirAbsolute}`);
       await fs.mkdir(outputDirAbsolute, { recursive: true });
     } else {
