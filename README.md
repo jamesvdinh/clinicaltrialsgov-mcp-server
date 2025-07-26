@@ -2,7 +2,7 @@
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-^5.8.3-blue.svg)](https://www.typescriptlang.org/)
 [![Model Context Protocol](https://img.shields.io/badge/MCP%20SDK-^1.17.0-green.svg)](https://modelcontextprotocol.io/)
-[![Version](https://img.shields.io/badge/Version-1.0.10-blue.svg)](./CHANGELOG.md)
+[![Version](https://img.shields.io/badge/Version-1.1.0-blue.svg)](./CHANGELOG.md)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Status](https://img.shields.io/badge/Status-stable-green.svg)](https://github.com/cyanheads/clinicaltrialsgov-mcp-server/issues)
 [![GitHub](https://img.shields.io/github/stars/cyanheads/clinicaltrialsgov-mcp-server?style=social)](https://github.com/cyanheads/clinicaltrialsgov-mcp-server)
@@ -17,20 +17,19 @@ Built on the [`cyanheads/mcp-ts-template`](https://github.com/cyanheads/mcp-ts-t
 
 This server equips your AI with specialized tools to interact with the ClinicalTrials.gov database:
 
-| Tool Name                                                                | Description                                                                                                                                                 | Key Features                                                                                                                                                                                                                                                                                                                                             |
-| :----------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`clinicaltrials_search_studies`](./src/mcp-server/tools/searchStudies/) | Searches for clinical studies using a combination of query terms and filters. (See [Example](./examples/studies_2025-06-17T11-15-33-773Z.json))             | - `query`: Search by condition, term, location, title, intervention, outcomes, sponsor, or ID.<br/>- `filter`: Refine results by NCT IDs, study status, geographic distance, or advanced Essie expressions.<br/>- `pagination`: Control result sets with `pageSize` and `pageToken`.<br/>- `fields`: Specify which data fields to return for efficiency. |
-| [`clinicaltrials_get_study`](./src/mcp-server/tools/getStudy/)           | Fetches detailed information for one or more clinical studies by their NCT IDs. (See [Example](./examples/study_NCT03934567_2025-06-17T11-17-59-791Z.json)) | - `nctIds`: Fetches up to 5 studies using their unique identifiers (e.g., "NCT03934567").<br/>- `summaryOnly`: Return a condensed summary instead of full data.<br/>- `fields`: Select specific fields to retrieve.<br/>- `markupFormat`: Choose between `markdown` or `legacy` for formatted content.                                                   |
-| [`clinicaltrials_analyze_trends`](./src/mcp-server/tools/analyzeTrends/) | Performs statistical analysis on a set of studies, aggregating data by status, country, sponsor, or phase.                                                  | - `analysisType`: Choose the aggregation method (`countByStatus`, `countByCountry`, etc.).<br/>- `query` & `filter`: Use the same powerful search parameters as `search_studies` to define the dataset for analysis.<br/>- Analyzes up to 5000 studies per request.                                                                                      |
+| Tool Name                                                                | Description                                                                                                                                                                                                                                                                     | Example                                                     |
+| :----------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :---------------------------------------------------------- |
+| [`clinicaltrials_search_studies`](./src/mcp-server/tools/searchStudies/) | Searches for clinical studies using a combination of query terms and filters. Supports pagination, sorting, and geographic filtering.                                                                                                                                           | [View Example](./examples/clinicaltrials_search_studies.md) |
+| [`clinicaltrials_get_study`](./src/mcp-server/tools/getStudy/)           | Fetches one or more clinical studies from ClinicalTrials.gov by their NCT IDs. Returns either complete study data or concise summaries for each.                                                                                                                                | [View Example](./examples/clinicaltrials_get_study.md)      |
+| [`clinicaltrials_analyze_trends`](./src/mcp-server/tools/analyzeTrends/) | Performs a statistical analysis on a set of clinical trials, aggregating data by status, country, sponsor, or phase. Use specific query parameters to refine the analysis and filter the studies included in the analysis. The tool can handle up to 5000 studies per analysis. | [View Example](./examples/clinicaltrials_analyze_trends.md) |
 
 ---
 
 ## Table of Contents
 
-| [Overview](#overview)           | [Features](#features)                   | [Installation](#installation) |
-| :------------------------------ | :-------------------------------------- | :---------------------------- |
-| [Configuration](#configuration) | [Project Structure](#project-structure) |
-| [Tools](#tools)                 | [Development](#development)             | [License](#license)           |
+| [Overview](#overview) | [Features](#features) | [Installation](#installation)
+| [Configuration](#configuration) | [Project Structure](#project-structure)
+| [Tools](#tools) | [Development](#development) | [License](#license)
 
 ## Overview
 
@@ -176,10 +175,11 @@ _Note: All tools support comprehensive error handling and return structured JSON
 
 ## Examples
 
-Comprehensive usage examples are available in the [`examples/`](examples/) directory:
+Comprehensive usage examples for each tool are available in the [`examples/`](examples/) directory.
 
-- [Search Studies](examples/studies_2025-06-17T11-15-33-773Z.json)
-- [Get Study Details](examples/study_NCT03934567_2025-06-17T11-17-59-791Z.json)
+- **`clinicaltrials_search_studies`**: [View Example](./examples/clinicaltrials_search_studies.md)
+- **`clinicaltrials_get_study`**: [View Example](./examples/clinicaltrials_get_study.md)
+- **`clinicaltrials_analyze_trends`**: [View Example](./examples/clinicaltrials_analyze_trends.md)
 
 ## Development
 

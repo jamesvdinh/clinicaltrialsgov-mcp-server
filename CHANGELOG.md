@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.0] - 2025-07-26
+
+### Changed
+
+- **Tool Schemas and Descriptions**:
+  - **`getStudy`**: The `nctIds` parameter description is now more concise. The `summaryOnly` description was updated for clarity. All field descriptions were refined to be more direct and LLM-friendly.
+  - **`searchStudies`**: The default `pageSize` was changed from `50` to `10` to provide more focused results and match native API behavior.
+- **Output Formatting**:
+  - **`getStudy`**: The tool's text output now only contains the JSON result, removing redundant summary text for a cleaner response.
+  - **`searchStudies`**: The text output is now formatted as a structured Markdown list, providing a clear, readable summary of each study's key details (NCT ID, Title, Status, Summary, Interventions, Sponsor).
+- **Examples**: Replaced all `.json` example files with more descriptive `.md` files. The new Markdown examples provide both the tool call and a formatted response, making them easier to understand.
+
 ## [1.0.10] - 2025-07-26
 
 ### Changed
