@@ -54,7 +54,10 @@ export const registerAnalyzeTrendsTool = async (
 
         return {
           structuredContent: result,
-          content: [{ type: "text", text: summaryText }],
+          content: [
+            { type: "text", text: summaryText },
+            { type: "text", text: JSON.stringify(result, null, 2) },
+          ],
         };
       } catch (error) {
         logger.error(`Error in ${toolName} handler`, {
