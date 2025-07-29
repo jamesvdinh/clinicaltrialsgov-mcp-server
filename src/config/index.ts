@@ -98,10 +98,29 @@ const EnvSchema = z.object({
   NODE_ENV: z.string().default("development"),
   /** MCP communication transport ("stdio" or "http"). Default: "stdio". */
   MCP_TRANSPORT_TYPE: z.enum(["stdio", "http"]).default("stdio"),
+  /** MCP session mode ('stateless', 'stateful', 'auto'). Default: 'auto'. */
+  MCP_SESSION_MODE: z.enum(["stateless", "stateful", "auto"]).default("auto"),
+  /** HTTP server port (if MCP_TRANSPORT_TYPE is "http"). Default: 3010. */
   /** HTTP server port (if MCP_TRANSPORT_TYPE is "http"). Default: 3010. */
   MCP_HTTP_PORT: z.coerce.number().int().positive().default(3010),
   /** HTTP server host (if MCP_TRANSPORT_TYPE is "http"). Default: "127.0.0.1". */
   MCP_HTTP_HOST: z.string().default("127.0.0.1"),
+  /** The endpoint path for the MCP server. Default: "/mcp". */
+  MCP_HTTP_ENDPOINT_PATH: z.string().default("/mcp"),
+  /** Max retries for binding to a port if the initial one is in use. Default: 15. */
+  MCP_HTTP_MAX_PORT_RETRIES: z.coerce.number().int().nonnegative().default(15),
+  /** Delay in ms between port binding retries. Default: 50. */
+  MCP_HTTP_PORT_RETRY_DELAY_MS: z.coerce
+    .number()
+    .int()
+    .nonnegative()
+    .default(50),
+  /** Timeout in ms for considering a stateful session stale and eligible for cleanup. Default: 1800000 (30 minutes). */
+  MCP_STATEFUL_SESSION_STALE_TIMEOUT_MS: z.coerce
+    .number()
+    .int()
+    .positive()
+    .default(1_800_000),
   /** Optional. Comma-separated allowed origins for CORS (HTTP transport). */
   MCP_ALLOWED_ORIGINS: z.string().optional(),
   /** Optional. Secret key (min 32 chars) for auth tokens (HTTP transport). CRITICAL for production. */
@@ -112,14 +131,19 @@ const EnvSchema = z.object({
       "MCP_AUTH_SECRET_KEY must be at least 32 characters long for security reasons.",
     )
     .optional(),
-  /** The authentication mode to use. 'jwt' for internal simple JWTs, 'oauth' for OAuth 2.1. Default: 'jwt'. */
-  MCP_AUTH_MODE: z.enum(["jwt", "oauth"]).default("jwt"),
+  /** The authentication mode to use. 'jwt' for internal simple JWTs, 'oauth' for OAuth 2.1, or 'none'. Default: 'none'. */
+  MCP_AUTH_MODE: z.enum(["jwt", "oauth", "none"]).default("none"),
   /** The expected issuer URL for OAuth 2.1 access tokens. CRITICAL for validation. */
   OAUTH_ISSUER_URL: z.string().url().optional(),
   /** The JWKS (JSON Web Key Set) URI for the OAuth 2.1 provider. If not provided, it's often discoverable from the issuer URL. */
   OAUTH_JWKS_URI: z.string().url().optional(),
   /** The audience claim for the OAuth 2.1 access tokens. This server will reject tokens not intended for it. */
   OAUTH_AUDIENCE: z.string().optional(),
+
+  /** Optional. Client ID to use in development mode for JWT strategy. Default: "dev-client-id". */
+  DEV_MCP_CLIENT_ID: z.string().optional(),
+  /** Optional. Comma-separated scopes for development mode JWT strategy. Default: "dev-scope". */
+  DEV_MCP_SCOPES: z.string().optional(),
 
   /** Optional. Application URL for OpenRouter integration. */
   OPENROUTER_APP_URL: z
@@ -348,10 +372,21 @@ export const config = {
   environment: env.NODE_ENV,
   /** MCP transport type ('stdio' or 'http'). From `MCP_TRANSPORT_TYPE` env var. Default: "stdio". */
   mcpTransportType: env.MCP_TRANSPORT_TYPE,
+  /** MCP session mode ('stateless', 'stateful', 'auto'). From `MCP_SESSION_MODE` env var. Default: "auto". */
+  mcpSessionMode: env.MCP_SESSION_MODE,
+  /** HTTP server port (if http transport). From `MCP_HTTP_PORT` env var. Default: 3010. */
   /** HTTP server port (if http transport). From `MCP_HTTP_PORT` env var. Default: 3010. */
   mcpHttpPort: env.MCP_HTTP_PORT,
   /** HTTP server host (if http transport). From `MCP_HTTP_HOST` env var. Default: "127.0.0.1". */
   mcpHttpHost: env.MCP_HTTP_HOST,
+  /** MCP endpoint path for HTTP transport. From `MCP_HTTP_ENDPOINT_PATH`. Default: "/mcp". */
+  mcpHttpEndpointPath: env.MCP_HTTP_ENDPOINT_PATH,
+  /** Max retries for port binding. From `MCP_HTTP_MAX_PORT_RETRIES`. Default: 15. */
+  mcpHttpMaxPortRetries: env.MCP_HTTP_MAX_PORT_RETRIES,
+  /** Delay between port binding retries. From `MCP_HTTP_PORT_RETRY_DELAY_MS`. Default: 50. */
+  mcpHttpPortRetryDelayMs: env.MCP_HTTP_PORT_RETRY_DELAY_MS,
+  /** Timeout for stale stateful sessions. From `MCP_STATEFUL_SESSION_STALE_TIMEOUT_MS`. Default: 1800000. */
+  mcpStatefulSessionStaleTimeoutMs: env.MCP_STATEFUL_SESSION_STALE_TIMEOUT_MS,
   /** Array of allowed CORS origins (http transport). From `MCP_ALLOWED_ORIGINS` (comma-separated). */
   mcpAllowedOrigins: env.MCP_ALLOWED_ORIGINS?.split(",")
     .map((origin) => origin.trim())
@@ -366,6 +401,10 @@ export const config = {
   oauthJwksUri: env.OAUTH_JWKS_URI,
   /** OAuth 2.1 Audience. From `OAUTH_AUDIENCE`. */
   oauthAudience: env.OAUTH_AUDIENCE,
+  /** Development mode client ID. From `DEV_MCP_CLIENT_ID`. */
+  devMcpClientId: env.DEV_MCP_CLIENT_ID,
+  /** Development mode scopes. From `DEV_MCP_SCOPES`. */
+  devMcpScopes: env.DEV_MCP_SCOPES?.split(",").map((s) => s.trim()),
   /** OpenRouter App URL. From `OPENROUTER_APP_URL`. Default: "http://localhost:3000". */
   openrouterAppUrl: env.OPENROUTER_APP_URL || "http://localhost:3000",
   /** OpenRouter App Name. From `OPENROUTER_APP_NAME`. Defaults to `mcpServerName`. */

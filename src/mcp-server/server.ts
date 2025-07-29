@@ -22,8 +22,8 @@ import { ErrorHandler, logger, requestContextService } from "../utils/index.js";
 import { registerGetStudyTool } from "./tools/getStudy/index.js";
 import { registerSearchStudiesTool } from "./tools/searchStudies/index.js";
 import { registerAnalyzeTrendsTool } from "./tools/analyzeTrends/index.js";
-import { startHttpTransport } from "./transports/httpTransport.js";
-import { connectStdioTransport } from "./transports/stdioTransport.js";
+import { startHttpTransport } from "./transports/http/index.js";
+import { startStdioTransport } from "./transports/stdio/index.js";
 
 /**
  * Creates and configures a new instance of the `McpServer`.
@@ -37,12 +37,6 @@ async function createMcpServerInstance(): Promise<McpServer> {
     operation: "createMcpServerInstance",
   });
   logger.info("Initializing MCP server instance", context);
-
-  requestContextService.configure({
-    appName: config.mcpServerName,
-    appVersion: config.mcpServerVersion,
-    environment,
-  });
 
   const server = new McpServer(
     { name: config.mcpServerName, version: config.mcpServerVersion },
@@ -89,13 +83,17 @@ async function startTransport(): Promise<McpServer | ServerType | void> {
   });
   logger.info(`Starting transport: ${transportType}`, context);
 
+  // Always use the factory pattern
+  const serverFactory = createMcpServerInstance;
+
   if (transportType === "http") {
-    return startHttpTransport(createMcpServerInstance, context);
+    const { server } = await startHttpTransport(serverFactory, context);
+    return server;
   }
 
   if (transportType === "stdio") {
-    const server = await createMcpServerInstance();
-    await connectStdioTransport(server, context);
+    const server = await serverFactory(); // Call the factory once here
+    await startStdioTransport(server, context);
     return server;
   }
 
@@ -114,6 +112,14 @@ export async function initializeAndStartServer(): Promise<
     operation: "initializeAndStartServer",
   });
   logger.info("MCP Server initialization sequence started.", context);
+
+  // Configure the global request context service once at startup.
+  requestContextService.configure({
+    appName: config.mcpServerName,
+    appVersion: config.mcpServerVersion,
+    environment,
+  });
+
   try {
     const result = await startTransport();
     logger.info(
