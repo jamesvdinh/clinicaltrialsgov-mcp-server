@@ -1,6 +1,6 @@
 # clinicaltrialsgov-mcp-server - Directory Structure
 
-Generated on: 2025-07-29 20:37:30
+Generated on: 2025-07-29 21:04:34
 
 ```
 clinicaltrialsgov-mcp-server
@@ -8,6 +8,7 @@ clinicaltrialsgov-mcp-server
 │   ├── workflows
 │   │   └── publish.yml
 │   └── FUNDING.yml
+├── coverage
 ├── data
 ├── docs
 │   ├── best-practices.md
@@ -105,6 +106,48 @@ clinicaltrialsgov-mcp-server
 │   │   │   └── sanitization.ts
 │   │   └── index.ts
 │   └── index.ts
+├── tests
+│   ├── mcp-server
+│   │   ├── tools
+│   │   │   ├── analyzeTrends.test.ts
+│   │   │   ├── getStudy.test.ts
+│   │   │   └── searchStudies.test.ts
+│   │   ├── transports
+│   │   │   ├── auth
+│   │   │   │   ├── lib
+│   │   │   │   │   └── authUtils.test.ts
+│   │   │   │   ├── strategies
+│   │   │   │   │   ├── jwtStrategy.test.ts
+│   │   │   │   │   └── oauthStrategy.test.ts
+│   │   │   │   └── auth.test.ts
+│   │   │   └── stdio
+│   │   │       └── stdioTransport.test.ts
+│   │   └── server.test.ts
+│   ├── mocks
+│   │   ├── handlers.ts
+│   │   └── server.ts
+│   ├── services
+│   │   └── supabase
+│   │       └── supabaseClient.test.ts
+│   ├── utils
+│   │   ├── internal
+│   │   │   ├── errorHandler.test.ts
+│   │   │   ├── logger.test.ts
+│   │   │   └── requestContext.test.ts
+│   │   ├── metrics
+│   │   │   └── tokenCounter.test.ts
+│   │   ├── network
+│   │   │   └── fetchWithTimeout.test.ts
+│   │   ├── parsing
+│   │   │   ├── dateParser.test.ts
+│   │   │   └── jsonParser.test.ts
+│   │   ├── scheduling
+│   │   │   └── scheduler.test.ts
+│   │   └── security
+│   │       ├── idGenerator.test.ts
+│   │       ├── rateLimiter.test.ts
+│   │       └── sanitization.test.ts
+│   └── setup.ts
 ├── .clinerules
 ├── .dockerignore
 ├── .env.example
@@ -123,8 +166,10 @@ clinicaltrialsgov-mcp-server
 ├── smithery.yaml
 ├── tsconfig.json
 ├── tsconfig.typedoc.json
+├── tsconfig.vitest.json
 ├── tsdoc.json
-└── typedoc.json
+├── typedoc.json
+└── vitest.config.ts
 ```
 
 _Note: This tree excludes files and directories matched by .gitignore and default patterns._

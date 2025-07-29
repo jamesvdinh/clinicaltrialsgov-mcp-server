@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.3] - 2025-07-29
+
+### Added
+
+- **Testing Framework**: Integrated **Vitest** as the primary testing framework for unit and integration tests.
+  - Includes a comprehensive test suite with over 190 tests, achieving over 60% code coverage.
+  - Added `vitest.config.ts`, `tsconfig.vitest.json`, and a `tests/` directory with detailed tests for tools, services, and utilities.
+- **Test Scripts**: Added new npm scripts for running tests:
+  - `npm test`: Runs all tests once.
+  - `npm test:watch`: Runs tests in interactive watch mode.
+  - `npm test:coverage`: Runs all tests and generates a code coverage report.
+
+### Changed
+
+- **Logger**: Added a `resetForTesting` method to the `Logger` singleton to ensure clean state between test runs.
+- **Sanitization**: Improved the `sanitizeHtml` and `sanitizeForLogging` methods for more robust and accurate sanitization.
+- **Dependencies**: Added `vitest`, `@vitest/coverage-v8`, and `msw` for testing. Updated `package.json` version to `1.1.3`.
+
 ## [1.1.2] - 2025-07-29
 
 ### Alignment with `cyanheads/mcp-ts-template@v1.7.7`

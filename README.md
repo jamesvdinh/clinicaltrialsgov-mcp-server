@@ -4,8 +4,8 @@
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-^5.8.3-blue.svg?style=flat-square)](https://www.typescriptlang.org/)
 [![Model Context Protocol](https://img.shields.io/badge/MCP%20SDK-^1.17.0-green.svg?style=flat-square)](https://modelcontextprotocol.io/)
-[![Version](https://img.shields.io/badge/Version-1.1.2-blue.svg?style=flat-square)](./CHANGELOG.md)
-[![Coverage](https://img.shields.io/badge/Coverage-0.0%25-red?style=flat-square)](./vitest.config.ts)
+[![Version](https://img.shields.io/badge/Version-1.1.3-blue.svg?style=flat-square)](./CHANGELOG.md)
+[![Coverage](https://img.shields.io/badge/Coverage-61.03%25-yellow?style=flat-square)](./vitest.config.ts)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=flat-square)](https://opensource.org/licenses/Apache-2.0)
 [![Status](https://img.shields.io/badge/Status-stable-green.svg?style=flat-square)](https://github.com/cyanheads/clinicaltrialsgov-mcp-server/issues)
 [![GitHub](https://img.shields.io/github/stars/cyanheads/clinicaltrialsgov-mcp-server?style=social)](https://github.com/cyanheads/clinicaltrialsgov-mcp-server)
@@ -14,7 +14,7 @@
 
 </div>
 
-An MCP (Model Context Protocol) server providing a robust, developer-friendly interface to the official [ClinicalTrials.gov v2 API](https://clinicaltrials.gov/data-api/api). Enables LLMs and AI agents to search, retrieve, and analyze clinical study data programmatically.
+Model Context Protocol (MCP) Server providing a robust, developer-friendly interface to the official [ClinicalTrials.gov v2 API](https://clinicaltrials.gov/data-api/api). Enables LLMs and AI agents to search, retrieve, and analyze clinical study data programmatically.
 
 Built on the [`cyanheads/mcp-ts-template`](https://github.com/cyanheads/mcp-ts-template), this server follows a modular architecture with robust error handling, logging, and security features.
 
@@ -34,7 +34,7 @@ This server equips your AI with specialized tools to interact with the ClinicalT
 
 | [Overview](#overview) | [Features](#features) | [Installation](#installation)
 | [Configuration](#configuration) | [Project Structure](#project-structure)
-| [Tools](#tools) | [Development](#development) | [License](#license)
+| [Tools](#tools) | [Development & Testing](#development--testing) | [License](#license)
 
 ## Overview
 
@@ -186,25 +186,16 @@ Comprehensive usage examples for each tool are available in the [`examples/`](ex
 - **`clinicaltrials_get_study`**: [View Example](./examples/clinicaltrials_get_study.md)
 - **`clinicaltrials_analyze_trends`**: [View Example](./examples/clinicaltrials_analyze_trends.md)
 
-## Development
+## Development & Testing
 
-### Build and Test
+### Development Scripts
 
 ```bash
 # Build the project (compile TS to JS in dist/ and make executable)
 npm run build
 
-# Test the server locally using the MCP inspector tool (stdio transport)
-npm run inspector
-
-# Test the server locally using the MCP inspector tool (http transport)
-npm run inspector:http
-
 # Clean build artifacts
 npm run clean
-
-# Generate a file tree representation for documentation
-npm run tree
 
 # Clean build artifacts and then rebuild the project
 npm run rebuild
@@ -212,6 +203,28 @@ npm run rebuild
 # Format code with Prettier
 npm run format
 
+# Generate a file tree representation for documentation
+npm run tree
+```
+
+### Testing
+
+This project uses [Vitest](https://vitest.dev/) for unit and integration testing.
+
+```bash
+# Run all tests once
+npm test
+
+# Run tests in watch mode
+npm run test:watch
+
+# Run tests and generate a coverage report
+npm run test:coverage
+```
+
+### Running the Server
+
+```bash
 # Start the server using stdio (default)
 npm start
 # Or explicitly:
@@ -219,6 +232,12 @@ npm run start:stdio
 
 # Start the server using HTTP transport
 npm run start:http
+
+# Test the server locally using the MCP inspector tool (stdio transport)
+npm run inspector
+
+# Test the server locally using the MCP inspector tool (http transport)
+npm run inspector:http
 ```
 
 ## License
