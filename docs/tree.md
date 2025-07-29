@@ -1,6 +1,6 @@
 # clinicaltrialsgov-mcp-server - Directory Structure
 
-Generated on: 2025-07-29 20:23:25
+Generated on: 2025-07-29 20:37:30
 
 ```
 clinicaltrialsgov-mcp-server
@@ -42,6 +42,9 @@ clinicaltrialsgov-mcp-server
 │   │   ├── transports
 │   │   │   ├── auth
 │   │   │   │   ├── lib
+│   │   │   │   │   ├── authContext.ts
+│   │   │   │   │   ├── authTypes.ts
+│   │   │   │   │   └── authUtils.ts
 │   │   │   │   ├── strategies
 │   │   │   │   │   ├── authStrategy.ts
 │   │   │   │   │   ├── jwtStrategy.ts
