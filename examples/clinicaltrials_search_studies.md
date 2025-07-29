@@ -83,6 +83,7 @@ Successfully retrieved 10 studies.
 Psilocybin has been studied for the treatment of depression, anxiety, tobacco and alcohol use disorders, obsessive-compulsive disorder, end of life depression and anxiety, demonstrating safety and efficacy for a variety of indications, with no significant adverse events occurring during the course of treatment and follow-up. Notably, in a participant group distinguished by long-standing, moderate to severe major depressive disorder, two doses of psilocybin-assisted therapy were found to be as effective in antidepressant effects as 6 weeks of daily escitalopram, a commonly used SSRI. Promising results found in these studies have led to psilocybin recently receiving breakthrough designation from the US FDA for its potential therapeutic effect in the treatment of depression.
 
 Based on previous research, psilocybin has demonstrated a favorable safety profile and has shown preliminary efficacy against depression as well as other symptoms that typically affect patients with PTSD. Unlike traditional SSRIs which are associated with treatment-resistance and addiction, psilocybin requires few doses to improve a wide-range of symptoms and has not been linked with physical dependence. Furthermore, the effect of other psychedelics can vary greatly and may potentially exacerbate existing conditions.
+
 - **Interventions:** APEX-002-A02, Placebo
 - **Sponsor:** Apex Labs Ltd.
 
@@ -94,6 +95,7 @@ Based on previous research, psilocybin has demonstrated a favorable safety profi
 - **Summary:** Psilocybin, the chemical component of "magic mushrooms", has been administered with psychotherapy in several randomized clinical trials (RCTs) showing large and sustained antidepressant effects.
 
 The purpose of this study is to assess the feasibility, tolerability, and preliminary efficacy of psilocybin therapy for adults with chronic neuropathic pain and co-morbid treatment resistant depression.
+
 - **Interventions:** Psilocybin 25 mg
 - **Sponsor:** Centre for Addiction and Mental Health
 
@@ -105,6 +107,7 @@ The purpose of this study is to assess the feasibility, tolerability, and prelim
 - **Summary:** Limit: 5000 characters. Psilocybin, the chemical component of "magic mushrooms", has been administered with psychotherapy in several randomized clinical trials (RCTs) showing large and sustained antidepressant effects. In healthy volunteers, the psychedelic effects of psilocybin have been shown to be blocked by administration of certain medications such as risperidone.
 
 The purpose of this study is to use an established SV2A radiotracer produced at our Centre to determine the feasibility of integrating PET imaging in to psilocybin trials. The preliminary imaging data will assess whether psilocybin's antidepressant effects are related to changes in synaptic density in adults with TRD, and whether any changes in synaptic density are associated with psilocybin's actions on the 5-HT2AR.
+
 - **Interventions:** Psilocybin 25 mg, Risperidone 1 MG
 - **Sponsor:** Centre for Addiction and Mental Health
 

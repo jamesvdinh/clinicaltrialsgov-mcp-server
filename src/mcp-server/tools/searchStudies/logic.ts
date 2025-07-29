@@ -5,7 +5,7 @@
 import { z } from "zod";
 import {
   ClinicalTrialsGovService,
-  PagedStudiesSchema
+  PagedStudiesSchema,
 } from "../../../services/clinical-trials-gov/index.js";
 import { cleanStudy } from "../../../utils/clinicaltrials/jsonCleaner.js";
 import { logger, type RequestContext } from "../../../utils/index.js";
@@ -16,23 +16,46 @@ import { logger, type RequestContext } from "../../../utils/index.js";
 export const SearchStudiesInputSchema = z.object({
   query: z
     .object({
-      cond: z.string().optional().describe("Search for conditions or diseases."),
+      cond: z
+        .string()
+        .optional()
+        .describe("Search for conditions or diseases."),
       term: z
         .string()
         .optional()
-        .describe("Search for other terms like interventions, outcomes, or sponsors."),
+        .describe(
+          "Search for other terms like interventions, outcomes, or sponsors.",
+        ),
       locn: z.string().optional().describe("Search for study locations."),
-      titles: z.string().optional().describe("Search within study titles or acronyms."),
-      intr: z.string().optional().describe("Search for specific interventions or treatments."),
-      outc: z.string().optional().describe("Search for specific outcome measures."),
-      spons: z.string().optional().describe("Search for sponsors or collaborators."),
-      id: z.string().optional().describe("Search for study identifiers (e.g., NCT ID)."),
+      titles: z
+        .string()
+        .optional()
+        .describe("Search within study titles or acronyms."),
+      intr: z
+        .string()
+        .optional()
+        .describe("Search for specific interventions or treatments."),
+      outc: z
+        .string()
+        .optional()
+        .describe("Search for specific outcome measures."),
+      spons: z
+        .string()
+        .optional()
+        .describe("Search for sponsors or collaborators."),
+      id: z
+        .string()
+        .optional()
+        .describe("Search for study identifiers (e.g., NCT ID)."),
     })
     .optional()
     .describe("A set of search terms that influence result ranking."),
   filter: z
     .object({
-      ids: z.array(z.string()).optional().describe("Return only studies with the specified NCT IDs."),
+      ids: z
+        .array(z.string())
+        .optional()
+        .describe("Return only studies with the specified NCT IDs."),
       overallStatus: z
         .array(
           z.enum([
@@ -57,16 +80,28 @@ export const SearchStudiesInputSchema = z.object({
           unit: z.enum(["km", "mi"]).default("km"),
         })
         .optional()
-        .describe("Filter results to a geographic area by providing a point and radius."),
-      advanced: z.string().optional().describe("Apply an advanced filter using Essie expression syntax."),
+        .describe(
+          "Filter results to a geographic area by providing a point and radius.",
+        ),
+      advanced: z
+        .string()
+        .optional()
+        .describe("Apply an advanced filter using Essie expression syntax."),
     })
     .optional()
-    .describe("A set of filters that narrow the search results without affecting ranking."),
+    .describe(
+      "A set of filters that narrow the search results without affecting ranking.",
+    ),
   fields: z
     .array(z.string())
     .optional()
-    .describe("A list of specific top-level fields to include in the response."),
-  sort: z.array(z.string()).optional().describe("Specify the sort order for the results."),
+    .describe(
+      "A list of specific top-level fields to include in the response.",
+    ),
+  sort: z
+    .array(z.string())
+    .optional()
+    .describe("Specify the sort order for the results."),
   pageSize: z
     .number()
     .int()
@@ -74,8 +109,13 @@ export const SearchStudiesInputSchema = z.object({
     .max(200)
     .default(10)
     .optional()
-    .describe("The number of studies to return per page (1-200). Defaults to 10."),
-  pageToken: z.string().optional().describe("A token used to retrieve the next page of results."),
+    .describe(
+      "The number of studies to return per page (1-200). Defaults to 10.",
+    ),
+  pageToken: z
+    .string()
+    .optional()
+    .describe("A token used to retrieve the next page of results."),
 });
 
 /**
@@ -106,7 +146,10 @@ export async function searchStudiesLogic(
   params: SearchStudiesInput,
   context: RequestContext,
 ): Promise<SearchStudiesOutput> {
-  logger.debug("Executing searchStudiesLogic", { ...context, toolInput: params });
+  logger.debug("Executing searchStudiesLogic", {
+    ...context,
+    toolInput: params,
+  });
 
   // Explicitly construct parameters for the service to ensure clarity and prevent side effects.
   const apiParams: Record<string, unknown> = {

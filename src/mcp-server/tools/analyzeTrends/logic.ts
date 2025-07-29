@@ -27,12 +27,11 @@ export const AnalyzeTrendsInputSchema = SearchStudiesInputSchema.pick({
   query: true,
   filter: true,
 }).extend({
-  analysisType: z.union([
-    AnalysisTypeSchema,
-    z.array(AnalysisTypeSchema).min(1),
-  ]).describe(
-    "A single analysis type or an array of types to perform on the study set.",
-  ),
+  analysisType: z
+    .union([AnalysisTypeSchema, z.array(AnalysisTypeSchema).min(1)])
+    .describe(
+      "A single analysis type or an array of types to perform on the study set.",
+    ),
 });
 
 /**
