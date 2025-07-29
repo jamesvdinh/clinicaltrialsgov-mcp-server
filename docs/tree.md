@@ -1,6 +1,6 @@
 # clinicaltrialsgov-mcp-server - Directory Structure
 
-Generated on: 2025-07-26 14:49:39
+Generated on: 2025-07-29 20:23:25
 
 ```
 clinicaltrialsgov-mcp-server
@@ -13,10 +13,9 @@ clinicaltrialsgov-mcp-server
 │   ├── best-practices.md
 │   └── tree.md
 ├── examples
-│   ├── studies_2025-06-17T11-15-33-773Z.json
-│   ├── studies_2025-06-17T11-16-37-179Z.json
-│   ├── study_NCT00184067_2025-06-17T11-17-42-480Z.json
-│   └── study_NCT03934567_2025-06-17T11-17-59-791Z.json
+│   ├── clinicaltrials_analyze_trends.md
+│   ├── clinicaltrials_get_study.md
+│   └── clinicaltrials_search_studies.md
 ├── scripts
 │   ├── clean.ts
 │   ├── fetch-openapi-spec.ts
@@ -42,20 +41,29 @@ clinicaltrialsgov-mcp-server
 │   │   │       └── registration.ts
 │   │   ├── transports
 │   │   │   ├── auth
-│   │   │   │   ├── core
-│   │   │   │   │   ├── authContext.ts
-│   │   │   │   │   ├── authTypes.ts
-│   │   │   │   │   └── authUtils.ts
+│   │   │   │   ├── lib
 │   │   │   │   ├── strategies
-│   │   │   │   │   ├── jwt
-│   │   │   │   │   │   └── jwtMiddleware.ts
-│   │   │   │   │   └── oauth
-│   │   │   │   │       └── oauthMiddleware.ts
+│   │   │   │   │   ├── authStrategy.ts
+│   │   │   │   │   ├── jwtStrategy.ts
+│   │   │   │   │   └── oauthStrategy.ts
+│   │   │   │   ├── authFactory.ts
+│   │   │   │   ├── authMiddleware.ts
 │   │   │   │   └── index.ts
-│   │   │   ├── httpErrorHandler.ts
-│   │   │   ├── httpTransport.ts
-│   │   │   └── stdioTransport.ts
-│   │   ├── README.md
+│   │   │   ├── core
+│   │   │   │   ├── baseTransportManager.ts
+│   │   │   │   ├── honoNodeBridge.ts
+│   │   │   │   ├── statefulTransportManager.ts
+│   │   │   │   ├── statelessTransportManager.ts
+│   │   │   │   └── transportTypes.ts
+│   │   │   ├── http
+│   │   │   │   ├── httpErrorHandler.ts
+│   │   │   │   ├── httpTransport.ts
+│   │   │   │   ├── httpTypes.ts
+│   │   │   │   ├── index.ts
+│   │   │   │   └── mcpTransportMiddleware.ts
+│   │   │   └── stdio
+│   │   │       ├── index.ts
+│   │   │       └── stdioTransport.ts
 │   │   └── server.ts
 │   ├── services
 │   │   ├── clinical-trials-gov

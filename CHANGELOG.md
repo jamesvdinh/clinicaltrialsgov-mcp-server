@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.2] - 2025-07-29
+
+### Alignment with `cyanheads/mcp-ts-template@v1.7.7`
+
+- **mcp-ts-template Alignment**: Updated the server to align with the latest changes in the [`mcp-ts-template` v1.7.7](https://github.com/cyanheads/mcp-ts-template/releases/tag/v1.7.7), including improvements to the project structure and configuration.
+
+### Changed
+
+- **Transport Layer Refactor**: Overhauled the HTTP and STDIO transport layers for improved modularity, robustness, and adherence to modern best practices.
+  - **HTTP Transport**: Re-architected to use a strategy pattern with `StatelessTransportManager` and `StatefulTransportManager` to handle different session modes (`stateless`, `stateful`, `auto`). This decouples session logic from the Hono web server implementation.
+  - **STDIO Transport**: Refactored into a dedicated module with improved error handling and clearer separation of concerns.
+  - **Hono Integration**: Introduced a `honoNodeBridge` to seamlessly connect the MCP SDK's Node.js-style streamable transport with Hono's Web Standards-based streaming responses.
+- **Authentication Refactor**: Abstracted authentication into a strategy pattern (`AuthStrategy`) with concrete implementations for `jwt` and `oauth`.
+  - A new `authFactory` now selects the appropriate strategy based on configuration.
+  - A unified `authMiddleware` handles token extraction and delegates verification to the selected strategy.
+  - The `none` authentication mode is now explicitly supported for development and testing.
+- **Configuration**: Added new environment variables to support the enhanced transport and session management features, including `MCP_SESSION_MODE`, `MCP_HTTP_ENDPOINT_PATH`, and timeouts for stateful sessions.
+- **Dependencies**: Updated several dependencies and added new ones for testing (`vitest`, `supertest`, `msw`) and improved mocking (`@faker-js/faker`, `@anatine/zod-mock`).
+
+### Removed
+
+- **Deleted Legacy Files**: Removed several legacy transport and authentication files that were replaced by the new, more modular architecture.
+
 ## [1.1.1] - 2025-07-26
 
 ### Changed

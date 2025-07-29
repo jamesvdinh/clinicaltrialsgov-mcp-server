@@ -1,13 +1,18 @@
-# ClinicalTrials.gov MCP Server
+<div align="center">
 
-[![TypeScript](https://img.shields.io/badge/TypeScript-^5.8.3-blue.svg)](https://www.typescriptlang.org/)
-[![Model Context Protocol](https://img.shields.io/badge/MCP%20SDK-^1.17.0-green.svg)](https://modelcontextprotocol.io/)
-[![Version](https://img.shields.io/badge/Version-1.1.1-blue.svg)](./CHANGELOG.md)
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![Status](https://img.shields.io/badge/Status-stable-green.svg)](https://github.com/cyanheads/clinicaltrialsgov-mcp-server/issues)
+# clinicaltrialsgov-mcp-server
+
+[![TypeScript](https://img.shields.io/badge/TypeScript-^5.8.3-blue.svg?style=flat-square)](https://www.typescriptlang.org/)
+[![Model Context Protocol](https://img.shields.io/badge/MCP%20SDK-^1.17.0-green.svg?style=flat-square)](https://modelcontextprotocol.io/)
+[![Version](https://img.shields.io/badge/Version-1.1.2-blue.svg?style=flat-square)](./CHANGELOG.md)
+[![Coverage](https://img.shields.io/badge/Coverage-0.0%25-red?style=flat-square)](./vitest.config.ts)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=flat-square)](https://opensource.org/licenses/Apache-2.0)
+[![Status](https://img.shields.io/badge/Status-stable-green.svg?style=flat-square)](https://github.com/cyanheads/clinicaltrialsgov-mcp-server/issues)
 [![GitHub](https://img.shields.io/github/stars/cyanheads/clinicaltrialsgov-mcp-server?style=social)](https://github.com/cyanheads/clinicaltrialsgov-mcp-server)
 
-**Empower your AI agents with direct access to the official ClinicalTrials.gov database!**
+**Empower your AI agents with direct access to the ClinicalTrials.gov database!**
+
+</div>
 
 An MCP (Model Context Protocol) server providing a robust, developer-friendly interface to the official [ClinicalTrials.gov v2 API](https://clinicaltrials.gov/data-api/api). Enables LLMs and AI agents to search, retrieve, and analyze clinical study data programmatically.
 
