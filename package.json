@@ -1,6 +1,6 @@
 {
   "name": "clinicaltrialsgov-mcp-server",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "description": "ClinicalTrials.gov Model Context Protocol (MCP) Server that provides a suite of tools for interacting with the official ClinicalTrials.gov v2 API. Enables AI agents and LLMs to programmatically search, retrieve, and analyze clinical trial data.",
   "main": "dist/index.js",
   "files": [
@@ -34,7 +34,10 @@
     "fetch-spec": "ts-node --esm scripts/fetch-openapi-spec.ts",
     "format": "prettier --write \"**/*.{ts,js,json,md,html,css}\"",
     "inspector": "npx mcp-inspector --config mcp.json --server clinicaltrialsgov-mcp-server",
-    "db:duckdb-example": "MCP_LOG_LEVEL=debug tsc && node dist/storage/duckdbExample.js"
+    "db:duckdb-example": "MCP_LOG_LEVEL=debug tsc && node dist/storage/duckdbExample.js",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@hono/node-server": "^1.17.1",

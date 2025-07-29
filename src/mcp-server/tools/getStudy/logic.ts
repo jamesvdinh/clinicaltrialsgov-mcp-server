@@ -134,6 +134,8 @@ export async function getStudyLogic(
   context: RequestContext,
 ): Promise<GetStudyOutput> {
   const nctIds = Array.isArray(params.nctIds) ? params.nctIds : [params.nctIds];
+  const markupFormat = params.markupFormat ?? 'markdown';
+
   logger.debug(`Executing getStudyLogic for NCT IDs: ${nctIds.join(", ")}`, {
     ...context,
     toolInput: params,
@@ -147,7 +149,7 @@ export async function getStudyLogic(
     try {
       const study = await service.fetchStudy(nctId, context, {
         fields: params.fields,
-        markupFormat: params.markupFormat,
+        markupFormat: markupFormat,
       });
 
       if (!study) {
