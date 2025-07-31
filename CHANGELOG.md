@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.4] - 2025-07-31
+
+### Changed
+
+- **Error Handling**:
+  - Improved shutdown logic in `src/index.ts` for more graceful and reliable server termination.
+  - Enhanced error handling in the MCP server initialization sequence (`src/mcp-server/server.ts`) to provide clearer critical error logging.
+  - Refined `ErrorHandler.ts` to prevent potential issues with error mapping.
+  - Auth strategies (`jwtStrategy.ts`, `oauthStrategy.ts`) now re-throw structured `McpError` instances directly, improving error propagation.
+- **Code Quality & Robustness**:
+  - **Type Safety**: Replaced `export { AuthStrategy }` with `export type { AuthStrategy }` to enforce type-only imports. The `mcpTransportMiddleware` now has an explicit `MiddlewareHandler` return type.
+  - **Robustness**: Added nullish coalescing and stricter checks in `jsonParser.ts` and `idGenerator.ts` to prevent runtime errors.
+  - **HTTP Transport**: Improved client IP address detection and made JSON response handling in `httpTransport.ts` more resilient.
+- **Dependencies**: Updated `@modelcontextprotocol/sdk` to `^1.17.1` and `openai` to `^5.11.0`.
+
+### Fixed
+
+- **Testing**:
+  - Updated server tests (`server.test.ts`) to align with the improved error handling and initialization logic.
+  - Removed redundant authentication strategy tests that are now covered by Zod schema validation at the entry point.
+
 ## [1.1.3] - 2025-07-29
 
 ### Added
