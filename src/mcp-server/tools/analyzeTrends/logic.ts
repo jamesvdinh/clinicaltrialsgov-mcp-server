@@ -46,7 +46,7 @@ export const AnalysisResultSchema = z.object({
   analysisType: AnalysisTypeSchema,
   totalStudies: z.number().int(),
   results: z.record(z.number()),
-});
+}).passthrough();
 
 /**
  * Defines the structure for the analysis result.

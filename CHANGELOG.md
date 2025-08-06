@@ -2,21 +2,31 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.11] - 2025-08-06
+
+### Changed
+
+- **Schema Resiliency**: Updated all core Zod schemas in `types.ts` and `logic.ts` to use `.passthrough()`. Trying to fix an error in the Zod schema for Structured responses. This prevents validation errors when the ClinicalTrials.gov API adds new, optional fields to its responses, making the server more robust and resilient to external API changes.
+- Updated package version to `1.1.11`.
+
 ## [1.1.10] - 2025-08-06
 
 ### Changed
+
 - **Schema Resiliency**: Updated core Zod schemas in `logic.ts` and `types.ts` to use `.passthrough()`. This prevents validation errors when the ClinicalTrials.gov API adds new, optional fields to its responses, making the server more robust and resilient to external API changes.
 - Updated package version to `1.1.10`.
 
 ## [1.1.9] - 2025-08-06
 
 ### Fixed
+
 - **Version Synchronization**: Corrected a versioning error where `v1.1.7` was published after `v1.1.8`. Version `1.1.7` has been deprecated, and this version (`1.1.9`) is released to ensure a clear and linear version history.
 - Updated package version to `1.1.9`.
 
 ## [1.1.8] - 2025-08-06
 
 ### Changed
+
 - **Enhanced `searchStudies` Tool**: The summary output for the `searchStudies` tool has been enriched to include additional key details for each study: `Study Type`, `Phases`, `Eligibility` (sex and minimum age), and `Locations` (countries). The locations are now also deduplicated for a cleaner output. This provides a more comprehensive overview of search results at a glance.
 - **Expanded `StudySchema`**: The core `StudySchema` in `src/services/clinical-trials-gov/types.ts` has been updated to include the `eligibilityModule`, ensuring that new fields related to participant eligibility are correctly validated and typed.
 - Updated package version to `1.1.8`.
@@ -24,12 +34,14 @@ All notable changes to this project will be documented in this file.
 ## [1.1.7] - 2025-08-06
 
 ### Fixed
+
 - **Schema Resiliency**: Updated the core `StudySchema` in `src/services/clinical-trials-gov/types.ts` to use `.passthrough()`. This prevents validation errors when the ClinicalTrials.gov API adds new, optional fields to its responses, making the server more robust and resilient to external API changes.
 - Updated package version to `1.1.7`.
 
 ## [1.1.6] - 2025-08-06
 
 ### Changed
+
 - **Improved Data Integrity**: Refactored core Zod schemas (`StudySchema`, `PagedStudiesSchema`) to enforce stricter data validation by removing `.passthrough()` and defining explicit, optional fields. This enhances type safety and ensures incoming data conforms to the expected structure. Key additions include the `derivedSection` and `hasResults` fields, along with making nested properties optional to gracefully handle sparse API responses.
 - **Enhanced Robustness**: Added a validation step in `jsonCleaner.ts` that uses the new strict `StudySchema` to parse study objects. It now logs a warning and strips any unexpected fields, making the data cleaning process more transparent and resilient.
 - Updated package version to `1.1.6`.

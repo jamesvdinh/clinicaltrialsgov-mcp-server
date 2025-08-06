@@ -17,12 +17,16 @@ export const StudySchema = z.object({
       identificationModule: z
         .object({
           nctId: z.string(),
-          orgStudyIdInfo: z.object({ id: z.string().optional() }).optional(),
+          orgStudyIdInfo: z
+            .object({ id: z.string().optional() })
+            .passthrough()
+            .optional(),
           organization: z
             .object({
               fullName: z.string().optional(),
               class: z.string().optional(),
             })
+            .passthrough()
             .optional(),
           briefTitle: z.string().optional(),
           officialTitle: z.string().optional(),
@@ -39,37 +43,46 @@ export const StudySchema = z.object({
               date: z.string().optional(),
               type: z.string().optional(),
             })
+            .passthrough()
             .optional(),
           primaryCompletionDateStruct: z
             .object({
               date: z.string().optional(),
               type: z.string().optional(),
             })
+            .passthrough()
             .optional(),
           completionDateStruct: z
             .object({
               date: z.string().optional(),
               type: z.string().optional(),
             })
+            .passthrough()
             .optional(),
         })
         .passthrough()
         .optional(),
       sponsorCollaboratorsModule: z
         .object({
-          responsibleParty: z.object({ type: z.string().optional() }).optional(),
+          responsibleParty: z
+            .object({ type: z.string().optional() })
+            .passthrough()
+            .optional(),
           leadSponsor: z
             .object({
               name: z.string().optional(),
               class: z.string().optional(),
             })
+            .passthrough()
             .optional(),
           collaborators: z
             .array(
-              z.object({
-                name: z.string().optional(),
-                class: z.string().optional(),
-              }),
+              z
+                .object({
+                  name: z.string().optional(),
+                  class: z.string().optional(),
+                })
+                .passthrough(),
             )
             .optional(),
         })
@@ -93,21 +106,25 @@ export const StudySchema = z.object({
         .object({
           arms: z
             .array(
-              z.object({
-                name: z.string().optional(),
-                type: z.string().optional(),
-                description: z.string().optional(),
-              }),
+              z
+                .object({
+                  name: z.string().optional(),
+                  type: z.string().optional(),
+                  description: z.string().optional(),
+                })
+                .passthrough(),
             )
             .optional(),
           interventions: z
             .array(
-              z.object({
-                type: z.string().optional(),
-                name: z.string().optional(),
-                description: z.string().optional(),
-                armNames: z.array(z.string()).optional(),
-              }),
+              z
+                .object({
+                  type: z.string().optional(),
+                  name: z.string().optional(),
+                  description: z.string().optional(),
+                  armNames: z.array(z.string()).optional(),
+                })
+                .passthrough(),
             )
             .optional(),
         })
@@ -122,8 +139,12 @@ export const StudySchema = z.object({
               allocation: z.string().optional(),
               interventionModel: z.string().optional(),
               primaryPurpose: z.string().optional(),
-              maskingInfo: z.object({ masking: z.string().optional() }).optional(),
+              maskingInfo: z
+                .object({ masking: z.string().optional() })
+                .passthrough()
+                .optional(),
             })
+            .passthrough()
             .optional(),
         })
         .passthrough()
@@ -142,11 +163,13 @@ export const StudySchema = z.object({
         .object({
           locations: z
             .array(
-              z.object({
-                city: z.string().optional(),
-                state: z.string().optional(),
-                country: z.string().optional(),
-              }),
+              z
+                .object({
+                  city: z.string().optional(),
+                  state: z.string().optional(),
+                  country: z.string().optional(),
+                })
+                .passthrough(),
             )
             .optional(),
         })
@@ -167,36 +190,44 @@ export const StudySchema = z.object({
         .object({
           meshes: z
             .array(
-              z.object({
-                id: z.string().optional(),
-                term: z.string().optional(),
-              }),
+              z
+                .object({
+                  id: z.string().optional(),
+                  term: z.string().optional(),
+                })
+                .passthrough(),
             )
             .optional(),
           ancestors: z
             .array(
-              z.object({
-                id: z.string().optional(),
-                term: z.string().optional(),
-              }),
+              z
+                .object({
+                  id: z.string().optional(),
+                  term: z.string().optional(),
+                })
+                .passthrough(),
             )
             .optional(),
           browseLeaves: z
             .array(
-              z.object({
-                id: z.string().optional(),
-                name: z.string().optional(),
-                asFound: z.string().optional(),
-                relevance: z.string().optional(),
-              }),
+              z
+                .object({
+                  id: z.string().optional(),
+                  name: z.string().optional(),
+                  asFound: z.string().optional(),
+                  relevance: z.string().optional(),
+                })
+                .passthrough(),
             )
             .optional(),
           browseBranches: z
             .array(
-              z.object({
-                abbrev: z.string().optional(),
-                name: z.string().optional(),
-              }),
+              z
+                .object({
+                  abbrev: z.string().optional(),
+                  name: z.string().optional(),
+                })
+                .passthrough(),
             )
             .optional(),
         })
@@ -206,35 +237,43 @@ export const StudySchema = z.object({
         .object({
           meshes: z
             .array(
-              z.object({
-                id: z.string().optional(),
-                term: z.string().optional(),
-              }),
+              z
+                .object({
+                  id: z.string().optional(),
+                  term: z.string().optional(),
+                })
+                .passthrough(),
             )
             .optional(),
           ancestors: z
             .array(
-              z.object({
-                id: z.string().optional(),
-                term: z.string().optional(),
-              }),
+              z
+                .object({
+                  id: z.string().optional(),
+                  term: z.string().optional(),
+                })
+                .passthrough(),
             )
             .optional(),
           browseLeaves: z
             .array(
-              z.object({
-                id: z.string().optional(),
-                name: z.string().optional(),
-                relevance: z.string().optional(),
-              }),
+              z
+                .object({
+                  id: z.string().optional(),
+                  name: z.string().optional(),
+                  relevance: z.string().optional(),
+                })
+                .passthrough(),
             )
             .optional(),
           browseBranches: z
             .array(
-              z.object({
-                abbrev: z.string().optional(),
-                name: z.string().optional(),
-              }),
+              z
+                .object({
+                  abbrev: z.string().optional(),
+                  name: z.string().optional(),
+                })
+                .passthrough(),
             )
             .optional(),
         })
@@ -259,7 +298,7 @@ export const PagedStudiesSchema = z.object({
   studies: z.array(StudySchema),
   nextPageToken: z.string().optional(),
   totalCount: z.number().optional(),
-});
+}).passthrough();
 
 /**
  * Represents a paged list of studies.
