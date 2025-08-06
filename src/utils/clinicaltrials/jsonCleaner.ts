@@ -4,7 +4,8 @@
  * @module src/utils/clinicaltrials/jsonCleaner
  */
 
-import { Study } from "../../services/clinical-trials-gov/types.js";
+import { Study, StudySchema } from "../../services/clinical-trials-gov/types.js";
+import { logger } from "../internal/logger.js";
 
 /**
  * Removes duplicate and redundant information from the browse modules
@@ -103,6 +104,16 @@ function ensureArmNamesArray(study: Study): Study {
  * @returns A cleaned study object.
  */
 export function cleanStudy(study: Study): Study {
+  const result = StudySchema.safeParse(study);
+  if (!result.success) {
+    const rawKeys = new Set(Object.keys(study));
+    const schemaKeys = new Set(Object.keys(StudySchema.shape));
+    const extraKeys = [...rawKeys].filter((key) => !schemaKeys.has(key));
+    if (extraKeys.length > 0) {
+      logger.warning(`Stripped extra keys from study: ${extraKeys.join(", ")}`);
+    }
+  }
+
   let cleanedStudy = study;
   cleanedStudy = cleanBrowseModules(cleanedStudy);
   cleanedStudy = filterBrowseLeavesByRelevance(cleanedStudy);

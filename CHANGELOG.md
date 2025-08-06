@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.6] - 2025-08-06
+
+### Changed
+- **Improved Data Integrity**: Refactored core Zod schemas (`StudySchema`, `PagedStudiesSchema`) to enforce stricter data validation by removing `.passthrough()` and defining explicit, optional fields. This enhances type safety and ensures incoming data conforms to the expected structure. Key additions include the `derivedSection` and `hasResults` fields, along with making nested properties optional to gracefully handle sparse API responses.
+- **Enhanced Robustness**: Added a validation step in `jsonCleaner.ts` that uses the new strict `StudySchema` to parse study objects. It now logs a warning and strips any unexpected fields, making the data cleaning process more transparent and resilient.
+- Updated package version to `1.1.6`.
+
 ## [1.1.5] - 2025-08-06
 
 ### Changed

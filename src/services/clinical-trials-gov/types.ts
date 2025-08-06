@@ -11,143 +11,217 @@ import { z } from "zod";
  * Zod schema for a single clinical study, mirroring the ClinicalTrials.gov API structure.
  * This provides runtime validation and serves as the single source of truth for the Study type.
  */
-export const StudySchema = z
-  .object({
-    protocolSection: z
-      .object({
-        identificationModule: z
-          .object({
-            nctId: z.string(),
-            orgStudyIdInfo: z.object({ id: z.string() }).optional(),
-            organization: z
-              .object({
-                fullName: z.string(),
-                class: z.string(),
-              })
-              .optional(),
-            briefTitle: z.string().optional(),
-            officialTitle: z.string().optional(),
-            acronym: z.string().optional(),
-          })
-          .passthrough()
-          .optional(),
-        statusModule: z
-          .object({
-            overallStatus: z.string().optional(),
-            lastKnownStatus: z.string().optional(),
-            startDateStruct: z
-              .object({
-                date: z.string(),
+export const StudySchema = z.object({
+  protocolSection: z
+    .object({
+      identificationModule: z
+        .object({
+          nctId: z.string(),
+          orgStudyIdInfo: z.object({ id: z.string().optional() }).optional(),
+          organization: z
+            .object({
+              fullName: z.string().optional(),
+              class: z.string().optional(),
+            })
+            .optional(),
+          briefTitle: z.string().optional(),
+          officialTitle: z.string().optional(),
+          acronym: z.string().optional(),
+        })
+        .optional(),
+      statusModule: z
+        .object({
+          overallStatus: z.string().optional(),
+          lastKnownStatus: z.string().optional(),
+          startDateStruct: z
+            .object({
+              date: z.string().optional(),
+              type: z.string().optional(),
+            })
+            .optional(),
+          primaryCompletionDateStruct: z
+            .object({
+              date: z.string().optional(),
+              type: z.string().optional(),
+            })
+            .optional(),
+          completionDateStruct: z
+            .object({
+              date: z.string().optional(),
+              type: z.string().optional(),
+            })
+            .optional(),
+        })
+        .optional(),
+      sponsorCollaboratorsModule: z
+        .object({
+          responsibleParty: z.object({ type: z.string().optional() }).optional(),
+          leadSponsor: z
+            .object({
+              name: z.string().optional(),
+              class: z.string().optional(),
+            })
+            .optional(),
+          collaborators: z
+            .array(
+              z.object({
+                name: z.string().optional(),
+                class: z.string().optional(),
+              }),
+            )
+            .optional(),
+        })
+        .optional(),
+      descriptionModule: z
+        .object({
+          briefSummary: z.string().optional(),
+          detailedDescription: z.string().optional(),
+        })
+        .optional(),
+      conditionsModule: z
+        .object({
+          conditions: z.array(z.string()).optional(),
+          keywords: z.array(z.string()).optional(),
+        })
+        .optional(),
+      armsInterventionsModule: z
+        .object({
+          arms: z
+            .array(
+              z.object({
+                name: z.string().optional(),
                 type: z.string().optional(),
-              })
-              .optional(),
-            primaryCompletionDateStruct: z
-              .object({
-                date: z.string(),
+                description: z.string().optional(),
+              }),
+            )
+            .optional(),
+          interventions: z
+            .array(
+              z.object({
                 type: z.string().optional(),
-              })
-              .optional(),
-            completionDateStruct: z
-              .object({
-                date: z.string(),
-                type: z.string().optional(),
-              })
-              .optional(),
-          })
-          .passthrough()
-          .optional(),
-        sponsorCollaboratorsModule: z
-          .object({
-            responsibleParty: z.object({ type: z.string() }).optional(),
-            leadSponsor: z
-              .object({
-                name: z.string(),
-                class: z.string(),
-              })
-              .optional(),
-            collaborators: z
-              .array(
-                z.object({
-                  name: z.string(),
-                  class: z.string(),
-                }),
-              )
-              .optional(),
-          })
-          .passthrough()
-          .optional(),
-        descriptionModule: z
-          .object({
-            briefSummary: z.string().optional(),
-            detailedDescription: z.string().optional(),
-          })
-          .passthrough()
-          .optional(),
-        conditionsModule: z
-          .object({
-            conditions: z.array(z.string()).optional(),
-            keywords: z.array(z.string()).optional(),
-          })
-          .passthrough()
-          .optional(),
-        armsInterventionsModule: z
-          .object({
-            arms: z
-              .array(
-                z.object({
-                  name: z.string(),
-                  type: z.string(),
-                  description: z.string().optional(),
-                }),
-              )
-              .optional(),
-            interventions: z
-              .array(
-                z.object({
-                  type: z.string(),
-                  name: z.string(),
-                  description: z.string().optional(),
+                name: z.string().optional(),
+                description: z.string().optional(),
                 armNames: z.array(z.string()).optional(),
               }),
             )
             .optional(),
-          })
-          .passthrough()
-          .optional(),
-        designModule: z
-          .object({
-            studyType: z.string().optional(),
-            phases: z.array(z.string()).optional(),
-            designInfo: z
-              .object({
-                allocation: z.string().optional(),
-                interventionModel: z.string().optional(),
-                primaryPurpose: z.string().optional(),
-                maskingInfo: z.object({ masking: z.string() }).optional(),
-              })
-              .optional(),
-          })
-          .passthrough()
-          .optional(),
-        contactsLocationsModule: z
-          .object({
-            locations: z
-              .array(
-                z.object({
-                  city: z.string().optional(),
-                  state: z.string().optional(),
-                  country: z.string().optional(),
-                }),
-              )
-              .optional(),
-          })
-          .passthrough()
-          .optional(),
-      })
-      .passthrough()
-      .optional(),
-  })
-  .passthrough();
+        })
+        .optional(),
+      designModule: z
+        .object({
+          studyType: z.string().optional(),
+          phases: z.array(z.string()).optional(),
+          designInfo: z
+            .object({
+              allocation: z.string().optional(),
+              interventionModel: z.string().optional(),
+              primaryPurpose: z.string().optional(),
+              maskingInfo: z.object({ masking: z.string().optional() }).optional(),
+            })
+            .optional(),
+        })
+        .optional(),
+      contactsLocationsModule: z
+        .object({
+          locations: z
+            .array(
+              z.object({
+                city: z.string().optional(),
+                state: z.string().optional(),
+                country: z.string().optional(),
+              }),
+            )
+            .optional(),
+        })
+        .optional(),
+    })
+    .optional(),
+  derivedSection: z
+    .object({
+      miscInfoModule: z
+        .object({
+          versionHolder: z.string().optional(),
+        })
+        .optional(),
+      conditionBrowseModule: z
+        .object({
+          meshes: z
+            .array(
+              z.object({
+                id: z.string().optional(),
+                term: z.string().optional(),
+              }),
+            )
+            .optional(),
+          ancestors: z
+            .array(
+              z.object({
+                id: z.string().optional(),
+                term: z.string().optional(),
+              }),
+            )
+            .optional(),
+          browseLeaves: z
+            .array(
+              z.object({
+                id: z.string().optional(),
+                name: z.string().optional(),
+                asFound: z.string().optional(),
+                relevance: z.string().optional(),
+              }),
+            )
+            .optional(),
+          browseBranches: z
+            .array(
+              z.object({
+                abbrev: z.string().optional(),
+                name: z.string().optional(),
+              }),
+            )
+            .optional(),
+        })
+        .optional(),
+      interventionBrowseModule: z
+        .object({
+          meshes: z
+            .array(
+              z.object({
+                id: z.string().optional(),
+                term: z.string().optional(),
+              }),
+            )
+            .optional(),
+          ancestors: z
+            .array(
+              z.object({
+                id: z.string().optional(),
+                term: z.string().optional(),
+              }),
+            )
+            .optional(),
+          browseLeaves: z
+            .array(
+              z.object({
+                id: z.string().optional(),
+                name: z.string().optional(),
+                relevance: z.string().optional(),
+              }),
+            )
+            .optional(),
+          browseBranches: z
+            .array(
+              z.object({
+                abbrev: z.string().optional(),
+                name: z.string().optional(),
+              }),
+            )
+            .optional(),
+        })
+        .optional(),
+    })
+    .optional(),
+  hasResults: z.boolean().optional(),
+});
 
 /**
  * Represents a single clinical study, based on the ClinicalTrials.gov API structure.
@@ -158,13 +232,11 @@ export type Study = z.infer<typeof StudySchema>;
 /**
  * Zod schema for a paged list of studies.
  */
-export const PagedStudiesSchema = z
-  .object({
-    studies: z.array(StudySchema),
-    nextPageToken: z.string().optional(),
-    totalCount: z.number().optional(),
-  })
-  .passthrough();
+export const PagedStudiesSchema = z.object({
+  studies: z.array(StudySchema),
+  nextPageToken: z.string().optional(),
+  totalCount: z.number().optional(),
+});
 
 /**
  * Represents a paged list of studies.

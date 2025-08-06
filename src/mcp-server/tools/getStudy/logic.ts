@@ -109,7 +109,7 @@ function createStudySummary(study: Study): StudySummary {
     conditions: study.protocolSection?.conditionsModule?.conditions,
     interventions:
       study.protocolSection?.armsInterventionsModule?.interventions?.map(
-        (i: { name: string; type: string }) => ({
+        (i) => ({
           name: i.name,
           type: i.type,
         }),
