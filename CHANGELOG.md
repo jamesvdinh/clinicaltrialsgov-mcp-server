@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.8] - 2025-08-06
+
+### Changed
+- **Enhanced `searchStudies` Tool**: The summary output for the `searchStudies` tool has been enriched to include additional key details for each study: `Study Type`, `Phases`, `Eligibility` (sex and minimum age), and `Locations` (countries). The locations are now also deduplicated for a cleaner output. This provides a more comprehensive overview of search results at a glance.
+- **Expanded `StudySchema`**: The core `StudySchema` in `src/services/clinical-trials-gov/types.ts` has been updated to include the `eligibilityModule`, ensuring that new fields related to participant eligibility are correctly validated and typed.
+- Updated package version to `1.1.8`.
+
 ## [1.1.7] - 2025-08-06
 
 ### Fixed

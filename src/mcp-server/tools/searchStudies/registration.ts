@@ -54,16 +54,35 @@ export const registerSearchStudiesTool = async (
               study.protocolSection?.armsInterventionsModule;
             const sponsorModule =
               study.protocolSection?.sponsorCollaboratorsModule;
+            const designModule = study.protocolSection?.designModule;
+            const eligibilityModule = study.protocolSection?.eligibilityModule;
+            const contactsLocationsModule =
+              study.protocolSection?.contactsLocationsModule;
 
             const interventions =
               interventionsModule?.interventions
                 ?.map((i) => i.name)
                 .join(", ") ?? "N/A";
 
+            const locations =
+              [
+                ...new Set(
+                  contactsLocationsModule?.locations
+                    ?.map((l) => l.country)
+                    .filter((c) => c) ?? [],
+                ),
+              ].join(", ") || "N/A";
+
             return `
 - **NCT ID:** ${idModule?.nctId ?? "N/A"}
 - **Title:** ${idModule?.briefTitle ?? "N/A"}
 - **Status:** ${statusModule?.overallStatus ?? "N/A"}
+- **Study Type:** ${designModule?.studyType ?? "N/A"}
+- **Phases:** ${designModule?.phases?.join(", ") ?? "N/A"}
+- **Eligibility:** ${eligibilityModule?.sex ?? "N/A"}, ${
+              eligibilityModule?.minimumAge ?? "N/A"
+            }
+- **Locations:** ${locations}
 - **Summary:** ${descriptionModule?.briefSummary ?? "N/A"}
 - **Interventions:** ${interventions}
 - **Sponsor:** ${sponsorModule?.leadSponsor?.name ?? "N/A"}

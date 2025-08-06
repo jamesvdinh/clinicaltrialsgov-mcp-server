@@ -121,6 +121,15 @@ export const StudySchema = z.object({
             .optional(),
         })
         .optional(),
+      eligibilityModule: z
+        .object({
+          eligibilityCriteria: z.string().optional(),
+          healthyVolunteers: z.boolean().optional(),
+          sex: z.string().optional(),
+          minimumAge: z.string().optional(),
+          stdAges: z.array(z.string()).optional(),
+        })
+        .optional(),
       contactsLocationsModule: z
         .object({
           locations: z
