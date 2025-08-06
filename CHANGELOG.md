@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.10] - 2025-08-06
+
+### Changed
+- **Schema Resiliency**: Updated core Zod schemas in `logic.ts` and `types.ts` to use `.passthrough()`. This prevents validation errors when the ClinicalTrials.gov API adds new, optional fields to its responses, making the server more robust and resilient to external API changes.
+- Updated package version to `1.1.10`.
+
 ## [1.1.9] - 2025-08-06
 
 ### Fixed

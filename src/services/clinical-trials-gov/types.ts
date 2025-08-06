@@ -28,6 +28,7 @@ export const StudySchema = z.object({
           officialTitle: z.string().optional(),
           acronym: z.string().optional(),
         })
+        .passthrough()
         .optional(),
       statusModule: z
         .object({
@@ -52,6 +53,7 @@ export const StudySchema = z.object({
             })
             .optional(),
         })
+        .passthrough()
         .optional(),
       sponsorCollaboratorsModule: z
         .object({
@@ -71,18 +73,21 @@ export const StudySchema = z.object({
             )
             .optional(),
         })
+        .passthrough()
         .optional(),
       descriptionModule: z
         .object({
           briefSummary: z.string().optional(),
           detailedDescription: z.string().optional(),
         })
+        .passthrough()
         .optional(),
       conditionsModule: z
         .object({
           conditions: z.array(z.string()).optional(),
           keywords: z.array(z.string()).optional(),
         })
+        .passthrough()
         .optional(),
       armsInterventionsModule: z
         .object({
@@ -106,6 +111,7 @@ export const StudySchema = z.object({
             )
             .optional(),
         })
+        .passthrough()
         .optional(),
       designModule: z
         .object({
@@ -120,6 +126,7 @@ export const StudySchema = z.object({
             })
             .optional(),
         })
+        .passthrough()
         .optional(),
       eligibilityModule: z
         .object({
@@ -129,6 +136,7 @@ export const StudySchema = z.object({
           minimumAge: z.string().optional(),
           stdAges: z.array(z.string()).optional(),
         })
+        .passthrough()
         .optional(),
       contactsLocationsModule: z
         .object({
@@ -142,6 +150,7 @@ export const StudySchema = z.object({
             )
             .optional(),
         })
+        .passthrough()
         .optional(),
     })
     .passthrough()
@@ -152,6 +161,7 @@ export const StudySchema = z.object({
         .object({
           versionHolder: z.string().optional(),
         })
+        .passthrough()
         .optional(),
       conditionBrowseModule: z
         .object({
@@ -190,6 +200,7 @@ export const StudySchema = z.object({
             )
             .optional(),
         })
+        .passthrough()
         .optional(),
       interventionBrowseModule: z
         .object({
@@ -227,6 +238,7 @@ export const StudySchema = z.object({
             )
             .optional(),
         })
+        .passthrough()
         .optional(),
     })
     .passthrough()

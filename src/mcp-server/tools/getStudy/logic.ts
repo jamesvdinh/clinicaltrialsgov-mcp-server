@@ -68,7 +68,7 @@ export const StudySummarySchema = z.object({
     )
     .optional(),
   leadSponsor: z.string().optional(),
-});
+}).passthrough();
 
 /**
  * TypeScript type inferred from the summary schema.
