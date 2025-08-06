@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.5] - 2025-08-06
+
+### Changed
+
+- **Refactoring**:
+  - Removed the `cleanStudy` utility and updated Zod schemas in `types.ts` to use `.passthrough()`. This simplifies the data processing pipeline by making the schemas more flexible and resilient to unexpected fields from the API.
+- **Configuration**:
+  - Streamlined the `.dockerignore` file to be more concise and effective.
+  - Updated `eslint.config.js` to explicitly ignore build, test, and dependency directories, improving linting performance.
+- **Dependencies**:
+  - Upgraded several key dependencies, including `typescript-eslint` to `^8.39.0` and `typedoc` to `^0.28.9`, to incorporate the latest features and security patches.
+
 ## [1.1.4] - 2025-07-31
 
 ### Changed

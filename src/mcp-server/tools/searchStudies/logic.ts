@@ -7,7 +7,6 @@ import {
   ClinicalTrialsGovService,
   PagedStudiesSchema,
 } from "../../../services/clinical-trials-gov/index.js";
-import { cleanStudy } from "../../../utils/clinicaltrials/jsonCleaner.js";
 import { logger, type RequestContext } from "../../../utils/index.js";
 
 /**
@@ -184,11 +183,6 @@ export async function searchStudiesLogic(
   const service = ClinicalTrialsGovService.getInstance();
   const pagedStudies = await service.listStudies(apiParams, context);
   logger.info("Successfully listed studies.", { ...context });
-
-  // Clean each study in the response to remove extraneous fields.
-  if (pagedStudies.studies) {
-    pagedStudies.studies = pagedStudies.studies.map(cleanStudy);
-  }
 
   return pagedStudies;
 }

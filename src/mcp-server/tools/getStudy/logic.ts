@@ -9,7 +9,6 @@ import {
   StudySchema,
 } from "../../../services/clinical-trials-gov/index.js";
 import { BaseErrorCode, McpError } from "../../../types-global/errors.js";
-import { cleanStudy } from "../../../utils/clinicaltrials/jsonCleaner.js";
 import { logger, type RequestContext } from "../../../utils/index.js";
 
 /**
@@ -160,14 +159,13 @@ export async function getStudyLogic(
         );
       }
 
-      const cleanedStudy = cleanStudy(study);
       logger.info(`Successfully fetched study ${nctId}`, { ...context });
 
       if (params.summaryOnly) {
         logger.debug(`Creating summary for study ${nctId}`, { ...context });
-        studies.push(createStudySummary(cleanedStudy));
+        studies.push(createStudySummary(study));
       } else {
-        studies.push(cleanedStudy);
+        studies.push(study);
       }
     } catch (error) {
       const errorMessage =
