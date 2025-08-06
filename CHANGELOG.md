@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.9] - 2025-08-06
+
+### Fixed
+- **Version Synchronization**: Corrected a versioning error where `v1.1.7` was published after `v1.1.8`. Version `1.1.7` has been deprecated, and this version (`1.1.9`) is released to ensure a clear and linear version history.
+- Updated package version to `1.1.9`.
+
 ## [1.1.8] - 2025-08-06
 
 ### Changed
