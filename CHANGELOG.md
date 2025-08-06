@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.7] - 2025-08-06
+
+### Fixed
+- **Schema Resiliency**: Updated the core `StudySchema` in `src/services/clinical-trials-gov/types.ts` to use `.passthrough()`. This prevents validation errors when the ClinicalTrials.gov API adds new, optional fields to its responses, making the server more robust and resilient to external API changes.
+- Updated package version to `1.1.7`.
+
 ## [1.1.6] - 2025-08-06
 
 ### Changed

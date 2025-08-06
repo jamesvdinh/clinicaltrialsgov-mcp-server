@@ -135,6 +135,7 @@ export const StudySchema = z.object({
         })
         .optional(),
     })
+    .passthrough()
     .optional(),
   derivedSection: z
     .object({
@@ -219,9 +220,10 @@ export const StudySchema = z.object({
         })
         .optional(),
     })
+    .passthrough()
     .optional(),
   hasResults: z.boolean().optional(),
-});
+}).passthrough();
 
 /**
  * Represents a single clinical study, based on the ClinicalTrials.gov API structure.
