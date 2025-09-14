@@ -47,6 +47,7 @@
     "@types/sanitize-html": "^2.16.0",
     "@types/validator": "13.15.2",
     "chrono-node": "^2.8.0",
+    "clinicaltrialsgov-mcp-server": "^1.1.11",
     "dotenv": "^16.6.1",
     "hono": "^4.8.10",
     "ignore": "^7.0.5",
@@ -117,7 +118,7 @@
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^3.2.4"
   },
-    "publishConfig": {
+  "publishConfig": {
     "access": "public"
   }
 }
