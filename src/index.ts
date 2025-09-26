@@ -58,7 +58,7 @@ const shutdown = async (signal: string): Promise<void> => {
 
   logger.info(
     `Received ${signal}. Initiating graceful shutdown...`,
-    shutdownContext,
+    shutdownContext
   );
 
   try {
@@ -68,7 +68,7 @@ const shutdown = async (signal: string): Promise<void> => {
     if (transportType === "stdio" && mcpStdioServer) {
       logger.info(
         "Attempting to close main MCP server (STDIO)...",
-        shutdownContext,
+        shutdownContext
       );
       closePromise = mcpStdioServer.close();
     } else if (transportType === "http" && actualHttpServer) {
@@ -91,7 +91,7 @@ const shutdown = async (signal: string): Promise<void> => {
     await closePromise;
     logger.info(
       "Graceful shutdown completed successfully. Exiting.",
-      shutdownContext,
+      shutdownContext
     );
     process.exit(0);
   } catch (error) {
@@ -133,13 +133,13 @@ const start = async (): Promise<void> => {
     if (process.stdout.isTTY) {
       console.warn(
         `[Startup Warning] Invalid MCP_LOG_LEVEL "${initialLogLevelConfig}" found in configuration. ` +
-          `Defaulting to log level "info". Valid levels are: ${validMcpLogLevels.join(", ")}.`,
+          `Defaulting to log level "info". Valid levels are: ${validMcpLogLevels.join(", ")}.`
       );
     }
   }
   await logger.initialize(validatedMcpLogLevel);
   logger.info(
-    `Logger has been initialized by start(). Effective MCP logging level set to: ${validatedMcpLogLevel}.`,
+    `Logger has been initialized by start(). Effective MCP logging level set to: ${validatedMcpLogLevel}.`
   );
 
   const transportType = config.mcpTransportType;
@@ -167,13 +167,13 @@ const start = async (): Promise<void> => {
 
   logger.info(
     `Starting ${config.mcpServerName} (Version: ${config.mcpServerVersion}, Transport: ${transportType}, Env: ${environment})...`,
-    startupContext,
+    startupContext
   );
 
   try {
     logger.debug(
       "Calling initializeAndStartServer to set up MCP transport...",
-      startupContext,
+      startupContext
     );
 
     const serverInstance = await initializeAndStartServer();
@@ -182,7 +182,7 @@ const start = async (): Promise<void> => {
       mcpStdioServer = serverInstance;
       logger.info(
         "STDIO McpServer instance stored globally for shutdown.",
-        startupContext,
+        startupContext
       );
     } else if (
       transportType === "http" &&
@@ -191,13 +191,13 @@ const start = async (): Promise<void> => {
       actualHttpServer = serverInstance;
       logger.info(
         "HTTP transport initialized, http.Server instance stored globally for shutdown.",
-        startupContext,
+        startupContext
       );
     } else if (transportType === "http") {
       // This case should ideally not be reached if initializeAndStartServer correctly returns http.Server
       logger.warning(
         "HTTP transport initialized, but no http.Server instance was returned to index.ts. Shutdown might be incomplete.",
-        startupContext,
+        startupContext
       );
     }
 
@@ -206,7 +206,7 @@ const start = async (): Promise<void> => {
       {
         ...startupContext,
         serverStartTime: new Date().toISOString(),
-      },
+      }
     );
 
     process.on("SIGTERM", () => shutdown("SIGTERM"));
@@ -221,7 +221,7 @@ const start = async (): Promise<void> => {
       };
       logger.error(
         "FATAL: Uncaught exception detected. This indicates a bug or unexpected state. Initiating shutdown...",
-        errorContext,
+        errorContext
       );
       await shutdown("uncaughtException");
     });
@@ -238,10 +238,10 @@ const start = async (): Promise<void> => {
         };
         logger.error(
           "FATAL: Unhandled promise rejection detected. This indicates a bug or missing error handling in async code. Initiating shutdown...",
-          rejectionContext,
+          rejectionContext
         );
         await shutdown("unhandledRejection");
-      },
+      }
     );
   } catch (error) {
     logger.error(
@@ -251,7 +251,7 @@ const start = async (): Promise<void> => {
         finalErrorContext: "ApplicationStartupFailure",
         errorMessage: error instanceof Error ? error.message : String(error),
         errorStack: error instanceof Error ? error.stack : undefined,
-      },
+      }
     );
     process.exit(1);
   }
@@ -266,7 +266,7 @@ const start = async (): Promise<void> => {
     if (process.stdout.isTTY) {
       console.error(
         "[GLOBAL CATCH] An unexpected error occurred outside of the main start function's error handling:",
-        error,
+        error
       );
     }
     process.exit(1);

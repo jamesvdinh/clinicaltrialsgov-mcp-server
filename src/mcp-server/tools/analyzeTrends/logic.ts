@@ -30,7 +30,7 @@ export const AnalyzeTrendsInputSchema = SearchStudiesInputSchema.pick({
   analysisType: z
     .union([AnalysisTypeSchema, z.array(AnalysisTypeSchema).min(1)])
     .describe(
-      "A single analysis type or an array of types to perform on the study set.",
+      "A single analysis type or an array of types to perform on the study set."
     ),
 });
 
@@ -42,11 +42,13 @@ export type AnalyzeTrendsInput = z.infer<typeof AnalyzeTrendsInputSchema>;
 /**
  * Zod schema for the analysis result.
  */
-export const AnalysisResultSchema = z.object({
-  analysisType: AnalysisTypeSchema,
-  totalStudies: z.number().int(),
-  results: z.record(z.number()),
-}).passthrough();
+export const AnalysisResultSchema = z
+  .object({
+    analysisType: AnalysisTypeSchema,
+    totalStudies: z.number().int(),
+    results: z.record(z.number()),
+  })
+  .passthrough();
 
 /**
  * Defines the structure for the analysis result.
@@ -85,7 +87,7 @@ const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 async function fetchAllStudies(
   params: Omit<AnalyzeTrendsInput, "analysisType">,
-  context: RequestContext,
+  context: RequestContext
 ): Promise<Study[]> {
   const service = ClinicalTrialsGovService.getInstance();
   let allStudies: Study[] = [];
@@ -97,7 +99,7 @@ async function fetchAllStudies(
   // First, make one call to check the total number of studies
   const initialResponse = await service.listStudies(
     { ...params, pageSize: 1, countTotal: true },
-    context,
+    context
   );
   const totalStudies = initialResponse.totalCount ?? 0;
 
@@ -105,7 +107,7 @@ async function fetchAllStudies(
     throw new McpError(
       BaseErrorCode.INVALID_INPUT,
       `The query returned ${totalStudies} studies, which exceeds the limit of ${MAX_STUDIES_FOR_ANALYSIS} for analysis. Please provide a more specific query.`,
-      { totalStudies, limit: MAX_STUDIES_FOR_ANALYSIS },
+      { totalStudies, limit: MAX_STUDIES_FOR_ANALYSIS }
     );
   }
 
@@ -117,7 +119,7 @@ async function fetchAllStudies(
   while (hasMore) {
     const pagedStudies = await service.listStudies(
       { ...params, pageToken, pageSize: 1000 },
-      context,
+      context
     );
     if (pagedStudies.studies) {
       allStudies = allStudies.concat(pagedStudies.studies);
@@ -148,7 +150,7 @@ async function fetchAllStudies(
  */
 export async function analyzeTrendsLogic(
   params: AnalyzeTrendsInput,
-  context: RequestContext,
+  context: RequestContext
 ): Promise<AnalyzeTrendsOutput> {
   const { analysisType, ...searchParams } = params;
   const allStudies = await fetchAllStudies(searchParams, context);
@@ -171,7 +173,7 @@ export async function analyzeTrendsLogic(
             (loc) => {
               const country = loc.country ?? "Unknown";
               results[country] = (results[country] || 0) + 1;
-            },
+            }
           );
           continue;
         case "countBySponsorType":
@@ -183,7 +185,7 @@ export async function analyzeTrendsLogic(
           const phases = study.protocolSection?.designModule?.phases ?? [
             "Unknown",
           ];
-          phases.forEach((phase) => {
+          phases.forEach((phase: string) => {
             const phaseKey = phase ?? "Unknown";
             results[phaseKey] = (results[phaseKey] || 0) + 1;
           });

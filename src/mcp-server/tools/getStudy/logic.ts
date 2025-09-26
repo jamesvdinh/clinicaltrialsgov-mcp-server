@@ -17,34 +17,39 @@ import { logger, type RequestContext } from "../../../utils/index.js";
 export const GetStudyInputSchema = z.object({
   nctIds: z
     .union([
-      z.string().regex(/^[Nn][Cc][Tt]\d{8}$/),
+      z
+        .string()
+        .regex(/^[Nn][Cc][Tt]\d{8}$/)
+        .transform((id) => [id]),
       z
         .array(z.string().regex(/^[Nn][Cc][Tt]\d{8}$/))
         .min(1)
         .max(5),
     ])
+    .transform((val) => (Array.isArray(val) ? val : [val]))
     .describe(
-      "A single NCT ID (e.g., 'NCT12345678') or an array of up to 5 NCT IDs to fetch. Each ID must be 8 digits.",
+      "A single NCT ID (e.g., 'NCT12345678') or an array of up to 5 NCT IDs to fetch. Each ID must be 8 digits."
     ),
   markupFormat: z
     .enum(["markdown", "legacy"])
     .default("markdown")
     .optional()
     .describe(
-      "Format for rich text fields. 'markdown' provides formatted text, while 'legacy' provides the original. Defaults to 'markdown'.",
+      "Format for rich text fields. 'markdown' provides formatted text, while 'legacy' provides the original. Defaults to 'markdown'."
     ),
   fields: z
-    .array(z.string())
+    // .array(z.string())
+    .any()
     .optional()
     .describe(
-      "A list of specific top-level fields to return (e.g., ['protocolSection', 'derivedSection']). If omitted, all fields are returned.",
+      "A list of specific top-level fields to return (e.g., ['protocolSection', 'derivedSection']). If omitted, all fields are returned."
     ),
   summaryOnly: z
     .boolean()
     .default(false)
     .optional()
     .describe(
-      "If true, returns a concise summary of each study. If false (default), returns the complete study data.",
+      "If true, returns a concise summary of each study. If false (default), returns the complete study data."
     ),
 });
 
@@ -56,19 +61,21 @@ export type GetStudyInput = z.infer<typeof GetStudyInputSchema>;
 /**
  * Zod schema for a summarized study, containing only essential fields for a concise overview.
  */
-export const StudySummarySchema = z.object({
-  nctId: z.string().optional(),
-  title: z.string().optional(),
-  briefSummary: z.string().optional(),
-  overallStatus: z.string().optional(),
-  conditions: z.array(z.string()).optional(),
-  interventions: z
-    .array(
-      z.object({ name: z.string().optional(), type: z.string().optional() }),
-    )
-    .optional(),
-  leadSponsor: z.string().optional(),
-}).passthrough();
+export const StudySummarySchema = z
+  .object({
+    nctId: z.string().optional(),
+    title: z.string().optional(),
+    briefSummary: z.string().optional(),
+    overallStatus: z.string().optional(),
+    conditions: z.array(z.string()).optional(),
+    interventions: z
+      .array(
+        z.object({ name: z.string().optional(), type: z.string().optional() })
+      )
+      .optional(),
+    leadSponsor: z.string().optional(),
+  })
+  .passthrough();
 
 /**
  * TypeScript type inferred from the summary schema.
@@ -85,7 +92,7 @@ export const GetStudyOutputSchema = z.object({
       z.object({
         nctId: z.string(),
         error: z.string(),
-      }),
+      })
     )
     .optional(),
 });
@@ -112,7 +119,7 @@ function createStudySummary(study: Study): StudySummary {
         (i) => ({
           name: i.name,
           type: i.type,
-        }),
+        })
       ),
     leadSponsor:
       study.protocolSection?.sponsorCollaboratorsModule?.leadSponsor?.name,
@@ -130,10 +137,10 @@ function createStudySummary(study: Study): StudySummary {
  */
 export async function getStudyLogic(
   params: GetStudyInput,
-  context: RequestContext,
+  context: RequestContext
 ): Promise<GetStudyOutput> {
   const nctIds = Array.isArray(params.nctIds) ? params.nctIds : [params.nctIds];
-  const markupFormat = params.markupFormat ?? 'markdown';
+  const markupFormat = params.markupFormat ?? "markdown";
 
   logger.debug(`Executing getStudyLogic for NCT IDs: ${nctIds.join(", ")}`, {
     ...context,
@@ -147,7 +154,7 @@ export async function getStudyLogic(
   const studyPromises = nctIds.map(async (nctId) => {
     try {
       const study = await service.fetchStudy(nctId, context, {
-        fields: params.fields,
+        // fields: params.fields,
         markupFormat: markupFormat,
       });
 
@@ -155,7 +162,7 @@ export async function getStudyLogic(
         // This case might be redundant if fetchStudy throws a 404, but it's a safe fallback.
         throw new McpError(
           BaseErrorCode.NOT_FOUND,
-          `Study with NCT ID '${nctId}' not found.`,
+          `Study with NCT ID '${nctId}' not found.`
         );
       }
 

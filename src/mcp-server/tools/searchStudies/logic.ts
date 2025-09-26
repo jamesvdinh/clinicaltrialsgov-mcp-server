@@ -23,7 +23,7 @@ export const SearchStudiesInputSchema = z.object({
         .string()
         .optional()
         .describe(
-          "Search for other terms like interventions, outcomes, or sponsors.",
+          "Search for other terms like interventions, outcomes, or sponsors."
         ),
       locn: z.string().optional().describe("Search for study locations."),
       titles: z
@@ -52,7 +52,8 @@ export const SearchStudiesInputSchema = z.object({
   filter: z
     .object({
       ids: z
-        .array(z.string())
+        // .array(z.string())
+        .any()
         .optional()
         .describe("Return only studies with the specified NCT IDs."),
       overallStatus: z
@@ -67,7 +68,7 @@ export const SearchStudiesInputSchema = z.object({
             "TERMINATED",
             "WITHDRAWN",
             "UNKNOWN",
-          ]),
+          ])
         )
         .optional()
         .describe("Filter results by one or more study statuses."),
@@ -80,7 +81,7 @@ export const SearchStudiesInputSchema = z.object({
         })
         .optional()
         .describe(
-          "Filter results to a geographic area by providing a point and radius.",
+          "Filter results to a geographic area by providing a point and radius."
         ),
       advanced: z
         .string()
@@ -89,16 +90,18 @@ export const SearchStudiesInputSchema = z.object({
     })
     .optional()
     .describe(
-      "A set of filters that narrow the search results without affecting ranking.",
+      "A set of filters that narrow the search results without affecting ranking."
     ),
   fields: z
-    .array(z.string())
+    // .array(z.string())
+    .any()
     .optional()
     .describe(
-      "A list of specific top-level fields to include in the response.",
+      "A list of specific top-level fields to include in the response."
     ),
   sort: z
-    .array(z.string())
+    // .array(z.string())
+    .any()
     .optional()
     .describe("Specify the sort order for the results."),
   pageSize: z
@@ -109,7 +112,7 @@ export const SearchStudiesInputSchema = z.object({
     .default(10)
     .optional()
     .describe(
-      "The number of studies to return per page (1-200). Defaults to 10.",
+      "The number of studies to return per page (1-200). Defaults to 10."
     ),
   pageToken: z
     .string()
@@ -143,7 +146,7 @@ export type SearchStudiesOutput = z.infer<typeof SearchStudiesOutputSchema>;
  */
 export async function searchStudiesLogic(
   params: SearchStudiesInput,
-  context: RequestContext,
+  context: RequestContext
 ): Promise<SearchStudiesOutput> {
   logger.debug("Executing searchStudiesLogic", {
     ...context,
