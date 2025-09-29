@@ -21,7 +21,7 @@ import {
  * @param server - The MCP server instance.
  */
 export const registerAnalyzeTrendsTool = async (
-  server: McpServer,
+  server: McpServer
 ): Promise<void> => {
   const toolName = "clinicaltrials_analyze_trends";
   const toolDescription =
@@ -52,7 +52,7 @@ export const registerAnalyzeTrendsTool = async (
             .join("\n");
           summaryLines.push(
             `Successfully analyzed ${analysisResult.totalStudies} studies for trend '${analysisResult.analysisType}'.\n\n` +
-              `Analysis Results:\n${resultsSummary}`,
+              `Analysis Results:\n${resultsSummary}`
           );
         });
 
@@ -83,7 +83,7 @@ export const registerAnalyzeTrendsTool = async (
           },
         };
       }
-    },
+    }
   );
   logger.info(`Tool '${toolName}' registered successfully.`);
 };
